@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正禾資訊有限公司 | 弱電工程．結構化佈線．監控系統專家</title>
+    <style>
+        /* 🎨 首頁專屬局部視覺油漆 (對齊正禾品牌色) */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* 清爽乾淨的科技淺灰白底 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif;
+        }
+
+        /* 🏢 服務項目大區塊 */
+        .zh-services-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            box-sizing: border-box;
+        }
+
+        .zh-section-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #111111;
+            margin-bottom: 40px;
+            position: relative;
+            padding-left: 12px;
+            border-left: 5px solid #f27a2b; /* 左側帶有正禾橘的專業視覺飾條 */
+        }
+
+        /* 🎴 八宮格高級網格排版 (電腦版4欄、平板2欄、手機1欄) */
+        .zh-services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        /* 📄 單一服務項目樂高卡片 */
+        .zh-service-card {
+            background-color: #ffffff;
+            border: 1px solid #eef0f2;
+            border-radius: 12px;
+            padding: 35px 20px;
+            text-align: center;
+            text-decoration: none; /* 拔掉超連結的下底線 */
+            color: #333333;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: all 0.25s ease; /* 讓滑鼠移過去的浮起效果非常絲滑 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        /* 🖼️ 圖案收納外框 */
+        .zh-service-icon-box {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zh-service-icon-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* ✏️ 項目文字標題 */
+        .zh-service-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0;
+            color: #222222;
+            transition: color 0.2s ease;
+        }
+
+        /* ✨ 觸動人心的高階 Hover 互動特效 */
+        .zh-service-card:hover {
+            transform: translateY(-6px); /* 卡片微微向上浮起 */
+            border-color: #f27a2b; /* 邊框變成正禾橘 */
+            box-shadow: 0 12px 24px rgba(242, 122, 43, 0.12); /* 底下散發淡淡的橘色科技光暈 */
+        }
+
+        .zh-service-card:hover .zh-service-name {
+            color: #f27a2b; /* 文字也跟著亮起正禾橘 */
+        }
+
+        /* 📱 手機版響應式破格防護 */
+        @media (max-width: 992px) {
+            .zh-services-grid { grid-template-columns: repeat(2, 1fr); } /* 平板變兩欄 */
+        }
+        @media (max-width: 576px) {
+            .zh-services-grid { grid-template-columns: 1fr; gap: 16px; } /* 手機變單欄大按鈕 */
+            .zh-section-title { font-size: 24px; text-align: center; padding-left: 0; border-left: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="zh-services-section">
+        <h2 class="zh-section-title">服務項目</h2>
+        
+        <div class="zh-services-grid">
+            
+            <a href="cases-ncc.html" class="zh-service-card">
+                <div class="zh-service-icon-box">
+                    <img src="images/ncc.png" alt="NCC 電信送審">
+                </div>
+                <h3 class="zh-service-name">NCC 電信送審</h3>
+            </a>
+
+            <a href="cases-fiber.html" class="zh-service-card">
+                <div class="zh-service-icon-box">
+                    <img src="images/fiber.png" alt="光纖熔接">
+                </div>
+                <h3 class="zh-service-name">光纖熔接</h3>
+            </a>
+
+            <a href="network.html" class="zh-service-card">
+                <div class="zh-service-icon-box">
+                    <img src="images/network.png" alt="結構化佈線工程">
+                </div>
+                <h3 class="zh-service-name">結構化佈線工程</h3>
+            </a>
+
+            <a href="calc-cctv.html" class="zh-service-card">
+                <div class="zh-service-icon-box">
+                    <img src="images/cctv.png" alt="監視系統">
+                </div>
+                <h3 class="zh-service-name">監視系統</h3>
+            </a>
+
+            <a href="cases-phone.html" class="zh-service-card">
+                <div class="zh-service-icon-box">
+                    <img src="images/phone.png" alt="電話總機">
+                </div>
+                <h3 class="zh-service-name">電話總機</h3>
+            </a>
+
+            <a href="cases-broadcast.html" class="zh-service-card">
+                <div class="zh-service-icon-box">
+                    <img src="images/broadcast.png" alt="廣播系統">
+                </div>
+                <h3 class="zh-service-name">廣播系統</h3>
+            </a>
+
+            <a href="cases-access.html" class="zh-service-card">
+                <div class="zh-service-icon-box">
+                    <img src="images/access.png" alt="門禁捲門控制">
+                </div>
+                <h3 class="zh-service-name">門禁捲門控制</h3>
+            </a>
+
+            <a href="cases-office.html" class="zh-service-card">
+                <div class="zh-service-icon-box">
+                    <img src="images/office.png" alt="辦公室設備">
+                </div>
+                <h3 class="zh-service-name">辦公室設備</h3>
+            </a>
+
+        </div>
+    </main>
+
+    <script src="nav.js"></script>
+    <script src="header.js"></script> <script src="footer.js"></script>
+
+</body>
+</html>
