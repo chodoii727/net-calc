@@ -1,0 +1,453 @@
+<style>
+  .calc-container {
+    background-color: #f7f8fa; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0; 
+  }
+  .calc-card {
+    background-color: #ffffff; 
+    border: 1px solid #e4e7eb; 
+    border-radius: 16px; 
+    box-shadow: 0 10px 35px rgba(0,0,0,0.06); 
+    width: 100%;
+    max-width: 460px;
+    padding: 22px 25px;
+    color: #111111;
+    box-sizing: border-box;
+  }
+  .calc-title { color: #111111; text-align: left; margin-top: 0; margin-bottom: 20px; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+  
+  .calc-tabs { display: flex; background-color: #f6f6f6; padding: 4px; border-radius: 8px; margin-bottom: 22px; gap: 2px; }
+  .tab-btn { flex: 1; border: none; background: none; padding: 10px 2px; font-size: 14px; font-weight: 700; color: #545454; cursor: pointer; border-radius: 6px; transition: all 0.2s; text-align: center; white-space: nowrap; }
+  .tab-btn.active { background-color: #ffffff; color: #111111; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+  
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .step-block {
+    border-bottom: 1px dashed #e4e7eb;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+  .step-block:last-child {
+    border-bottom: none;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+
+  .form-group { margin-bottom: 0px; }
+  
+  .form-label { 
+    color: #111111; 
+    font-size: 15.5px; 
+    font-weight: 700; 
+    display: block; 
+    margin-bottom: 10px; 
+    border-left: 4px solid #f27a2b; 
+    padding-left: 10px;
+  }
+  
+  .form-select { 
+    width: 100%; 
+    background-color: #f8f9fa; 
+    color: #111111; 
+    border: 1px solid #ccd1d6; 
+    padding: 12px 14px; 
+    border-radius: 8px; 
+    font-size: 15px; 
+    outline: none; 
+    transition: all 0.15s ease; 
+    font-weight: 600; 
+  }
+  .form-select:focus { background-color: #ffffff; border-color: #111111; }
+  
+  .range-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; width: 100%; }
+  .range-slider { width: 100%; accent-color: #111111; cursor: pointer; height: 6px; margin-top: 6px; }
+  
+  .info-box { background-color: #f6f6f6; border-radius: 8px; padding: 14px; margin-top: 8px; }
+  
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .info-row:last-child { margin-bottom: 0; }
+  .info-row-label {
+    white-space: nowrap;
+    flex-shrink: 0;
+    color: #111111;
+    font-weight: 700;
+    width: 95px; 
+  }
+  .info-row-content {
+    color: #545454;
+    font-weight: 600;
+  }
+  
+  .summary-box { 
+    width: 100%; 
+    height: auto;
+    min-height: 165px;
+    background-color: #f6f6f6; 
+    color: #111111; 
+    border: none; 
+    padding: 15px; 
+    border-radius: 8px; 
+    font-size: 13.5px; 
+    box-sizing: border-box; 
+    line-height: 1.6; 
+    overflow-y: auto; 
+  }
+
+  .summary-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .summary-price {
+    color: #f27a2b;
+    font-weight: 700;
+    font-family: Arial, sans-serif;
+  }
+  .summary-price.zero {
+    color: #888888;
+    font-weight: 600;
+  }
+  
+  .total-section { text-align: center; margin-bottom: 16px; background-color: #f6f6f6; padding: 15px; border-radius: 12px; }
+  .total-label { color: #545454; font-size: 13px; font-weight: 600; }
+  .total-amount { color: #111111; font-size: 36px; font-weight: 800; margin-top: 2px; font-family: Arial, sans-serif; }
+  .total-note { color: #f27a2b; font-size: 14px; font-weight: bold; margin-top: 4px; }
+  
+  .submit-btn { width: 100%; background-color: #111111; color: #ffffff; border: none; font-size: 16px; font-weight: bold; padding: 14px 0; border-radius: 8px; text-align: center; cursor: pointer; transition: background 0.15s ease; letter-spacing: 0.5px; }
+  .submit-btn:hover { background-color: #333333; }
+  .calc-hr { border: 0; border-top: 1px solid #eeeeee; margin: 16px 0; }
+
+  @media (max-width: 480px) {
+    .calc-container { padding: 10px 0; }
+    .calc-card { padding: 15px 15px; border-radius: 12px; }
+    .calc-title { font-size: 21px; margin-bottom: 12px; }
+    .step-block { padding-bottom: 14px; margin-bottom: 14px; }
+    .form-label { font-size: 14px; margin-bottom: 8px; padding-left: 8px; border-left-width: 3px; }
+    .form-select { padding: 10px 12px; font-size: 14px; }
+    .summary-box { padding: 12px; font-size: 12.5px; }
+    .info-row { font-size: 12px; margin-bottom: 6px; }
+    .info-row-label { width: 85px; }
+    .total-amount { font-size: 30px; }
+    .submit-btn { padding: 12px 0; font-size: 15px; }
+  }
+</style>
+
+<div class="calc-container">
+  <div class="calc-card">
+    <h3 class="calc-title">正禾資訊 ｜ 網路佈線預算模擬</h3>
+    
+    <div class="calc-tabs">
+      <button id="btnIndoor" class="tab-btn active" onclick="switchTab('indoor')">🏠 室內網路佈線</button>
+      <button id="btnOutdoor" class="tab-btn" onclick="switchTab('outdoor')">☀️ 室外網路佈線</button>
+    </div>
+
+    <!-- 🏠 頁籤一：室內網路佈線 -->
+    <div id="panelIndoor" class="tab-content active">
+      <div class="form-group step-block">
+        <label class="form-label">1. 預計想要拉幾條網路線？ (基本15米)</label>
+        <select id="netQty" class="form-select" onchange="calculateAll()">
+          <option value="1" selected>1 條網路線 - $2,000</option>
+          <option value="2">2 條網路線 - $4,000</option>
+          <option value="3">3 條網路線 - $6,000</option>
+          <option value="4">4 條網路線 - $8,000</option>
+          <option value="6">6 條網路線 - $12,000</option>
+          <option value="8">8 條網路線 - $16,000</option>
+          <option value="12">12 條網路線 - $24,000</option>
+          <option value="16">16 條網路線 - $32,000</option>
+        </select>
+      </div>
+
+      <div class="form-group step-block">
+        <div class="range-header">
+          <label class="form-label" style="margin-bottom:0;">2. 預估每條網路線平均長度</label>
+          <span id="netLengthVal" style="color: #111111; font-size: 15px; font-weight: bold; text-align: right; white-space: nowrap;"></span>
+        </div>
+        <div style="font-size: 13px; color: #545454; font-weight: 600; margin-top: 6px; margin-bottom: 10px; padding-left: 14px;">
+          每條網路線基本內含 15 米，加長 1 米以 100 元另計
+        </div>
+        <div id="netExtraCostNote" style="font-size: 13.5px; font-weight: 600; margin-bottom: 14px; padding-left: 14px; transition: all 0.2s;">
+          ➔ 包含在基本長度內
+        </div>
+        <input type="range" id="netLength" class="range-slider" min="15" max="100" value="15" oninput="calculateAll()">
+      </div>
+
+      <div class="form-group step-block">
+        <label class="form-label">3. 集線交換器 (Switch) 需求</label>
+        <select id="netSwitch" class="form-select" onchange="calculateAll()">
+          <option value="0" selected>不需要交換器 (或自備)</option>
+          <option value="800">加購 5路網路交換器 - $800</option>
+          <option value="1200">加購 8路網路交換器 - $1,200</option>
+        </select>
+      </div>
+
+      <div class="form-group step-block">
+        <label class="form-label">4. 網路配線架 (Patch Panel) 需求</label>
+        <select id="netPanel" class="form-select" onchange="calculateAll()">
+          <option value="0" selected>不需要配線架 (一般水晶頭直接對接)</option>
+          <option value="900">加購 8孔網路配線架 - $900 / 組</option>
+        </select>
+      </div>
+
+      <div class="form-group step-block">
+        <label class="form-label">5. 線路明線美化壓條固定</label>
+        <select id="moldingType" class="form-select" onchange="calculateAll()">
+          <option value="0" selected>不需要壓條固定 (純佈線或走原有管路)</option>
+          <option value="30">選用 一號壓條 - $30 / 米</option>
+          <option value="40">選用 二號壓條 - $40 / 米</option>
+          <option value="50">選用 三號壓條 - $50 / 米</option>
+        </select>
+      </div>
+
+      <div class="form-group step-block" id="moldingLengthBlock" style="display: none;">
+        <div class="range-header">
+          <label class="form-label" style="margin-bottom:0; border-left:none; padding-left:0;">5-2. 預估現場壓條需要幾米？(一米即為一支)</label>
+          <span id="moldingLengthVal" style="color: #111111; font-size: 15px; font-weight: bold; text-align: right; white-space: nowrap;"></span>
+        </div>
+        <input type="range" id="moldingLength" class="range-slider" min="0" max="200" value="0" oninput="calculateAll()">
+      </div>
+    </div>
+
+    <!-- ☀️ 頁籤二：室外網路佈線 -->
+    <div id="panelOutdoor" class="tab-content">
+      <div class="form-group step-block">
+        <div class="range-header">
+          <label class="form-label" style="margin-bottom:0;">1. 預估室外網路線總長度</label>
+          <span id="outLengthVal" style="color: #111111; font-size: 15px; font-weight: bold; text-align: right; white-space: nowrap;"></span>
+        </div>
+        <div style="font-size: 13px; color: #545454; font-weight: 600; margin-top: 6px; margin-bottom: 10px; padding-left: 14px;">
+          室外黑皮線材含基本線夾固定，每米以 100 元計算
+        </div>
+        <input type="range" id="outLength" class="range-slider" min="0" max="300" value="30" oninput="calculateAll()">
+      </div>
+
+      <div class="form-group step-block">
+        <div class="range-header">
+          <label class="form-label" style="margin-bottom:0;">2. 預估架空鋼索牽引長度</label>
+          <span id="outAerialLengthVal" style="color: #111111; font-size: 15px; font-weight: bold; text-align: right; white-space: nowrap;"></span>
+        </div>
+        <div style="font-size: 13px; color: #545454; font-weight: 600; margin-top: 6px; margin-bottom: 10px; padding-left: 14px;">
+          鋼索架空牽引施工，每米以 70 元計算
+        </div>
+        <input type="range" id="outAerialLength" class="range-slider" min="0" max="300" value="0" oninput="calculateAll()">
+      </div>
+
+      <div class="form-group step-block">
+        <div class="range-header">
+          <label class="form-label" style="margin-bottom:0;">3. 現場是否需要防護硬管/浪管包覆？</label>
+          <span id="outPipeLengthVal" style="color: #111111; font-size: 15px; font-weight: bold; text-align: right; white-space: nowrap;"></span>
+        </div>
+        <div style="font-size: 13px; color: #545454; font-weight: 600; margin-top: 6px; margin-bottom: 10px; padding-left: 14px;">
+          戶外管材每支 4 米 $150 元 (依米數自動無條件進位換算支數)
+        </div>
+        <input type="range" id="outPipeLength" class="range-slider" min="0" max="200" value="0" oninput="calculateAll()">
+      </div>
+    </div>
+
+    <hr class="calc-hr">
+    
+    <div class="form-group" style="margin-bottom: 15px;">
+      <div class="info-box" id="infoBoxContainer"></div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+      <label class="form-label">📋 網路佈線估算明細</label>
+      <div id="summaryText" class="summary-box"></div>
+    </div>
+    
+    <div class="total-section">
+      <div class="total-label">估算佈線總價</div>
+      <div class="total-amount">NT$ <span id="grandTotal">0</span></div>
+      <div class="total-note">✓ 含安裝施工・線路設備保固 2 年</div>
+    </div>
+    
+    <button onclick="copyAndGoNet()" class="submit-btn">複製配置清單 ➔ 開啟LINE貼上</button>
+  </div>
+</div>
+
+<script>
+var rawLineSummaryText = "";
+var activeTab = "indoor";
+
+function switchTab(type) {
+  activeTab = type;
+  document.getElementById('btnIndoor').classList.remove('active');
+  document.getElementById('btnOutdoor').classList.remove('active');
+  document.getElementById('panelIndoor').classList.remove('active');
+  document.getElementById('panelOutdoor').classList.remove('active');
+  
+  if (type === 'indoor') {
+    document.getElementById('btnIndoor').classList.add('active');
+    document.getElementById('panelIndoor').classList.add('active');
+  } else {
+    document.getElementById('btnOutdoor').classList.add('active');
+    document.getElementById('panelOutdoor').classList.add('active');
+  }
+  calculateAll();
+}
+
+function calculateAll() {
+  if (activeTab === "indoor") {
+    calculateIndoor();
+  } else {
+    calculateOutdoor();
+  }
+}
+
+function calculateIndoor() {
+  var qty = parseInt(document.getElementById('netQty').value) || 1;
+  var length = parseInt(document.getElementById('netLength').value) || 15;
+  var switchPrice = parseInt(document.getElementById('netSwitch').value) || 0;
+  var panelPrice = parseInt(document.getElementById('netPanel').value) || 0;
+  var moldingPricePerMeter = parseInt(document.getElementById('moldingType').value) || 0;
+  var moldingLength = parseInt(document.getElementById('moldingLength').value) || 0;
+
+  var basePricePerLine = 2000;
+  var extraLengthPerLine = Math.max(0, length - 15);
+  
+  var totalBaseCost = qty * basePricePerLine;
+  var totalExtraMeters = extraLengthPerLine * qty;
+  var totalExtraCost = totalExtraMeters * 100;
+  
+  var totalIndoorMeters = length * qty;
+  var totalBaseMeters = 15 * qty;
+  var extraNoteEl = document.getElementById('netExtraCostNote');
+  
+  if (totalExtraCost > 0) {
+    if (qty === 1) {
+      extraNoteEl.innerHTML = "➔ 基礎 15 米外，額外加長 <span style='color:#f27a2b;'>" + totalExtraMeters + "</span> 米";
+    } else {
+      extraNoteEl.innerHTML = "➔ " + qty + " 條共 " + totalIndoorMeters + " 米 (含基礎 " + totalBaseMeters + " 米 ＋ 額外加長 <span style='color:#f27a2b;'>" + totalExtraMeters + "</span> 米)";
+    }
+    extraNoteEl.style.color = '#111111';
+  } else {
+    extraNoteEl.innerHTML = "➔ 包含在基本長度內，無額外加長";
+    extraNoteEl.style.color = '#06C167';
+  }
+
+  if (moldingPricePerMeter > 0) {
+    document.getElementById('moldingLengthBlock').style.display = 'block';
+  } else {
+    document.getElementById('moldingLengthBlock').style.display = 'none';
+    document.getElementById('moldingLength').value = 0;
+    moldingLength = 0;
+  }
+
+  var totalMoldingCost = moldingPricePerMeter * moldingLength;
+  var grandTotal = totalBaseCost + totalExtraCost + switchPrice + panelPrice + totalMoldingCost;
+
+  var indoorLengthHTML = length + " 米/條";
+  if (totalExtraCost > 0) {
+    indoorLengthHTML += " ｜ <span style='color:#f27a2b;'>+$" + totalExtraCost.toLocaleString() + "</span>";
+  } else {
+    indoorLengthHTML += " ｜ <span style='color:#888888;'>+$0</span>";
+  }
+  document.getElementById('netLengthVal').innerHTML = indoorLengthHTML;
+
+  document.getElementById('moldingLengthVal').innerHTML = moldingLength + " 米 ｜ <span style='color:#f27a2b;'>$" + totalMoldingCost.toLocaleString() + "</span>";
+  document.getElementById('grandTotal').innerText = grandTotal.toLocaleString();
+
+  document.getElementById('infoBoxContainer').innerHTML = 
+    "<div class='info-row'><span class='info-row-label'>🌐 佈線內含：</span><span class='info-row-content'>每條線皆含專用資訊插座 ×1、兩米網路跳線 ×1</span></div>" +
+    "<div class='info-row'><span class='info-row-label'>📐 長度統計：</span><span class='info-row-content'>基礎 " + totalBaseMeters + " 米，總計額外加長 <span style='color:#f27a2b; font-weight: bold;'>" + totalExtraMeters + "</span> 米</span></div>" +
+    "<div class='info-row'><span class='info-row-label'>🛠️ 品質承諾：</span><span class='info-row-content'>採用大同原廠加粗純銅線材，確保網路傳輸穩定不掉速。</span></div>";
+
+  var switchText = document.getElementById('netSwitch').options[document.getElementById('netSwitch').selectedIndex].text.split(' - ')[0];
+  var panelText = document.getElementById('netPanel').options[document.getElementById('netPanel').selectedIndex].text.split(' - ')[0];
+  
+  var moldingLabel = "不需要";
+  if (moldingPricePerMeter === 30) moldingLabel = "一號壓條";
+  if (moldingPricePerMeter === 40) moldingLabel = "二號壓條";
+  if (moldingPricePerMeter === 50) moldingLabel = "三號壓條";
+
+  var htmlSummary = "<div style='font-weight: 700; margin-bottom: 12px; color: #111111;'>【正禾資訊】網路佈線估算清單 (室內)：</div>" +
+    "<div class='summary-line'><span>1. 網路線基本費用：" + qty + " 條 (內含15米/條)</span><span class='summary-price'>$" + totalBaseCost.toLocaleString() + "</span></div>" +
+    "<div class='summary-line'><span>2. 線路額外加長：共 " + totalExtraMeters + " 米 (每米$100)</span><span class='summary-price " + (totalExtraCost === 0 ? "zero" : "") + "'>$" + totalExtraCost.toLocaleString() + "</span></div>" +
+    "<div class='summary-line'><span>3. 集線交換器：" + (switchPrice === 0 ? "不需要" : switchText) + "</span><span class='summary-price " + (switchPrice === 0 ? "zero" : "") + "'>$" + switchPrice.toLocaleString() + "</span></div>" +
+    "<div class='summary-line'><span>4. 網路配線架：" + (panelPrice === 0 ? "不需要" : panelText) + "</span><span class='summary-price " + (panelPrice === 0 ? "zero" : "") + "'>$" + panelPrice.toLocaleString() + "</span></div>" +
+    "<div class='summary-line'><span>5. 明線美化壓條：" + (moldingPricePerMeter === 0 ? "不需要" : moldingLabel + " × " + moldingLength + " 米") + "</span><span class='summary-price " + (totalMoldingCost === 0 ? "zero" : "") + "'>$" + totalMoldingCost.toLocaleString() + "</span></div>" +
+    "<hr style='border:0; border-top:1px dashed #e4e7eb; margin:12px 0;'>" +
+    "<div style='font-weight: 800; color: #111111; font-size:14px;'>💰 完工總價：NT$ " + grandTotal.toLocaleString() + " 元</div>";
+  
+  document.getElementById('summaryText').innerHTML = htmlSummary;
+
+  rawLineSummaryText = "【正禾資訊】網路佈線預算估算清單 (室內)：\n" +
+                        "1. 網路線基本費用：" + qty + " 條 (內含15米/條) ➔ $" + totalBaseCost.toLocaleString() + "\n" +
+                        "2. 線路額外加長：共 " + totalExtraMeters + " 米 (每米$100) ➔ $" + totalExtraCost.toLocaleString() + "\n" +
+                        "3. 集線交換器：" + (switchPrice === 0 ? "不需要" : switchText) + " ➔ $" + switchPrice.toLocaleString() + "\n" +
+                        "4. 網路配線架：" + (panelPrice === 0 ? "不需要" : panelText) + " ➔ $" + panelPrice.toLocaleString() + "\n" +
+                        "5. 明線美化壓條：" + (moldingPricePerMeter === 0 ? "不需要" : moldingLabel + " x " + moldingLength + " 米") + " ➔ $" + totalMoldingCost.toLocaleString() + "\n" +
+                        "💰 完工總價：NT$ " + grandTotal.toLocaleString() + " 元 (保固2年)";
+}
+
+function calculateOutdoor() {
+  var outLength = parseInt(document.getElementById('outLength').value) || 0;
+  var outAerialLength = parseInt(document.getElementById('outAerialLength').value) || 0;
+  var outPipeLength = parseInt(document.getElementById('outPipeLength').value) || 0;
+
+  var lineCost = outLength * 100;
+  var aerialCost = outAerialLength * 70;
+  var pipesNeeded = Math.ceil(outPipeLength / 4);
+  var pipeCost = pipesNeeded * 150;
+
+  var grandTotal = lineCost + aerialCost + pipeCost;
+
+  document.getElementById('outLengthVal').innerHTML = outLength + " 米 ｜ <span style='color:#f27a2b;'>$" + lineCost.toLocaleString() + "</span>";
+  document.getElementById('outAerialLengthVal').innerHTML = outAerialLength + " 米 ｜ <span style='color:#f27a2b;'>$" + aerialCost.toLocaleString() + "</span>";
+  document.getElementById('outPipeLengthVal').innerHTML = outPipeLength + " 米 ｜ <span style='color:#f27a2b;'>$" + pipeCost.toLocaleString() + "</span>";
+  
+  document.getElementById('grandTotal').innerText = grandTotal.toLocaleString();
+
+  document.getElementById('infoBoxContainer').innerHTML = 
+    "<div class='info-row'><span class='info-row-label'>🌐 線材規格：</span><span class='info-row-content'>採用戶外專用自帶鋼索雙皮黑皮網路線</span></div>" +
+    "<div class='info-row'><span class='info-row-label'>📐 管材進位：</span><span class='info-row-content'>包覆 " + outPipeLength + " 米，共折合計需 <span style='color:#f27a2b; font-weight: bold;'>" + pipesNeeded + "</span> 支防護硬管</span></div>" +
+    "<div class='info-row'><span class='info-row-label'>🛠️ 工法備註：</span><span class='info-row-content'>架空包含兩端不鏽鋼壁虎打眼及不鏽鋼拉緊器施工。</span></div>";
+
+  var htmlSummary = "<div style='font-weight: 700; margin-bottom: 12px; color: #111111;'>【正禾資訊】網路佈線估算清單 (室內)：</div>" +
+    "<div class='summary-line'><span>1. 室外網路線費用：" + outLength + " 米 (每米$100)</span><span class='summary-price'>$" + lineCost.toLocaleString() + "</span></div>" +
+    "<div class='summary-line'><span>2. 架空鋼索牽引費：" + (outAerialLength > 0 ? outAerialLength + " 米 (每米$70)" : "不需要") + "</span><span class='summary-price " + (aerialCost === 0 ? "zero" : "") + "'>$" + aerialCost.toLocaleString() + "</span></div>" +
+    "<div class='summary-line'><span>3. 戶外防護管材費：" + outPipeLength + " 米 (共 " + pipesNeeded + " 支)</span><span class='summary-price " + (pipeCost === 0 ? "zero" : "") + "'>$" + pipeCost.toLocaleString() + "</span></div>" +
+    "<hr style='border:0; border-top:1px dashed #e4e7eb; margin:12px 0;'>" +
+    "<div style='font-weight: 800; color: #111111; font-size:14px;'>💰 完工總價：NT$ " + grandTotal.toLocaleString() + " 元</div>";
+
+  document.getElementById('summaryText').innerHTML = htmlSummary;
+
+  rawLineSummaryText = "【正禾資訊】網路佈線預算估算清單 (室外)：\n" +
+                        "1. 室外網路線費用：" + outLength + " 米 (每米$100) ➔ $" + lineCost.toLocaleString() + "\n" +
+                        "2. 架空鋼索牽引費：" + (outAerialLength > 0 ? outAerialLength + " 米 (每米$70)" : "不需要") + " ➔ $" + aerialCost.toLocaleString() + "\n" +
+                        "3. 戶外防護管材費：" + outPipeLength + " 米 (共 " + pipesNeeded + " 支) ➔ $" + pipeCost.toLocaleString() + "\n" +
+                        "💰 完工總價：NT$ " + grandTotal.toLocaleString() + " 元 (保固2年)";
+}
+
+function copyAndGoNet() {
+  var tempInput = document.createElement("textarea");
+  tempInput.value = rawLineSummaryText;
+  document.body.appendChild(tempInput);
+  tempInput.select();
+  tempInput.setSelectionRange(0, 99999);
+  
+  try {
+    document.execCommand("copy");
+    alert("📋 網路佈線明細已成功複製到您的剪貼簿！\n\n點擊確定後將開啟 LINE，請在對話框「長按貼上」發送給正禾專家即可！");
+  } catch (err) {
+    alert("請直接截圖此畫面，並傳送給 LINE 線上客服核對唷！");
+  }
+  
+  document.body.removeChild(tempInput);
+  window.open("https://line.me/ti/p/~gooa168", "_blank");
+}
+
+calculateAll();
+</script>
