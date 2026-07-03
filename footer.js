@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="zh-footer-card">
           <div class="zh-card-hours">BUSINESS HOURS</div>
           <div class="zh-card-hours-val">週一至週五 08:00 - 17:30</div>
-          <div class="zh-card-phone-label">🔧 專家專線</div>
+          <div class="zh-card-phone-label">🔧 聯絡專線</div>
           <div class="zh-card-phone">0933-560468</div>
           <a href="https://line.me/ti/p/~gooa168" target="_blank" class="zh-card-btn">LINE 快速報價</a>
         </div>

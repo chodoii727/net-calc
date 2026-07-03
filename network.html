@@ -1,455 +1,746 @@
-<style>
-  .calc-container {
-    background-color: #f7f8fa; 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0; 
-  }
-  .calc-card {
-    background-color: #ffffff; 
-    border: 1px solid #e4e7eb; 
-    border-radius: 16px; 
-    box-shadow: 0 10px 35px rgba(0,0,0,0.06); 
-    width: 100%;
-    max-width: 460px;
-    padding: 22px 25px;
-    color: #111111;
-    box-sizing: border-box;
-  }
-  .calc-title { color: #111111; text-align: left; margin-top: 0; margin-bottom: 20px; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
-  
-  .calc-tabs { display: flex; background-color: #f6f6f6; padding: 4px; border-radius: 8px; margin-bottom: 22px; gap: 2px; }
-  .tab-btn { flex: 1; border: none; background: none; padding: 10px 2px; font-size: 14px; font-weight: 700; color: #545454; cursor: pointer; border-radius: 6px; transition: all 0.2s; text-align: center; white-space: nowrap; }
-  .tab-btn.active { background-color: #ffffff; color: #111111; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-  
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正禾資訊 | 智慧預算模擬器</title>
+    <style>
+        /* 🎨 全局現代化質感美學（大廠透氣感） */
+        :root {
+            --zh-orange: #f27a2b;       /* 正禾品牌橘 */
+            --zh-dark: #111111;         /* 高質感深色 */
+            --zh-bg: #f8f9fa;           /* 寬闊背景色 */
+            --zh-card-bg: #ffffff;
+            --zh-border: #e4e7eb;
+            --zh-text-muted: #545454;
+        }
 
-  .step-block {
-    border-bottom: 1px dashed #e4e7eb;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-  }
-  .step-block:last-child {
-    border-bottom: none;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-  }
+        body {
+            background-color: var(--zh-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0; /* 讓頁首頁尾可以貼齊邊界 */
+            box-sizing: border-box;
+        }
 
-  .form-group { margin-bottom: 0px; }
-  
-  .form-label { 
-    color: #111111; 
-    font-size: 15.5px; 
-    font-weight: 700; 
-    display: block; 
-    margin-bottom: 10px; 
-    border-left: 4px solid #f27a2b; 
-    padding-left: 10px;
-  }
-  
-  .form-select { 
-    width: 100%; 
-    background-color: #f8f9fa; 
-    color: #111111; 
-    border: 1px solid #ccd1d6; 
-    padding: 12px 14px; 
-    border-radius: 8px; 
-    font-size: 15px; 
-    outline: none; 
-    transition: all 0.15s ease; 
-    font-weight: 600; 
-  }
-  .form-select:focus { background-color: #ffffff; border-color: #111111; }
-  
-  .range-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; width: 100%; }
-  .range-slider { width: 100%; accent-color: #111111; cursor: pointer; height: 6px; margin-top: 6px; }
-  
-  .info-box { background-color: #f6f6f6; border-radius: 8px; padding: 14px; margin-top: 8px; }
-  
-  .info-row {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 8px;
-    font-size: 13px;
-    line-height: 1.5;
-  }
-  .info-row:last-child { margin-bottom: 0; }
-  .info-row-label {
-    white-space: nowrap;
-    flex-shrink: 0;
-    color: #111111;
-    font-weight: 700;
-    width: 95px; 
-  }
-  .info-row-content {
-    color: #545454;
-    font-weight: 600;
-  }
-  
-  .summary-box { 
-    width: 100%; 
-    height: auto;
-    min-height: 165px;
-    background-color: #f6f6f6; 
-    color: #111111; 
-    border: none; 
-    padding: 15px; 
-    border-radius: 8px; 
-    font-size: 13.5px; 
-    box-sizing: border-box; 
-    line-height: 1.6; 
-    overflow-y: auto; 
-  }
+        /* ✨ 讓估算器置中並帶有上下間距，絕對不影響頁首頁尾 */
+        .calc-container {
+            width: 100%;
+            max-width: 800px; /* 拉寬版面，營造大器透氣感 */
+            background-color: var(--zh-card-bg);
+            border: 1px solid var(--zh-border);
+            border-radius: 24px; /* 圓角加大更具科技感 */
+            box-shadow: 0 15px 45px rgba(0,0,0,0.05);
+            padding: 40px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            
+            /* 🎯 關鍵：讓估算器獨立上下留空 60px，左右自動置中 */
+            margin: 60px auto; 
+        }
 
-  .summary-line {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-  .summary-price {
-    color: #f27a2b;
-    font-weight: 700;
-    font-family: Arial, sans-serif;
-  }
-  .summary-price.zero {
-    color: #888888;
-    font-weight: 600;
-  }
-  
-  .total-section { text-align: center; margin-bottom: 16px; background-color: #f6f6f6; padding: 15px; border-radius: 12px; }
-  .total-label { color: #545454; font-size: 13px; font-weight: 600; }
-  .total-amount { color: #111111; font-size: 36px; font-weight: 800; margin-top: 2px; font-family: Arial, sans-serif; }
-  .total-note { color: #f27a2b; font-size: 14px; font-weight: bold; margin-top: 4px; }
-  
-  .submit-btn { width: 100%; background-color: #111111; color: #ffffff; border: none; font-size: 16px; font-weight: bold; padding: 14px 0; border-radius: 8px; text-align: center; cursor: pointer; transition: background 0.15s ease; letter-spacing: 0.5px; }
-  .submit-btn:hover { background-color: #333333; }
-  .calc-hr { border: 0; border-top: 1px solid #eeeeee; margin: 16px 0; }
+        .calc-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
 
-  @media (max-width: 480px) {
-    .calc-container { padding: 10px 0; }
-    .calc-card { padding: 15px 15px; border-radius: 12px; }
-    .calc-title { font-size: 21px; margin-bottom: 12px; }
-    .step-block { padding-bottom: 14px; margin-bottom: 14px; }
-    .form-label { font-size: 14px; margin-bottom: 8px; padding-left: 8px; border-left-width: 3px; }
-    .form-select { padding: 10px 12px; font-size: 14px; }
-    .summary-box { padding: 12px; font-size: 12.5px; }
-    .info-row { font-size: 12px; margin-bottom: 6px; }
-    .info-row-label { width: 85px; }
-    .total-amount { font-size: 30px; }
-    .submit-btn { padding: 12px 0; font-size: 15px; }
-  }
-</style>
+        .calc-title {
+            color: var(--zh-dark);
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .calc-subtitle {
+            color: var(--zh-text-muted);
+            font-size: 15px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* 🧭 步驟多階段導航條（Step Indicator） */
+        .step-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+            background: #f1f3f5;
+            padding: 6px;
+            border-radius: 14px;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            padding: 12px 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--zh-text-muted);
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .progress-step.active {
+            background-color: var(--zh-card-bg);
+            color: var(--zh-dark);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* 📦 步驟分頁控制 */
+        .step-panel {
+            display: none;
+        }
+
+        .step-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 🏠 步驟一：環境大圖卡網格 (Grid Layout) */
+        .env-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .env-card {
+            border: 2px solid var(--zh-border);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: var(--zh-bg);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .env-card:hover {
+            border-color: var(--zh-dark);
+            background-color: #fff;
+        }
+
+        .env-card.active {
+            border-color: var(--zh-orange);
+            background-color: #fff;
+            box-shadow: 0 8px 20px rgba(242,122,43,0.08);
+        }
+
+        .env-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--zh-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .env-card-desc {
+            font-size: 13.5px;
+            color: var(--zh-text-muted);
+            line-height: 1.4;
+        }
+
+        /* 💡 智慧分析備註盒子 */
+        .ai-note-box {
+            background-color: #fff9f5;
+            border-left: 4px solid var(--zh-orange);
+            border-radius: 4px 12px 12px 4px;
+            padding: 16px 20px;
+            margin-top: 25px;
+            font-size: 14.5px;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        /* ⚙️ 步驟二：精美微互動元件控制組 */
+        .control-group {
+            background: #fff;
+            border: 1px solid var(--zh-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-label-zone {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .control-title {
+            font-size: 16.5px;
+            font-weight: 700;
+            color: var(--zh-dark);
+        }
+
+        .control-desc {
+            font-size: 13px;
+            color: var(--zh-text-muted);
+        }
+
+        /* ➕➖ 數字加減器 */
+        .counter-tool {
+            display: flex;
+            align-items: center;
+            background: #f1f3f5;
+            border-radius: 10px;
+            padding: 4px;
+        }
+
+        .counter-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #fff;
+            color: var(--zh-dark);
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.15s;
+        }
+
+        .counter-btn:hover {
+            background: #e4e7eb;
+        }
+
+        .counter-value {
+            width: 50px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--zh-dark);
+        }
+
+        /* 🎚️ 滑桿元件美化 */
+        .slider-group {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .range-slider {
+            width: 100%;
+            accent-color: var(--zh-dark);
+            cursor: pointer;
+            height: 6px;
+        }
+
+        /* 🔔 自動匹配智慧提示盒 */
+        .auto-match-box {
+            background: #f1fdf7;
+            border: 1px dashed #06C167;
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-top: 15px;
+            font-size: 13.5px;
+            color: #1e7e4c;
+            font-weight: 600;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* 📋 步驟三：配置明細與總價區 */
+        .summary-wrapper {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .detail-list {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14.5px;
+            border-bottom: 1px dashed var(--zh-border);
+            padding-bottom: 10px;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: var(--zh-text-muted);
+            font-weight: 500;
+        }
+
+        .detail-val {
+            color: var(--zh-dark);
+            font-weight: 700;
+        }
+
+        .result-panel {
+            background: #fff;
+            border: 2px solid var(--zh-dark);
+            border-radius: 16px;
+            padding: 30px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.03);
+        }
+
+        .total-label {
+            font-size: 14px;
+            color: var(--zh-text-muted);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .total-amount {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--zh-dark);
+            margin-bottom: 10px;
+        }
+
+        .warranty-tag {
+            color: var(--zh-orange);
+            font-size: 13.5px;
+            font-weight: 700;
+            background: #fff5ee;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+        }
+
+        /* 🔘 底部導航按鈕區 */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 35px;
+            gap: 15px;
+        }
+
+        .btn-nav {
+            padding: 14px 28px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: none;
+        }
+
+        .btn-prev {
+            background-color: #e4e7eb;
+            color: var(--zh-dark);
+        }
+
+        .btn-prev:hover { background-color: #cbd5e1; }
+
+        .btn-next {
+            background-color: var(--zh-dark);
+            color: #fff;
+            margin-left: auto; /* 靠右對齊 */
+        }
+
+        .btn-next:hover { background-color: #333; }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #06C167; /* 鮮明綠色引導成交點擊 */
+            color: #fff;
+            padding: 15px 0;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(6,193,103,0.2);
+            transition: all 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #05a859;
+            box-shadow: 0 6px 18px rgba(6,193,103,0.3);
+        }
+
+        /* 📱 完美響應式斷點（防手機擠壓爆版） */
+        @media (max-width: 680px) {
+            body { padding: 15px 10px; }
+            .calc-container { padding: 25px 20px; border-radius: 16px; }
+            .env-grid { grid-template-columns: 1fr; gap: 12px; }
+            .control-group { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .counter-tool { width: 100%; justify-content: space-between; box-sizing: border-box; }
+            .summary-wrapper { grid-template-columns: 1fr; gap: 20px; }
+            .calc-title { font-size: 22px; }
+            .progress-step { font-size: 12px; padding: 10px 4px; }
+        }
+    </style>
+</head>
+<body>
 
 <div class="calc-container">
-  <div class="calc-card">
-    <h3 class="calc-title">正禾資訊 ｜ 網路佈線預算模擬</h3>
-    
-    <div class="calc-tabs">
-      <button id="btnIndoor" class="tab-btn active" onclick="switchTab('indoor')">🏠 室內網路佈線</button>
-      <button id="btnOutdoor" class="tab-btn" onclick="switchTab('outdoor')">☀️ 室外網路佈線</button>
+    <div class="calc-header">
+        <h2 class="calc-title">正禾資訊 ｜ 智慧監控預算規劃</h2>
+        <p class="calc-subtitle">大廠級一秒精算・快速產生專屬預算明細</p>
     </div>
 
-    <!-- 🏠 頁籤一：室內網路佈線 -->
-    <div id="panelIndoor" class="tab-content active">
-      <div class="form-group step-block">
-        <label class="form-label">1. 預計想要拉幾條網路線？ (基本15米)</label>
-        <select id="netQty" class="form-select" onchange="calculateAll()">
-          <option value="1" selected>1 條網路線 - $2,000</option>
-          <option value="2">2 條網路線 - $4,000</option>
-          <option value="3">3 條網路線 - $6,000</option>
-          <option value="4">4 條網路線 - $8,000</option>
-          <option value="6">6 條網路線 - $12,000</option>
-          <option value="8">8 條網路線 - $16,000</option>
-          <option value="12">12 條網路線 - $24,000</option>
-          <option value="16">16 條網路線 - $32,000</option>
-        </select>
-      </div>
-
-      <div class="form-group step-block">
-        <div class="range-header">
-          <label class="form-label" style="margin-bottom:0;">2. 預估每條網路線平均長度</label>
-          <span id="netLengthVal" style="color: #111111; font-size: 15px; font-weight: bold; text-align: right; white-space: nowrap;"></span>
-        </div>
-        <div style="font-size: 13px; color: #545454; font-weight: 600; margin-top: 6px; margin-bottom: 10px; padding-left: 14px;">
-          每條網路線基本內含 15 米，加長 1 米以 100 元另計
-        </div>
-        <div id="netExtraCostNote" style="font-size: 13.5px; font-weight: 600; margin-bottom: 14px; padding-left: 14px; transition: all 0.2s;">
-          ➔ 包含在基本長度內
-        </div>
-        <input type="range" id="netLength" class="range-slider" min="15" max="100" value="15" oninput="calculateAll()">
-      </div>
-
-      <div class="form-group step-block">
-        <label class="form-label">3. 集線交換器 (Switch) 需求</label>
-        <select id="netSwitch" class="form-select" onchange="calculateAll()">
-          <option value="0" selected>不需要交換器 (或自備)</option>
-          <option value="800">加購 5路網路交換器 - $800</option>
-          <option value="1200">加購 8路網路交換器 - $1,200</option>
-        </select>
-      </div>
-
-      <div class="form-group step-block">
-        <label class="form-label">4. 網路配線架 (Patch Panel) 需求</label>
-        <select id="netPanel" class="form-select" onchange="calculateAll()">
-          <option value="0" selected>不需要配線架 (一般水晶頭直接對接)</option>
-          <option value="900">加購 8孔網路配線架 - $900 / 組</option>
-        </select>
-      </div>
-
-      <div class="form-group step-block">
-        <label class="form-label">5. 線路明線美化壓條固定</label>
-        <select id="moldingType" class="form-select" onchange="calculateAll()">
-          <option value="0" selected>不需要壓條固定 (純佈線或走原有管路)</option>
-          <option value="30">選用 一號壓條 - $30 / 米</option>
-          <option value="40">選用 二號壓條 - $40 / 米</option>
-          <option value="50">選用 三號壓條 - $50 / 米</option>
-        </select>
-      </div>
-
-      <div class="form-group step-block" id="moldingLengthBlock" style="display: none;">
-        <div class="range-header">
-          <label class="form-label" style="margin-bottom:0; border-left:none; padding-left:0;">5-2. 預估現場壓條需要幾米？(一米即為一支)</label>
-          <span id="moldingLengthVal" style="color: #111111; font-size: 15px; font-weight: bold; text-align: right; white-space: nowrap;"></span>
-        </div>
-        <input type="range" id="moldingLength" class="range-slider" min="0" max="200" value="0" oninput="calculateAll()">
-      </div>
+    <div class="step-progress">
+        <div id="stepTag1" class="progress-step active" onclick="goToStep(1)">① 選擇安裝環境</div>
+        <div id="stepTag2" class="progress-step" onclick="goToStep(2)">② 配置鏡頭與線路</div>
+        <div id="stepTag3" class="progress-step" onclick="goToStep(3)">③ 產出預算大綱</div>
     </div>
 
-    <!-- ☀️ 頁籤二：室外網路佈線 -->
-    <div id="panelOutdoor" class="tab-content">
-      <div class="form-group step-block">
-        <div class="range-header">
-          <label class="form-label" style="margin-bottom:0;">1. 預估室外網路線總長度</label>
-          <span id="outLengthVal" style="color: #111111; font-size: 15px; font-weight: bold; text-align: right; white-space: nowrap;"></span>
+    <div id="panelStep1" class="step-panel active">
+        <div class="env-grid">
+            <div class="env-card active" data-env="一般透天" onclick="selectEnv('一般透天')">
+                <span class="env-card-title">🏠 一般透天住宅</span>
+                <span class="env-card-desc">守護車庫、大門與周界防盜，混搭完美視角。</span>
+            </div>
+            <div class="env-card" data-env="店面商鋪" onclick="selectEnv('店面商鋪')">
+                <span class="env-card-title">🏪 店面 / 營業商鋪</span>
+                <span class="env-card-desc">聚焦櫃檯收銀、店內商品，配合同步語音錄音。</span>
+            </div>
+            <div class="env-card" data-env="傳統三合院" onclick="selectEnv('傳統三合院')">
+                <span class="env-card-title">🧱 傳統三合院</span>
+                <span class="env-card-desc">面寬開闊、夜間照明補光，提升暗處防盜。</span>
+            </div>
+            <div class="env-card" data-env="大型工廠" onclick="selectEnv('大型工廠')">
+                <span class="env-card-title">🏭 大型工廠 / 廠房</span>
+                <span class="env-card-desc">挑高結構、遠距離看守，抗干擾屏蔽線路。</span>
+            </div>
+            <div class="env-card" data-env="農場果園" onclick="selectEnv('農場果園')">
+                <span class="env-card-title">🌳 農場 / 果園 / 魚塭</span>
+                <span class="env-card-desc">戶外大場域防水防塵、長距離節點防雷擊規劃。</span>
+            </div>
+            <div class="env-card" data-env="馬路路口" onclick="selectEnv('馬路路口')">
+                <span class="env-card-title">🛣️ 私人道路 / 馬路路口</span>
+                <span class="env-card-desc">窄角長焦車牌專用機，強光抑制、不論日夜。</span>
+            </div>
         </div>
-        <div style="font-size: 13px; color: #545454; font-weight: 600; margin-top: 6px; margin-bottom: 10px; padding-left: 14px;">
-          室外黑皮線材含基本線夾固定，每米以 100 元計算
-        </div>
-        <input type="range" id="outLength" class="range-slider" min="0" max="300" value="30" oninput="calculateAll()">
-      </div>
-
-      <div class="form-group step-block">
-        <div class="range-header">
-          <label class="form-label" style="margin-bottom:0;">2. 預估架空鋼索牽引長度</label>
-          <span id="outAerialLengthVal" style="color: #111111; font-size: 15px; font-weight: bold; text-align: right; white-space: nowrap;"></span>
-        </div>
-        <div style="font-size: 13px; color: #545454; font-weight: 600; margin-top: 6px; margin-bottom: 10px; padding-left: 14px;">
-          鋼索架空牽引施工，每米以 70 元計算
-        </div>
-        <input type="range" id="outAerialLength" class="range-slider" min="0" max="300" value="0" oninput="calculateAll()">
-      </div>
-
-      <div class="form-group step-block">
-        <div class="range-header">
-          <label class="form-label" style="margin-bottom:0;">3. 現場是否需要防護硬管/浪管包覆？</label>
-          <span id="outPipeLengthVal" style="color: #111111; font-size: 15px; font-weight: bold; text-align: right; white-space: nowrap;"></span>
-        </div>
-        <div style="font-size: 13px; color: #545454; font-weight: 600; margin-top: 6px; margin-bottom: 10px; padding-left: 14px;">
-          戶外管材每支 4 米 $150 元 (依米數自動無條件進位換算支數)
-        </div>
-        <input type="range" id="outPipeLength" class="range-slider" min="0" max="200" value="0" oninput="calculateAll()">
-      </div>
+        
+        <div id="aiEnvNote" class="ai-note-box"></div>
     </div>
 
-    <hr class="calc-hr">
-    
-    <div class="form-group" style="margin-bottom: 15px;">
-      <div class="info-box" id="infoBoxContainer"></div>
+    <div id="panelStep2" class="step-panel">
+        <div class="control-group">
+            <div class="control-label-zone">
+                <span class="control-title">預計安裝鏡頭總數量</span>
+                <span class="control-desc">主流推薦：500萬畫素・智慧雙光有聲款</span>
+            </div>
+            <div class="counter-tool">
+                <button class="counter-btn" onclick="adjustQty('cam', -1)">-</button>
+                <div id="valCamQty" class="counter-value">4</div>
+                <button class="counter-btn" onclick="adjustQty('cam', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <div class="control-label-zone">
+                <span class="control-title">其中包含「車牌專用機」數量</span>
+                <span class="control-desc">具備強光抑制、專收出入口車牌（每支+$10,000）</span>
+            </div>
+            <div class="counter-tool">
+                <button class="counter-btn" onclick="adjustQty('lpr', -1)">-</button>
+                <div id="valLprQty" class="counter-value">0</div>
+                <button class="counter-btn" onclick="adjustQty('lpr', 1)">+</button>
+            </div>
+        </div>
+
+        <div class="control-group slider-group">
+            <div class="slider-header">
+                <span class="control-title">預估現場總拉線長度</span>
+                <span class="control-title" style="color: var(--zh-orange);"><span id="valMeters">60</span> 米</span>
+            </div>
+            <input type="range" id="sliderMeters" class="range-slider" min="0" max="500" value="60" oninput="updateMetersDisplay()">
+        </div>
+
+        <div id="autoMatchStatus" class="auto-match-box">
+            <span>💾 系統已動態優化：</span>
+            <span id="txtAutoMatch">4路數位監控主機 ＋ 2TB監控專用硬碟 (可存約25天)</span>
+        </div>
     </div>
 
-    <div class="form-group" style="margin-bottom: 20px;">
-      <label class="form-label">📋 網路佈線估算明細</label>
-      <div id="summaryText" class="summary-box"></div>
+    <div id="panelStep3" class="step-panel">
+        <div class="summary-wrapper">
+            <div class="detail-list">
+                <div class="detail-item"><span class="detail-label">案場環境</span><span id="resEnv" class="detail-val">-</span></div>
+                <div class="detail-item"><span class="detail-label">主機規格</span><span id="resHost" class="detail-val">-</span></div>
+                <div class="detail-item"><span class="detail-label">常規鏡頭</span><span id="resStdCam" class="detail-val">-</span></div>
+                <div class="detail-item"><span class="detail-label">車牌專用</span><span id="resLprCam" class="detail-val">-</span></div>
+                <div class="detail-item"><span class="detail-label">儲存硬碟</span><span id="resHdd" class="detail-val">-</span></div>
+                <div class="detail-item"><span class="detail-label">總拉線長</span><span id="resMeters" class="detail-val">-</span></div>
+            </div>
+            <div class="result-panel">
+                <span class="total-label">預估完工總價</span>
+                <div class="total-amount">NT$ <span id="resGrandTotal">0</span></div>
+                <div class="warranty-tag">✓ 包含完整施工・全機保固 2 年</div>
+                <button onclick="copyToLine()" class="btn-submit">傳送清單 ➔ 開啟官方LINE</button>
+            </div>
+        </div>
+        <textarea id="hiddenSummaryText" style="display:none;"></textarea>
     </div>
-    
-    <div class="total-section">
-      <div class="total-label">估算佈線總價</div>
-      <div class="total-amount">NT$ <span id="grandTotal">0</span></div>
-      <div class="total-note">✓ 含安裝施工・線路設備保固 2 年</div>
+
+    <div class="nav-buttons">
+        <button id="btnPrev" class="btn-nav btn-prev" onclick="moveStep(-1)" style="display:none;">返回上一步</button>
+        <button id="btnNext" class="btn-nav btn-next" onclick="moveStep(1)">下一步</button>
     </div>
-    
-    <button onclick="copyAndGoNet()" class="submit-btn">複製配置清單 ➔ 開啟LINE貼上</button>
-  </div>
 </div>
 
 <script>
-var rawLineSummaryText = "";
-var activeTab = "indoor";
+    // 🧠 全域狀態機與商業數據核心
+    let currentStep = 1;
+    let selectedEnvironment = '一般透天';
+    let camTotalQty = 4;
+    let lprCamQty = 0;
+    let estimatedMeters = 60;
 
-function switchTab(type) {
-  activeTab = type;
-  document.getElementById('btnIndoor').classList.remove('active');
-  document.getElementById('btnOutdoor').classList.remove('active');
-  document.getElementById('panelIndoor').classList.remove('active');
-  document.getElementById('panelOutdoor').classList.remove('active');
-  
-  if (type === 'indoor') {
-    document.getElementById('btnIndoor').classList.add('active');
-    document.getElementById('panelIndoor').classList.add('active');
-  } else {
-    document.getElementById('btnOutdoor').classList.add('active');
-    document.getElementById('panelOutdoor').classList.add('active');
-  }
-  calculateAll();
-}
+    const envData = {
+        "一般透天": "📊 <strong> 屋主首選：500萬高清款</strong><br>主要守護大門與車庫。現場規劃會依據跨距混搭不同焦距（如 2.8mm 大廣角通看庭院周界、4mm 聚焦鎖定大門出入口），確保局部放大依舊清晰。搭配智慧雙光有聲鏡頭，遇有鄰里糾紛或意外擦撞時，能提供明確的現場影音紀錄。",
+        "店面商鋪": "📊 <strong> 老闆首選：500萬有聲錄音款</strong><br>針對櫃檯收銀、商品貨架與進出動線進行規劃。我們會根據監控範圍的遠近，精準配置不同毫米（mm）數的鏡頭（如 6mm 窄角聚焦收銀台細節、2.8mm 超廣角看清店內走道），配合同步錄音，有效防範商業與交易糾紛。",
+        "傳統三合院": "📊 <strong> 業主首選：500萬智慧雙光款</strong><br>三合院通常面寬大且夜間照明不足。我們會依據正廳前廣場與曬穀場的遠近，配置合適的毫米（mm）數焦距與防衰減傳輸線路。搭配智慧雙光鏡頭，夜間有人車經過時自動開啟白光補光變彩色，大幅提升暗處防盜效果。",
+        "大型工廠": "📊 <strong> 廠長首選：500萬高清＋大硬碟</strong><br>因應廠房挑高結構與遠距離看守需求，我們會依據現場架設高度與目標物的遠近，挑選中長焦段（如 6mm 或 8mm）鏡頭，確保高處遠眺細節依然清晰；線路選用抗干擾屏蔽線材，並配置 4TB 監控專用大硬碟，確保高負載下的循環錄影天數符合安全審查標準。",
+        "農場果園": "📊 <strong> 農友首選：500萬高防水款＋大硬碟</strong><br>戶外環境開闊且夜間昏暗。規劃上會針對聯外大門、果園小徑等不同監視距離，搭配相對應的毫米（mm）數焦距與 IP67 防水防塵機身。結合防雷擊突波保護與長距離分段節點規劃，全面保障設備耐用度與夜間防盜效果。",
+        "馬路路口": "📊 <strong> 客戶首選：強光抑制車牌專用機</strong><br>普通鏡頭面對車速與夜間大燈反光時，容易因曝光而死白。此環境建議配置窄角長焦段（如 6mm 或 8mm 以上）的車牌專用機，結合 HLC 強光抑制與高快門速度，不論日夜或車速快慢都能精準定格、清晰記錄車牌。"
+    };
 
-function calculateAll() {
-  if (activeTab === "indoor") {
-    calculateIndoor();
-  } else {
-    calculateOutdoor();
-  }
-}
+    // 🚀 初始化系統
+    window.onload = function() {
+        refreshState();
+    };
 
-function calculateIndoor() {
-  var qty = parseInt(document.getElementById('netQty').value) || 1;
-  var length = parseInt(document.getElementById('netLength').value) || 15;
-  var switchPrice = parseInt(document.getElementById('netSwitch').value) || 0;
-  var panelPrice = parseInt(document.getElementById('netPanel').value) || 0;
-  var moldingPricePerMeter = parseInt(document.getElementById('moldingType').value) || 0;
-  var moldingLength = parseInt(document.getElementById('moldingLength').value) || 0;
+    // 🏠 步驟一：選擇環境卡片點擊
+    function selectEnv(envName) {
+        selectedEnvironment = envName;
+        
+        // ✨ 精準對暗號改法：用 data-env 比對，百分之百精準亮起橘框！
+        const cards = document.querySelectorAll('.env-card');
+        cards.forEach(card => {
+            if (card.getAttribute('data-env') === envName) {
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
+            }
+        });
 
-  var basePricePerLine = 2000;
-  var extraLengthPerLine = Math.max(0, length - 15);
-  
-  var totalBaseCost = qty * basePricePerLine;
-  var totalExtraMeters = extraLengthPerLine * qty;
-  var totalExtraCost = totalExtraMeters * 100;
-  
-  var totalIndoorMeters = length * qty;
-  var totalBaseMeters = 15 * qty;
-  var extraNoteEl = document.getElementById('netExtraCostNote');
-  
-  if (totalExtraCost > 0) {
-    if (qty === 1) {
-      extraNoteEl.innerHTML = "➔ 基礎 15 米外，額外加長 <span style='color:#f27a2b;'>" + totalExtraMeters + "</span> 米";
-    } else {
-      extraNoteEl.innerHTML = "➔ " + qty + " 條共 " + totalIndoorMeters + " 米 (含基礎 " + totalBaseMeters + " 米 ＋ 額外加長 <span style='color:#f27a2b;'>" + totalExtraMeters + "</span> 米)";
+        // 智能依場域估算初始基礎拉線線長
+        let multiplier = 15;
+        if (selectedEnvironment === '店面商鋪') multiplier = 12;
+        else if (selectedEnvironment === '傳統三合院') multiplier = 22;
+        else if (selectedEnvironment === '馬路路口') multiplier = 25;
+        else if (selectedEnvironment === '大型工廠') multiplier = 30;
+        else if (selectedEnvironment === '農場果園') multiplier = 40;
+        
+        estimatedMeters = camTotalQty * multiplier;
+        document.getElementById('sliderMeters').value = estimatedMeters;
+        
+        refreshState();
     }
-    extraNoteEl.style.color = '#111111';
-  } else {
-    extraNoteEl.innerHTML = "➔ 包含在基本長度內，無額外加長";
-    extraNoteEl.style.color = '#06C167';
-  }
 
-  if (moldingPricePerMeter > 0) {
-    document.getElementById('moldingLengthBlock').style.display = 'block';
-  } else {
-    document.getElementById('moldingLengthBlock').style.display = 'none';
-    document.getElementById('moldingLength').value = 0;
-    moldingLength = 0;
-  }
+    // ➕➖ 步驟二：加減計數器邏輯
+    function adjustQty(type, num) {
+        if (type === 'cam') {
+            camTotalQty = Math.max(1, Math.min(16, camTotalQty + num)); // 限制最高16路
+            if (lprCamQty > camTotalQty) lprCamQty = camTotalQty; // 車牌機不能大於總數
+        } else if (type === 'lpr') {
+            lprCamQty = Math.max(0, Math.min(4, Math.min(camTotalQty, lprCamQty + num))); // 最高混搭4支
+        }
+        
+        // 自動跟著數量微調線長
+        let multiplier = 15;
+        if (selectedEnvironment === '店面商鋪') multiplier = 12;
+        else if (selectedEnvironment === '傳統三合院') multiplier = 22;
+        else if (selectedEnvironment === '大型工廠') multiplier = 30;
+        else if (selectedEnvironment === '農場果園') multiplier = 40;
+        estimatedMeters = camTotalQty * multiplier;
+        document.getElementById('sliderMeters').value = estimatedMeters;
 
-  var totalMoldingCost = moldingPricePerMeter * moldingLength;
-  var grandTotal = totalBaseCost + totalExtraCost + switchPrice + panelPrice + totalMoldingCost;
+        refreshState();
+    }
 
-  var indoorLengthHTML = length + " 米/條";
-  if (totalExtraCost > 0) {
-    indoorLengthHTML += " ｜ <span style='color:#f27a2b;'>+$" + totalExtraCost.toLocaleString() + "</span>";
-  } else {
-    indoorLengthHTML += " ｜ <span style='color:#888888;'>+$0</span>";
-  }
-  document.getElementById('netLengthVal').innerHTML = indoorLengthHTML;
+    // 🎚️ 滑桿數值變更
+    function updateMetersDisplay() {
+        estimatedMeters = parseInt(document.getElementById('sliderMeters').value);
+        document.getElementById('valMeters').innerText = estimatedMeters;
+        runCalculations();
+    }
 
-  document.getElementById('moldingLengthVal').innerHTML = moldingLength + " 米 ｜ <span style='color:#f27a2b;'>$" + totalMoldingCost.toLocaleString() + "</span>";
-  document.getElementById('grandTotal').innerText = grandTotal.toLocaleString();
+    // 🔄 集中狀態刷新機
+    function refreshState() {
+        // 更新步驟二畫面的數字
+        document.getElementById('valCamQty').innerText = camTotalQty;
+        document.getElementById('valLprQty').innerText = lprCamQty;
+        document.getElementById('valMeters').innerText = estimatedMeters;
+        
+        // 更新步驟一的動態AI分析
+        document.getElementById('aiEnvNote').innerHTML = envData[selectedEnvironment];
 
-  document.getElementById('infoBoxContainer').innerHTML = 
-    "<div class='info-row'><span class='info-row-label'>🌐 佈線內含：</span><span class='info-row-content'>每條線皆含專用資訊插座 ×1、兩米網路跳線 ×1</span></div>" +
-    "<div class='info-row'><span class='info-row-label'>📐 長度統計：</span><span class='info-row-content'>基礎 " + totalBaseMeters + " 米，總計額外加長 <span style='color:#f27a2b; font-weight: bold;'>" + totalExtraMeters + "</span> 米</span></div>" +
-    "<div class='info-row'><span class='info-row-label'>🛠️ 品質承諾：</span><span class='info-row-content'>採用大同原廠加粗純銅線材，確保網路傳輸穩定不掉速。</span></div>";
+        runCalculations();
+    }
 
-  var switchText = document.getElementById('netSwitch').options[document.getElementById('netSwitch').selectedIndex].text.split(' - ')[0];
-  var panelText = document.getElementById('netPanel').options[document.getElementById('netPanel').selectedIndex].text.split(' - ')[0];
-  
-  var moldingLabel = "不需要";
-  if (moldingPricePerMeter === 30) moldingLabel = "一號壓條";
-  if (moldingPricePerMeter === 40) moldingLabel = "二號壓條";
-  if (moldingPricePerMeter === 50) moldingLabel = "三號壓條";
+    // 📊 核心智慧精算大腦（精準套用原有的商業定價邏輯）
+    let calculatedResults = {};
+    function runCalculations() {
+        // 1. 自動匹配主機價格
+        let hostPrice = 6000;
+        let hostText = '4路數位高規監控主機';
+        if (camTotalQty > 8) {
+            hostPrice = 14500;
+            hostText = '16路數位高規監控主機';
+        } else if (camTotalQty > 4) {
+            hostPrice = 8000;
+            hostText = '8路數位高規監控主機';
+        }
 
-  var htmlSummary = "<div style='font-weight: 700; margin-bottom: 12px; color: #111111;'>【正禾資訊】網路佈線估算清單 (室內)：</div>" +
-    "<div class='summary-line'><span>1. 網路線基本費用：" + qty + " 條 (內含15米/條)</span><span class='summary-price'>$" + totalBaseCost.toLocaleString() + "</span></div>" +
-    "<div class='summary-line'><span>2. 線路額外加長：共 " + totalExtraMeters + " 米 (每米$100)</span><span class='summary-price " + (totalExtraCost === 0 ? "zero" : "") + "'>$" + totalExtraCost.toLocaleString() + "</span></div>" +
-    "<div class='summary-line'><span>3. 集線交換器：" + (switchPrice === 0 ? "不需要" : switchText) + "</span><span class='summary-price " + (switchPrice === 0 ? "zero" : "") + "'>$" + switchPrice.toLocaleString() + "</span></div>" +
-    "<div class='summary-line'><span>4. 網路配線架：" + (panelPrice === 0 ? "不需要" : panelText) + "</span><span class='summary-price " + (panelPrice === 0 ? "zero" : "") + "'>$" + panelPrice.toLocaleString() + "</span></div>" +
-    "<div class='summary-line'><span>5. 明線美化壓條：" + (moldingPricePerMeter === 0 ? "不需要" : moldingLabel + " × " + moldingLength + " 米") + "</span><span class='summary-price " + (totalMoldingCost === 0 ? "zero" : "") + "'>$" + totalMoldingCost.toLocaleString() + "</span></div>" +
-    "<hr style='border:0; border-top:1px dashed #e4e7eb; margin:12px 0;'>" +
-    "<div style='font-weight: 800; color: #111111; font-size:14px;'>💰 完工總價：NT$ " + grandTotal.toLocaleString() + " 元</div>";
-  
-  document.getElementById('summaryText').innerHTML = htmlSummary;
+        // 2. 自動匹配硬碟（原廠智慧機制：大型場域或超過4路給4TB，其餘2TB）
+        let hddPrice = 5500;
+        let hddText = '2TB 監控專用硬碟';
+        if (selectedEnvironment === '大型工廠' || selectedEnvironment === '農場果園' || camTotalQty > 4) {
+            hddPrice = 7000;
+            hddText = '4TB 監控專用硬碟';
+        }
 
-  rawLineSummaryText = "【正禾資訊】網路佈線預算估算清單 (室內)：\n" +
-                        "1. 網路線基本費用：" + qty + " 條 (內含15米/條) ➔ $" + totalBaseCost.toLocaleString() + "\n" +
-                        "2. 線路額外加長：共 " + totalExtraMeters + " 米 (每米$100) ➔ $" + totalExtraCost.toLocaleString() + "\n" +
-                        "3. 集線交換器：" + (switchPrice === 0 ? "不需要" : switchText) + " ➔ $" + switchPrice.toLocaleString() + "\n" +
-                        "4. 網路配線架：" + (panelPrice === 0 ? "不需要" : panelText) + " ➔ $" + panelPrice.toLocaleString() + "\n" +
-                        "5. 明線美化壓條：" + (moldingPricePerMeter === 0 ? "不需要" : moldingLabel + " x " + moldingLength + " 米") + " ➔ $" + totalMoldingCost.toLocaleString() + "\n" +
-                        "💰 完工總價：NT$ " + grandTotal.toLocaleString() + " 元 (保固2年)";
-}
+        // 3. 計算鏡頭費用
+        let stdCamQty = camTotalQty - lprCamQty;
+        let stdCamPriceUnit = 4000; // 500萬智慧雙光有聲款
+        let lprCamPriceUnit = 10000; // 車牌專用款
+        let totalCamCost = (stdCamQty * stdCamPriceUnit) + (lprCamQty * lprCamPriceUnit);
 
-function calculateOutdoor() {
-  var outLength = parseInt(document.getElementById('outLength').value) || 0;
-  var outAerialLength = parseInt(document.getElementById('outAerialLength').value) || 0;
-  var outPipeLength = parseInt(document.getElementById('outPipeLength').value) || 0;
+        // 4. 計算循環天數
+        let totalCapacityGB = (hddPrice === 5500) ? 2000 : 4000;
+        let totalGbPerDay = (stdCamQty * 20) + (lprCamQty * 20); // 500萬主流高畫質消耗
+        let estimatedDays = Math.floor(totalCapacityGB / totalGbPerDay);
 
-  var lineCost = outLength * 100;
-  var aerialCost = outAerialLength * 70;
-  var pipesNeeded = Math.ceil(outPipeLength / 4);
-  var pipeCost = pipesNeeded * 150;
+        // 5. 計算免費線長超額
+        let freeMeters = camTotalQty * 15;
+        let extraMeters = Math.max(0, estimatedMeters - freeMeters);
+        let extraMetersCost = extraMeters * 50; // 每米超額50元
 
-  var grandTotal = lineCost + aerialCost + pipeCost;
+        // 6. 總金額
+        let grandTotal = hostPrice + totalCamCost + hddPrice + extraMetersCost;
 
-  document.getElementById('outLengthVal').innerHTML = outLength + " 米 ｜ <span style='color:#f27a2b;'>$" + lineCost.toLocaleString() + "</span>";
-  document.getElementById('outAerialLengthVal').innerHTML = outAerialLength + " 米 ｜ <span style='color:#f27a2b;'>$" + aerialCost.toLocaleString() + "</span>";
-  document.getElementById('outPipeLengthVal').innerHTML = outPipeLength + " 米 ｜ <span style='color:#f27a2b;'>$" + pipeCost.toLocaleString() + "</span>";
-  
-  document.getElementById('grandTotal').innerText = grandTotal.toLocaleString();
+        // 將運算值存入全域物件
+        calculatedResults = {
+            grandTotal: grandTotal,
+            hostText: hostText,
+            stdCamText: `500萬智慧雙光有聲機 x ${stdCamQty}支`,
+            lprCamText: lprCamQty > 0 ? `車牌專用強光抑制機 x ${lprCamQty}支` : '無配置',
+            hddText: `${hddText === '2TB 監控專用硬碟' ? '2TB' : '4TB'} 專用規格 (預估儲存約 ${estimatedDays} 天)`,
+            metersText: `${estimatedMeters}米 (內附${freeMeters}米/超額${extraMeters}米)`,
+            estimatedDays: estimatedDays
+        };
 
-  document.getElementById('infoBoxContainer').innerHTML = 
-    "<div class='info-row'><span class='info-row-label'>🌐 線材規格：</span><span class='info-row-content'>採用戶外專用自帶鋼索雙皮黑皮網路線</span></div>" +
-    "<div class='info-row'><span class='info-row-label'>📐 管材進位：</span><span class='info-row-content'>包覆 " + outPipeLength + " 米，共折合計需 <span style='color:#f27a2b; font-weight: bold;'>" + pipesNeeded + "</span> 支防護硬管</span></div>" +
-    "<div class='info-row'><span class='info-row-label'>🛠️ 工法備註：</span><span class='info-row-content'>架空包含兩端不鏽鋼壁虎打眼及不鏽鋼拉緊器施工。</span></div>";
+        // 即時刷新步驟二下方的綠色狀態提示框
+        document.getElementById('txtAutoMatch').innerText = `${hostText} ＋ ${(hddPrice===5500)?'2TB':'4TB'}大硬碟 (預估可錄存 ${estimatedDays} 天)`;
+    }
 
-  var htmlSummary = "<div style='font-weight: 700; margin-bottom: 12px; color: #111111;'>【正禾資訊】網路佈線估算清單 (室內)：</div>" +
-    "<div class='summary-line'><span>1. 室外網路線費用：" + outLength + " 米 (每米$100)</span><span class='summary-price'>$" + lineCost.toLocaleString() + "</span></div>" +
-    "<div class='summary-line'><span>2. 架空鋼索牽引費：" + (outAerialLength > 0 ? outAerialLength + " 米 (每米$70)" : "不需要") + "</span><span class='summary-price " + (aerialCost === 0 ? "zero" : "") + "'>$" + aerialCost.toLocaleString() + "</span></div>" +
-    "<div class='summary-line'><span>3. 戶外防護管材費：" + outPipeLength + " 米 (共 " + pipesNeeded + " 支)</span><span class='summary-price " + (pipeCost === 0 ? "zero" : "") + "'>$" + pipeCost.toLocaleString() + "</span></div>" +
-    "<hr style='border:0; border-top:1px dashed #e4e7eb; margin:12px 0;'>" +
-    "<div style='font-weight: 800; color: #111111; font-size:14px;'>💰 完工總價：NT$ " + grandTotal.toLocaleString() + " 元</div>";
+    // 🎛️ 步驟前後導航推動器
+    function moveStep(direction) {
+        goToStep(currentStep + direction);
+    }
 
-  document.getElementById('summaryText').innerHTML = htmlSummary;
+    function goToStep(stepNum) {
+        if (stepNum < 1 || stepNum > 3) return;
+        currentStep = stepNum;
 
-  rawLineSummaryText = "【正禾資訊】網路佈線預算估算清單 (室外)：\n" +
-                        "1. 室外網路線費用：" + outLength + " 米 (每米$100) ➔ $" + lineCost.toLocaleString() + "\n" +
-                        "2. 架空鋼索牽引費：" + (outAerialLength > 0 ? outAerialLength + " 米 (每米$70)" : "不需要") + " ➔ $" + aerialCost.toLocaleString() + "\n" +
-                        "3. 戶外防護管材費：" + outPipeLength + " 米 (共 " + pipesNeeded + " 支) ➔ $" + pipeCost.toLocaleString() + "\n" +
-                        "💰 完工總價：NT$ " + grandTotal.toLocaleString() + " 元 (保固2年)";
-}
+        // 1. 切換分頁面板顯示狀態
+        document.querySelectorAll('.step-panel').forEach(panel => panel.classList.remove('active'));
+        document.getElementById('panelStep' + stepNum).classList.add('active');
 
-function copyAndGoNet() {
-  var tempInput = document.createElement("textarea");
-  tempInput.value = rawLineSummaryText;
-  document.body.appendChild(tempInput);
-  tempInput.select();
-  tempInput.setSelectionRange(0, 99999);
-  
-  try {
-    document.execCommand("copy");
-    alert("📋 網路佈線明細已成功複製到您的剪貼簿！\n\n點擊確定後將開啟 LINE，請在對話框「長按貼上」發送給正禾專家即可！");
-  } catch (err) {
-    alert("請直接截圖此畫面，並傳送給 LINE 線上客服核對唷！");
-  }
-  
-  document.body.removeChild(tempInput);
-  window.open("https://line.me/ti/p/~gooa168", "_blank");
-}
+        // 2. 聯動更新頂部步驟導航標籤
+        document.querySelectorAll('.progress-step').forEach(tag => tag.classList.remove('active'));
+        document.getElementById('stepTag' + stepNum).classList.add('active');
 
-calculateAll();
+        // 3. 控制下方導航按鈕的顯示或隱藏
+        if (currentStep === 1) {
+            document.getElementById('btnPrev').style.display = 'none';
+            document.getElementById('btnNext').innerText = '配置鏡頭 ➔';
+            document.getElementById('btnNext').style.display = 'block';
+        } else if (currentStep === 2) {
+            document.getElementById('btnPrev').style.display = 'block';
+            document.getElementById('btnNext').innerText = '查看預算大綱 ➔';
+            document.getElementById('btnNext').style.display = 'block';
+        } else if (currentStep === 3) {
+            document.getElementById('btnPrev').style.display = 'block';
+            document.getElementById('btnNext').style.display = 'none'; // 最後一步交給大綠按鈕
+            
+            // 進到最後一步時，動態渲染結果清單
+            renderFinalSummary();
+        }
+    }
+
+    // 📋 步驟三：產出精緻的預算明細清單
+    function renderFinalSummary() {
+        document.getElementById('resEnv').innerText = selectedEnvironment;
+        document.getElementById('resHost').innerText = calculatedResults.hostText;
+        document.getElementById('resStdCam').innerText = calculatedResults.stdCamText;
+        document.getElementById('resLprCam').innerText = calculatedResults.lprCamText;
+        document.getElementById('resHdd').innerText = calculatedResults.hddText;
+        document.getElementById('resMeters').innerText = calculatedResults.metersText;
+        document.getElementById('resGrandTotal').innerText = calculatedResults.grandTotal.toLocaleString();
+
+        // 組合 LINE 專用文字框格式
+        let textForLine = `【正禾資訊】監控預算估算清單：\n` +
+                          `1. 案場環境：${selectedEnvironment}\n` +
+                          `2. 主機規格：${calculatedResults.hostText}\n` +
+                          `3. 鏡頭規格：${calculatedResults.stdCamText} ${lprCamQty > 0 ? '＋ ' + calculatedResults.lprCamText : ''}\n` +
+                          `4. 儲存硬碟：${calculatedResults.hddText}\n` +
+                          `5. 預估線長：${calculatedResults.metersText}\n` +
+                          `⚙️ 線路防護：完工一律內含防曬、防鼠咬軟管壓條基礎防護\n` +
+                          `💰 完工估算總價：NT$ ${calculatedResults.grandTotal.toLocaleString()} 元 (享全機保固2年)`;
+        
+        document.getElementById('hiddenSummaryText').value = textForLine;
+    }
+
+    // 🟢 LINE 一鍵成交發送機制
+    function copyToLine() {
+        const copyText = document.getElementById("hiddenSummaryText");
+        copyText.select();
+        
+        // 專為行動裝置（手機）相容性設計
+        copyText.setSelectionRange(0, 99999); 
+        
+        try {
+            document.execCommand("copy");
+            alert("📋 預算配置明細已成功複製到您的剪貼簿！\n\n點擊確定後將跳轉官方 LINE，您只需在對話框「長按貼上」發送給正禾專家，即可直接預約現場勘查囉！");
+        } catch (err) {
+            alert("因系統權限限制，請直接截圖此畫面，並傳送給 LINE 線上專家核對唷！");
+        }
+        
+        // 跳轉到正禾專屬 LINE 連結
+        window.open("https://line.me/ti/p/~gooa168", "_blank");
+    }
 </script>
+
 <script src="nav.js"></script>
+<script src="header.js"></script>
 <script src="footer.js"></script>
+
+</body>
+</html>
