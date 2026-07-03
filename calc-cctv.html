@@ -157,7 +157,7 @@
             font-size: 14.5px;
             color: #333333;
             line-height: 1.6;
-            display: none; /* 初始隱藏，選了環境才亮開 */
+            display: none; 
         }
         
         .ai-note-box p { margin: 0 0 12px 0; }
@@ -245,7 +245,6 @@
         .btn-prev { background-color: #e4e7eb; color: var(--zh-dark); }
         .btn-prev:hover { background-color: #cbd5e1; }
         
-        /* 🚀 LINE 專用綠色大鈕樣式 */
         .btn-next { background-color: var(--zh-dark); color: #fff; margin-left: auto; }
         .btn-next:hover { background-color: #333; }
         .btn-next.btn-line-submit {
@@ -514,8 +513,8 @@
     const envData = {
         "一般透天": "<p>優先尋找房子原有的弱電暗管（如電話、網路線孔）進行穿線佈線，保持外觀無過多明線。</p><p>若無管路可走，改用線槽（壓條）進行固定，確保美觀不凌亂。</p><p>車庫與大門出入口多為主要看守點，我們會現場評估，面寬比較大的地方，就用廣角鏡頭，這樣一台就能把整個範圍全部照進去。</p>",
         "店面商鋪": "<p>大多會配合店面輕鋼架天花板或裝潢夾層進行佈線。</p><p>針對收銀台下或沿牆部分，使用壓條配合裝潢顏色收線。</p><p>櫃檯收銀和貨架是看守重點。門口玻璃容易反光死白，我們會特別調整安裝角度避開。收銀台上方會配置『畫面拉比較近』的鏡頭用來看清點鈔，且目前的鏡頭基本上都有搭配收音功能，聽清對話才能避免消費糾紛。</p>",
-        "傳統三合院": "<p>三合院多為紅磚或水泥實牆，且天花板多為木造 or 無夾層，因此「不適合大量使用壓條」。我們會改用固定線夾沿著屋簷、樑柱邊緣緊密固定。</p><p>若必須跨越護龍或中庭，會採用懸空鋼索掛線或地埋管路保護。</p><p>三合院面寬大、夜間幾乎無光，施作時可以使用「智慧雙光」鏡頭的夜間紅外線/白光補光切換設定，確保夜間暗處防盜無死角。</p>",
-        "大型工廠": "<p>廠房多為鋼骨鐵皮結構，佈線時線材一律穿入 PVC 管內固定保護，避免外力拉扯或老鼠咬線。</p><p>明線部分一律走專用線槽（Cable Tray）或架鋼索吊掛固定。</p><p>由於廠內大型機具運作容易產生電磁干擾，我們會選用抗干擾的屏蔽線材，並與動力大電保持安全距離，畫面才不會有雜訊。另外硬碟容量也會加大，才夠應付多支鏡頭的錄影。</p>",
+        "傳統三合院": "<p>三合院多為紅磚 or 水泥實牆，且天花板多為木造 or 無夾層，因此「不適合大量使用壓條」。我們會改用固定線夾沿著屋簷、樑柱邊緣緊密固定。</p><p>若必須跨越護龍或中庭，會採用懸空鋼索掛線或地埋管路保護。</p><p>三合院面寬大、夜間幾乎無光，施作時可以使用「智慧雙光」鏡頭的夜間紅外線/白光補光切換設定，確保夜間暗處防盜無死角。</p>",
+        "大型工廠": "<p>廠房多為鋼骨鐵皮結構，佈線時線材一律穿入 PVC 管內固定保護，避免外力拉扯 or 老鼠咬線。</p><p>明線部分一律走專用線槽（Cable Tray）或架鋼索吊掛固定。</p><p>由於廠內大型機具運作容易產生電磁干擾，我們會選用抗干擾的屏蔽線材，並與動力大電保持安全距離，畫面才不會有雜訊。另外硬碟容量幕也加大，才夠應付多支鏡頭的錄影。</p>",
         "農場果園": "<p>大多為空曠地形。佈線需要依靠現場的電線桿、圍籬或特製立柱. 線材必須使用耐曬、耐高溫的戶外專用線材（或走地埋管）。</p><p>跨距過長時，會採用鋼索吊掛或設置分段傳輸節點盒（防雨箱）。</p><p>所有攝影機的變壓器、接線端子，我們一律會收進專用的工業防水盒內固定，防止雨水滲入造成線路短路燒毀。</p>",
         "馬路路口": "<p>施作多依附於現有的路燈桿或電線桿。</p><p>外露線材一律以束帶或鋼索緊固於立柱上，嚴禁任意垂吊。</p><p>這類場景通常有「車牌專用機」，安裝時的角度、高度、下傾角非常嚴格，不能太高 or 太斜，否則會拍不到車牌；且夜間必須設定好「強光抑制（HLC）」與「高快門速度」，防止遠光燈直射時車牌變成一片死白。</p>"
     };
@@ -608,7 +607,6 @@
         runCalculations();
     }
 
-    // 🚀 【核心修復】：把原本不小心打錯寫成 def 的地方改回正確的 function！
     function updateMetersDisplay() {
         estimatedMeters = parseInt(document.getElementById('sliderMeters').value);
         document.getElementById('valMeters').innerText = estimatedMeters;
@@ -633,8 +631,6 @@
         runCalculations();
     }
 
-    // 📊 核心智慧精算大腦
-    let calculatedResults = {};
     function runCalculations() {
         let hostPrice = 0;
         let hostText = '尚未選擇規格';
@@ -736,7 +732,6 @@
         } else if (currentStep === 3) {
             document.getElementById('btnPrev').style.display = 'block';
             
-            // 傳送清單大綠鈕
             nextBtn.innerText = '傳送清單 ➔ 開啟官方LINE';
             nextBtn.className = 'btn-nav btn-next btn-line-submit';
             nextBtn.onclick = function() { copyToLine(); };
