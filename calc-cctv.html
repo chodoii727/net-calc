@@ -122,13 +122,16 @@
         .env-card {
             border: 2px solid var(--zh-border);
             border-radius: 16px;
-            padding: 22px;
+            padding: 24px 22px;
             cursor: pointer;
             transition: all 0.2s ease;
             background-color: #fafbfc;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 70px;
+            box-sizing: border-box;
         }
 
         .env-card:hover {
@@ -143,7 +146,6 @@
         }
 
         .env-card-title { font-size: 17px; font-weight: 700; color: var(--zh-dark); display: flex; align-items: center; gap: 8px; }
-        .env-card-desc { font-size: 13px; color: var(--zh-text-muted); line-height: 1.4; }
 
         /* 💡 AI 智慧備註盒子（專家施工重點顯示區） */
         .ai-note-box {
@@ -155,6 +157,7 @@
             font-size: 14.5px;
             color: #333333;
             line-height: 1.6;
+            display: none; /* 初始隱藏，選了環境才亮開 */
         }
         
         .ai-note-box p { margin: 0 0 12px 0; }
@@ -236,18 +239,24 @@
             gap: 14px;
         }
 
-        .detail-item { display: flex; justify-content: space-between; font-size: 14.5px; border-bottom: 1px dashed var(--zh-border); padding-bottom: 10px; }
-        .detail-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .detail-label { color: var(--zh-text-muted); font-weight: 500; }
-        .detail-val { color: var(--zh-dark); font-weight: 700; }
-
         /* 🔘 底部導航前進返回按鈕 */
-        .nav-buttons { display: flex; justify-content: space-between; margin-top: 35px; gap: 15px; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 35px; gap: 15px; align-items: center; }
         .btn-nav { padding: 14px 28px; font-size: 15px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: all 0.15s ease; border: none; }
         .btn-prev { background-color: #e4e7eb; color: var(--zh-dark); }
         .btn-prev:hover { background-color: #cbd5e1; }
+        
+        /* 🚀 LINE 專用綠色大鈕樣式 */
         .btn-next { background-color: var(--zh-dark); color: #fff; margin-left: auto; }
         .btn-next:hover { background-color: #333; }
+        .btn-next.btn-line-submit {
+            background-color: #06C167;
+            box-shadow: 0 4px 12px rgba(6,193,103,0.2);
+        }
+        .btn-next.btn-line-submit:hover {
+            background-color: #05a859;
+            box-shadow: 0 6px 18px rgba(6,193,103,0.3);
+            transform: translateY(-1px);
+        }
 
         /* 💰 右側：曜石深黑即時計價固定面板 */
         .calc-sidebar-zone {
@@ -277,7 +286,7 @@
         .side-preview-list {
             list-style: none;
             padding: 0;
-            margin: 0 0 25px 0;
+            margin: 0; 
             border-top: 1px solid #2d3239;
             padding-top: 15px;
         }
@@ -288,23 +297,8 @@
             color: #b4c6ef;
             margin-bottom: 10px;
         }
+        .side-preview-list li:last-child { margin-bottom: 0; }
         .side-preview-list li span.val { color: #ffffff; font-weight: 700; text-align: right; }
-
-        .btn-submit {
-            width: 100%;
-            background-color: #06C167; 
-            color: #fff;
-            padding: 15px 0;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(6,193,103,0.2);
-            transition: all 0.2s;
-        }
-
-        .btn-submit:hover { background-color: #05a859; box-shadow: 0 6px 18px rgba(6,193,103,0.3); transform: translateY(-1px); }
 
         /* 📱 RWD 手機響應式面板打散防壓迫 */
         @media (max-width: 992px) {
@@ -332,7 +326,7 @@
         <div class="calc-container">
             <div class="calc-header">
                 <h2 class="calc-title">正禾資訊 ｜ 智慧監控預算規劃</h2>
-                <p class="calc-subtitle">快速產生專專屬預算明細</p>
+                <p class="calc-subtitle">快速產生專屬預算明細</p>
             </div>
 
             <div class="step-progress">
@@ -343,29 +337,23 @@
 
             <div id="panelStep1" class="step-panel active">
                 <div class="env-grid">
-                    <div class="env-card active" data-env="一般透天" onclick="selectEnv('一般透天')">
-                        <span class="env-card-title">🏠 一般透天住宅</span>
-                        <span class="env-card-desc">優先尋找房子弱電暗管穿線，保持外觀美觀無明線。</span>
+                    <div class="env-card" data-env="一般透天" onclick="selectEnv('一般透天')">
+                        <span class="env-card-title">一般透天住宅</span>
                     </div>
                     <div class="env-card" data-env="店面商鋪" onclick="selectEnv('店面商鋪')">
-                        <span class="env-card-title">🏪 店面 / 營業商鋪</span>
-                        <span class="env-card-desc">輕鋼架或裝潢夾層隱蔽佈線，配置特定聚焦與收音鏡頭。</span>
+                        <span class="env-card-title">店面 / 營業商鋪</span>
                     </div>
                     <div class="env-card" data-env="傳統三合院" onclick="selectEnv('傳統三合院')">
-                        <span class="env-card-title">🧱 傳統三合院</span>
-                        <span class="env-card-desc">紅磚實牆沿屋簷緊密固定，搭配智慧雙光無死角。</span>
+                        <span class="env-card-title">傳統三合院</span>
                     </div>
                     <div class="env-card" data-env="大型工廠" onclick="selectEnv('大型工廠')">
-                        <span class="env-card-title">🏭 大型工廠 / 廠房</span>
-                        <span class="env-card-desc">全線穿入 PVC 管防外力與老鼠，配置抗干擾屏蔽線材。</span>
+                        <span class="env-card-title">大型工廠 / 廠房</span>
                     </div>
                     <div class="env-card" data-env="農場果園" onclick="selectEnv('農場果園')">
-                        <span class="env-card-title">🌳 農場 / 果園 / 魚塭</span>
-                        <span class="env-card-desc">依靠電線桿立柱拉耐曬特規線，接頭一律收進防水盒。</span>
+                        <span class="env-card-title">農場 / 果園 / 魚塭</span>
                     </div>
                     <div class="env-card" data-env="馬路路口" onclick="selectEnv('馬路路口')">
-                        <span class="env-card-title">🛣️ 私人道路 / 馬路路口</span>
-                        <span class="env-card-desc">依附路燈桿緊固束帶，車牌專用機強光抑制設定。</span>
+                        <span class="env-card-title">私人道路 / 馬路路口</span>
                     </div>
                 </div>
                 
@@ -380,7 +368,7 @@
                         <span class="control-desc">依據未來可能增加鏡頭的擴充需求來選擇主機規格</span>
                     </div>
                     <div class="btn-select-group" id="hostSelectGroup">
-                        <button class="btn-select-item active" id="btnHost4" onclick="selectHost(4)">4路主機</button>
+                        <button class="btn-select-item" id="btnHost4" onclick="selectHost(4)">4路主機</button>
                         <button class="btn-select-item" id="btnHost8" onclick="selectHost(8)">8路主機</button>
                         <button class="btn-select-item" id="btnHost16" onclick="selectHost(16)">16路主機</button>
                     </div>
@@ -393,7 +381,7 @@
                     </div>
                     <div class="counter-tool">
                         <button class="counter-btn" onclick="adjustQty('cam', -1)">-</button>
-                        <div id="valCamQty" class="counter-value">4</div>
+                        <div id="valCamQty" class="counter-value">0</div>
                         <button class="counter-btn" onclick="adjustQty('cam', 1)">+</button>
                     </div>
                 </div>
@@ -416,8 +404,8 @@
                             <span class="control-title">儲存硬碟容量規格</span>
                             <span class="control-desc">監控專用硬碟，容量越大可存放天數越久</span>
                         </div>
-                        <div class="btn-select-group">
-                            <button class="btn-select-item active" id="btnHdd2" onclick="selectHdd(2)">2TB</button>
+                        <div class="btn-select-group" id="hddSelectGroup">
+                            <button class="btn-select-item" id="btnHdd2" onclick="selectHdd(2)">2TB</button>
                             <button class="btn-select-item" id="btnHdd4" onclick="selectHdd(4)">4TB</button>
                             <button class="btn-select-item" id="btnHdd8" onclick="selectHdd(8)">8TB</button>
                         </div>
@@ -428,16 +416,15 @@
                 <div class="control-group slider-group">
                     <div class="slider-header">
                         <span class="control-title">預估現場總拉線長度</span>
-                        <span class="control-title" style="color: var(--zh-orange);"><span id="valMeters">60</span> 米</span>
+                        <span class="control-title" style="color: var(--zh-orange);"><span id="valMeters">0</span> 米</span>
                     </div>
-                    <input type="range" id="sliderMeters" class="range-slider" min="0" max="500" value="60" oninput="updateMetersDisplay()">
-                    
+                    <input type="range" id="sliderMeters" class="range-slider" min="0" max="500" value="0" oninput="updateMetersDisplay()">
                     <div id="metersLiveNote" class="live-note" style="color: #666;"></div>
                 </div>
 
             </div>
 
-         <div id="panelStep3" class="step-panel">
+            <div id="panelStep3" class="step-panel">
                 <div class="detail-list" style="background: #ffffff; border: 1px solid var(--zh-border); display: flex; flex-direction: column; gap: 24px; padding: 30px; text-align: left;">
                     
                     <div style="border-bottom: 1px solid #f1f3f5; padding-bottom: 18px;">
@@ -475,7 +462,7 @@
                     </div>
 
                     <div style="padding-bottom: 5px;">
-                        <div style="font-size: 18px; color: var(--zh-dark); line-height: 1.6; margin-bottom: 6px;">
+                        <div style="font-size: 18px; color: var(--zh-orange); line-height: 1.6; margin-bottom: 6px;">
                             <strong>總拉線長：</strong> <span id="resMeters" style="color: var(--zh-orange); font-weight: 700;">-</span>
                         </div>
                         <div id="resMetersNote" style="font-size: 14.5px; color: #333333; line-height: 1.5; padding-left: 0;">-</div>
@@ -500,14 +487,12 @@
             </div>
             
             <ul class="side-preview-list">
-                <li><span>環境場域</span><span class="val" id="sideEnv">一般透天</span></li>
-                <li><span>主機規格</span><span class="val" id="sideHost">-</span></li>
-                <li><span>鏡頭總數</span><span class="val" id="sideCamCount">-</span></li>
-                <li><span>硬碟天數</span><span class="val" id="sideHdd">-</span></li>
-                <li><span>估算線長</span><span class="val" id="sideMeters">-</span></li>
+                <li><span>環境場域</span><span class="val" id="sideEnv">未選擇</span></li>
+                <li><span>主機規格</span><span class="val" id="sideHost">未選擇</span></li>
+                <li><span>鏡頭總數</span><span class="val" id="sideCamCount">0 支</span></li>
+                <li><span>硬碟天數</span><span class="val" id="sideHdd">未選擇</span></li>
+                <li><span>估算線長</span><span class="val" id="sideMeters">0 米</span></li>
             </ul>
-
-            <button onclick="copyToLine()" class="btn-submit">傳送清單 ➔ 開啟官方LINE</button>
         </div>
         <textarea id="hiddenSummaryText" style="display:none;"></textarea>
     </div>
@@ -517,31 +502,28 @@
 <zh-footer></zh-footer>
 
 <script>
-    // 🧠 全域狀態機核心數據（主機與硬碟完全解放自選）
+    // 🧠 全域狀態機核心數據
     let currentStep = 1;
-    let selectedEnvironment = '一般透天';
-    let hostChannels = 4;       // 自選主機：4、8、16
-    let camTotalQty = 4;        // 鏡頭總數
-    let lprCamQty = 0;          // 車牌機數量
-    let hddSize = 2;            // 自選硬碟：2、4、8 (TB)
-    let estimatedMeters = 60;   // 拉線米數
+    let selectedEnvironment = ''; 
+    let hostChannels = 0;       
+    let camTotalQty = 0;        
+    let lprCamQty = 0;          
+    let hddSize = 0;            
+    let estimatedMeters = 0;    
 
-    // 🏆 正禾工程施作核心心法（不分小標題，段落清爽乾淨）
     const envData = {
         "一般透天": "<p>優先尋找房子原有的弱電暗管（如電話、網路線孔）進行穿線佈線，保持外觀無過多明線。</p><p>若無管路可走，改用線槽（壓條）進行固定，確保美觀不凌亂。</p><p>車庫與大門出入口多為主要看守點，我們會現場評估，面寬比較大的地方，就用廣角鏡頭，這樣一台就能把整個範圍全部照進去。</p>",
         "店面商鋪": "<p>大多會配合店面輕鋼架天花板或裝潢夾層進行佈線。</p><p>針對收銀台下或沿牆部分，使用壓條配合裝潢顏色收線。</p><p>櫃檯收銀和貨架是看守重點。門口玻璃容易反光死白，我們會特別調整安裝角度避開。收銀台上方會配置『畫面拉比較近』的鏡頭用來看清點鈔，且目前的鏡頭基本上都有搭配收音功能，聽清對話才能避免消費糾紛。</p>",
-        "傳統三合院": "<p>三合院多為紅磚或水泥實牆，且天花板多為木造或無夾層，因此「不適合大量使用壓條」。我們會改用固定線夾沿著屋簷、樑柱邊緣緊密固定。</p><p>若必須跨越護龍或中庭，會採用懸空鋼索掛線或地埋管路保護。</p><p>三合院面寬大、夜間幾乎無光，施作時可以使用「智慧雙光」鏡頭的夜間紅外線/白光補光切換設定，確保夜間暗處防盜無死角。</p>",
+        "傳統三合院": "<p>三合院多為紅磚或水泥實牆，且天花板多為木造 or 無夾層，因此「不適合大量使用壓條」。我們會改用固定線夾沿著屋簷、樑柱邊緣緊密固定。</p><p>若必須跨越護龍或中庭，會採用懸空鋼索掛線或地埋管路保護。</p><p>三合院面寬大、夜間幾乎無光，施作時可以使用「智慧雙光」鏡頭的夜間紅外線/白光補光切換設定，確保夜間暗處防盜無死角。</p>",
         "大型工廠": "<p>廠房多為鋼骨鐵皮結構，佈線時線材一律穿入 PVC 管內固定保護，避免外力拉扯或老鼠咬線。</p><p>明線部分一律走專用線槽（Cable Tray）或架鋼索吊掛固定。</p><p>由於廠內大型機具運作容易產生電磁干擾，我們會選用抗干擾的屏蔽線材，並與動力大電保持安全距離，畫面才不會有雜訊。另外硬碟容量也會加大，才夠應付多支鏡頭的錄影。</p>",
-        "農場果園": "<p>大多為空曠地形。佈線需要依靠現場的電線桿、圍籬或特製立柱。線材必須使用耐曬、耐高溫的戶外專用線材（或走地埋管）。</p><p>跨距過長時，會採用鋼索吊掛或設置分段傳輸節點盒（防雨箱）。</p><p>所有攝影機的變壓器、接線端子，我們一律會收進專用的工業防水盒內固定，防止雨水滲入造成線路短路燒毀。</p>",
+        "農場果園": "<p>大多為空曠地形。佈線需要依靠現場的電線桿、圍籬或特製立柱. 線材必須使用耐曬、耐高溫的戶外專用線材（或走地埋管）。</p><p>跨距過長時，會採用鋼索吊掛或設置分段傳輸節點盒（防雨箱）。</p><p>所有攝影機的變壓器、接線端子，我們一律會收進專用的工業防水盒內固定，防止雨水滲入造成線路短路燒毀。</p>",
         "馬路路口": "<p>施作多依附於現有的路燈桿或電線桿。</p><p>外露線材一律以束帶或鋼索緊固於立柱上，嚴禁任意垂吊。</p><p>這類場景通常有「車牌專用機」，安裝時的角度、高度、下傾角非常嚴格，不能太高 or 太斜，否則會拍不到車牌；且夜間必須設定好「強光抑制（HLC）」與「高快門速度」，防止遠光燈直射時車牌變成一片死白。</p>"
     };
 
-    // 🚀 初始化系統
     window.onload = function() {
         refreshState();
     };
 
-    // 🏠 步驟一：選擇環境卡片點擊
     function selectEnv(envName) {
         selectedEnvironment = envName;
         
@@ -554,25 +536,23 @@
             }
         });
 
-        // 智能依場域估算初始基礎拉線線長
-        let multiplier = 15;
-        if (selectedEnvironment === '店面商鋪') multiplier = 12;
-        else if (selectedEnvironment === '傳統三合院') multiplier = 22;
-        else if (selectedEnvironment === '馬路路口') multiplier = 25;
-        else if (selectedEnvironment === '大型工廠') multiplier = 30;
-        else if (selectedEnvironment === '農場果園') multiplier = 40;
-        
-        estimatedMeters = camTotalQty * multiplier;
-        document.getElementById('sliderMeters').value = estimatedMeters;
+        if (camTotalQty > 0) {
+            let multiplier = 15;
+            if (selectedEnvironment === '店面商鋪') multiplier = 12;
+            else if (selectedEnvironment === '傳統三合院') multiplier = 22;
+            else if (selectedEnvironment === '馬路路口') multiplier = 25;
+            else if (selectedEnvironment === '大型工廠') multiplier = 30;
+            else if (selectedEnvironment === '農場果園') multiplier = 40;
+            estimatedMeters = camTotalQty * multiplier;
+            document.getElementById('sliderMeters').value = estimatedMeters;
+        }
         
         refreshState();
     }
 
-    // 🎛️ 自選錄影主機邏輯
     function selectHost(channels) {
-        // 如果目前鏡頭數大於欲選的主機路數，則不能降級選擇
         if (camTotalQty > channels) {
-            alert(`⚠️ 您目前的鏡頭數量為 ${camTotalQty} 支，無法選擇 ${channels} 路主機！`);
+            alert(`⚠️ 您目前的鏡頭數量為 ${camTotalQty} 支，無法調降為 ${channels} 路主機！`);
             return;
         }
         hostChannels = channels;
@@ -586,62 +566,69 @@
         if (hostChannels === 8) document.getElementById('btnHost8').classList.add('active');
         if (hostChannels === 16) document.getElementById('btnHost16').classList.add('active');
 
-        // 防呆灰色視覺暗示
         document.getElementById('btnHost4').classList.toggle('disabled', camTotalQty > 4);
         document.getElementById('btnHost8').classList.toggle('disabled', camTotalQty > 8);
     }
 
-    // ➕➖ 步驟二：加減計數器邏輯（內置超過8支自動跳16路防呆安全鎖）
     function adjustQty(type, num) {
         if (type === 'cam') {
-            camTotalQty = Math.max(1, Math.min(16, camTotalQty + num));
+            camTotalQty = Math.max(0, Math.min(16, camTotalQty + num));
             if (lprCamQty > camTotalQty) lprCamQty = camTotalQty;
 
-            // 🧠 核心安全鎖：根據鏡頭數量，強制將主機規格往上推
             if (camTotalQty > 8 && hostChannels < 16) {
                 hostChannels = 16;
-            } else if (camTotalQty > 4 && hostChannels < 8) {
+            } else if (camTotalQty > 4 && hostChannels < 8 && hostChannels !== 0) {
                 hostChannels = 8;
+            } else if (camTotalQty > 0 && hostChannels === 0) {
+                hostChannels = 4;
             }
         } else if (type === 'lpr') {
             lprCamQty = Math.max(0, Math.min(4, Math.min(camTotalQty, lprCamQty + num)));
         }
         
-        // 動態隨鏡頭數調整初始預估米數
-        let multiplier = 15;
-        if (selectedEnvironment === '店面商鋪') multiplier = 12;
-        else if (selectedEnvironment === '傳統三合院') multiplier = 22;
-        else if (selectedEnvironment === '大型工廠') multiplier = 30;
-        else if (selectedEnvironment === '農場果園') multiplier = 40;
-        estimatedMeters = camTotalQty * multiplier;
+        if (camTotalQty > 0) {
+            let multiplier = 15;
+            if (selectedEnvironment === '店面商鋪') multiplier = 12;
+            else if (selectedEnvironment === '傳統三合院') multiplier = 22;
+            else if (selectedEnvironment === '大型工廠') multiplier = 30;
+            else if (selectedEnvironment === '農場果園') multiplier = 40;
+            estimatedMeters = camTotalQty * multiplier;
+        } else {
+            estimatedMeters = 0;
+        }
         document.getElementById('sliderMeters').value = estimatedMeters;
 
         refreshState();
     }
 
-    // 💾 自選儲存硬碟邏輯
     function selectHdd(size) {
         hddSize = size;
-        document.querySelectorAll('#btnHdd2, #btnHdd4, #btnHdd8').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('#hddSelectGroup .btn-select-item').forEach(btn => btn.classList.remove('active'));
         document.getElementById('btnHdd' + size).classList.add('active');
         runCalculations();
     }
 
-    // 🎚️ 滑桿數值變更
+    // 🚀 【核心修復】：把原本不小心打錯寫成 def 的地方改回正確的 function！
     function updateMetersDisplay() {
         estimatedMeters = parseInt(document.getElementById('sliderMeters').value);
         document.getElementById('valMeters').innerText = estimatedMeters;
         runCalculations();
     }
 
-    // 🔄 集中狀態刷新機
     function refreshState() {
         document.getElementById('valCamQty').innerText = camTotalQty;
         document.getElementById('valLprQty').innerText = lprCamQty;
         document.getElementById('valMeters').innerText = estimatedMeters;
         
         updateHostButtons();
-        document.getElementById('aiEnvNote').innerHTML = envData[selectedEnvironment];
+
+        if (selectedEnvironment) {
+            const noteBox = document.getElementById('aiEnvNote');
+            noteBox.innerHTML = envData[selectedEnvironment];
+            noteBox.style.display = 'block'; 
+        } else {
+            document.getElementById('aiEnvNote').style.display = 'none';
+        }
 
         runCalculations();
     }
@@ -649,73 +636,64 @@
     // 📊 核心智慧精算大腦
     let calculatedResults = {};
     function runCalculations() {
-        // 1. 主機計價邏輯
-        let hostPrice = 6000;
-        let hostText = '4路數位高規監控主機';
-        if (hostChannels === 8) {
-            hostPrice = 8000;
-            hostText = '8路數位高規監控主機';
-        } else if (hostChannels === 16) {
-            hostPrice = 14500;
-            hostText = '16路數位高規監控主機';
-        }
+        let hostPrice = 0;
+        let hostText = '尚未選擇規格';
+        if (hostChannels === 4) { hostPrice = 6000; hostText = '4路數位高規監控主機'; }
+        else if (hostChannels === 8) { hostPrice = 8000; hostText = '8路數位高規監控主機'; }
+        else if (hostChannels === 16) { hostPrice = 14500; hostText = '16路數位高規監控主機'; }
 
-        // 2. 硬碟計價與儲存天數計算
-        let hddPrice = 5500;
-        let hddText = '2TB 監控專用硬碟';
-        if (hddSize === 4) {
-            hddPrice = 7000;
-            hddText = '4TB 監控專用硬碟';
-        } else if (hddSize === 8) {
-            hddPrice = 15000; // 老闆指定定價
-            hddText = '8TB 監控專用硬碟';
-        }
+        let hddPrice = 0;
+        let hddText = '尚未選擇規格';
+        if (hddSize === 2) { hddPrice = 5500; hddText = '2TB 監控專用硬碟'; }
+        else if (hddSize === 4) { hddPrice = 7000; hddText = '4TB 監控專用硬碟'; }
+        else if (hddSize === 8) { hddPrice = 15000; hddText = '8TB 監控專用硬碟'; }
 
         let stdCamQty = camTotalQty - lprCamQty;
         let stdCamPriceUnit = 4000; 
         let lprCamPriceUnit = 10000; 
         let totalCamCost = (stdCamQty * stdCamPriceUnit) + (lprCamQty * lprCamPriceUnit);
 
-        // 智慧推算錄影天數（大約估算公式）
-        let totalCapacityGB = hddSize * 1000;
-        let totalGbPerDay = camTotalQty * 22; // 每支常規/車牌有聲款一天大約抓 22GB 
-        let estimatedDays = Math.floor(totalCapacityGB / totalGbPerDay);
+        let estimatedDays = 0;
+        if (camTotalQty > 0 && hddSize > 0) {
+            let totalCapacityGB = hddSize * 1000;
+            let totalGbPerDay = camTotalQty * 22; 
+            estimatedDays = Math.floor(totalCapacityGB / totalGbPerDay);
+            document.getElementById('hddLiveNote').innerHTML = `💾 經系統計算：您選擇的 <strong>${camTotalQty}</strong> 支鏡頭，搭配 <strong>${hddSize}TB</strong> 硬碟，大約可保存 <strong>${estimatedDays}</strong> 天錄影檔案資料。`;
+        } else {
+            document.getElementById('hddLiveNote').innerHTML = `💡 提示：請先在上方增加鏡頭數量並選擇硬碟容量，系統將自動計算可保存天數。`;
+        }
 
-        // 🎯 渲染硬碟動態提示小文字
-        document.getElementById('hddLiveNote').innerHTML = `💾 經系統計算：您選擇的 <strong>${camTotalQty}</strong> 支鏡頭，搭配 <strong>${hddSize}TB</strong> 硬碟，大約可保存 <strong>${estimatedDays}</strong> 天錄影檔案資料。`;
-
-        // 3. 線長與加長溢價動態計算
         let freeMeters = camTotalQty * 15;
         let extraMeters = Math.max(0, estimatedMeters - freeMeters);
         let extraMetersCost = extraMeters * 50; 
 
-        // 🎯 渲染線長動態提示小文字
-       // 🚀 完美分線段版本：加入 <br> 標籤與微調字句，排版更透氣專業
-        document.getElementById('metersLiveNote').innerHTML = `💡 註：每支攝影機一律內含 15 米基本線長。<br>本場域共 <strong>${camTotalQty}</strong> 支監視器，內含 <strong>${freeMeters}</strong> 米，預估線路加長 <strong>${extraMeters}</strong> 米，加長費用為 <span style="color:var(--zh-orange); font-weight:bold;">NT$ ${extraMetersCost.toLocaleString()}</span> 元（每米以 50 元基礎計價）。`;
-        // 4. 總預算加總
+        if (camTotalQty > 0) {
+            document.getElementById('metersLiveNote').innerHTML = `💡 註：每支攝影機一律內含 15 米基本線長。<br>本場域共 <strong>${camTotalQty}</strong> 支監視器 內含 <strong>${freeMeters}</strong> 米，預估線路加長 <strong>${extraMeters}</strong> 米，加長費用為 <span style="color:var(--zh-orange); font-weight:bold;">NT$ ${extraMetersCost.toLocaleString()}</span> 元（每米以 50 元基礎計價）。`;
+        } else {
+            document.getElementById('metersLiveNote').innerHTML = `💡 提示：請先增加監視器數量，系統將為您自動展開內含之基本線長。`;
+        }
+
         let grandTotal = hostPrice + totalCamCost + hddPrice + extraMetersCost;
 
         calculatedResults = {
             grandTotal: grandTotal,
             hostText: hostText,
-            stdCamText: `500萬智慧雙光有聲機 x ${stdCamQty}支`,
+            stdCamText: camTotalQty > 0 ? `500萬智慧雙光有聲機 x ${stdCamQty}支` : '尚未配置',
             lprCamText: lprCamQty > 0 ? `車牌專用機 x ${lprCamQty}支` : '無配置',
-            hddText: `${hddSize}TB 監控專用規格 (可存約 ${estimatedDays} 天)`,
-            metersText: `${estimatedMeters}米 (內含${freeMeters}米 / 超額加長${extraMeters}米)`,
+            hddText: hddSize > 0 ? `${hddSize}TB 監控專用規格 (可存約 ${estimatedDays} 天)` : '尚未配置',
+            metersText: camTotalQty > 0 ? `${estimatedMeters}米 (內含${freeMeters}米 / 超額加長${extraMeters}米)` : '尚未配置',
             estimatedDays: estimatedDays
         };
         
-        // ⚡ 右側曜石深黑面板即時同步刷新！
         document.getElementById('resGrandTotal').innerText = grandTotal.toLocaleString();
-        document.getElementById('sideEnv').innerText = selectedEnvironment;
-        document.getElementById('sideHost').innerText = `${hostChannels}路高規主機`;
-        document.getElementById('sideCamCount').innerText = `${camTotalQty} 支 (車牌${lprCamQty})`;
-        document.getElementById('sideHdd').innerText = `${hddSize}TB (約錄${estimatedDays}天)`;
-        document.getElementById('sideMeters').innerText = `${estimatedMeters} 米`;
+        document.getElementById('sideEnv').innerText = selectedEnvironment ? selectedEnvironment : '未選擇';
+        document.getElementById('sideHost').innerText = hostChannels > 0 ? `${hostChannels}路高規主機` : '未選擇';
+        document.getElementById('sideCamCount').innerText = camTotalQty > 0 ? `${camTotalQty} 支 (車牌${lprCamQty})` : '0 支';
+        document.getElementById('sideHdd').innerText = hddSize > 0 ? `${hddSize}TB (約錄${estimatedDays}天)` : '未選擇';
+        document.getElementById('sideMeters').innerText = camTotalQty > 0 ? `${estimatedMeters} 米` : '0 米';
 
-        // LINE 清單輸出格式化文字
         let textForLine = `【正禾資訊】監控預算估算清單：\n` +
-                          `1. 案場環境：${selectedEnvironment}\n` +
+                          `1. 案場環境：${selectedEnvironment ? selectedEnvironment : '未選擇'}\n` +
                           `2. 主機規格：${hostText}\n` +
                           `3. 鏡頭規格：${calculatedResults.stdCamText} ${lprCamQty > 0 ? '＋ ' + calculatedResults.lprCamText : ''}\n` +
                           `4. 儲存硬碟：${calculatedResults.hddText}\n` +
@@ -725,7 +703,6 @@
         document.getElementById('hiddenSummaryText').value = textForLine;
     }
 
-    // 🎛️ 步驟導航推動器
     function moveStep(direction) {
         goToStep(currentStep + direction);
     }
@@ -740,39 +717,48 @@
         document.querySelectorAll('.progress-step').forEach(tag => tag.classList.remove('active'));
         document.getElementById('stepTag' + stepNum).classList.add('active');
 
+        const nextBtn = document.getElementById('btnNext');
+
         if (currentStep === 1) {
             document.getElementById('btnPrev').style.display = 'none';
-            document.getElementById('btnNext').innerText = '配置鏡頭 ➔';
+            nextBtn.innerText = '配置鏡頭 ➔';
+            nextBtn.className = 'btn-nav btn-next';
+            nextBtn.onclick = function() { moveStep(1); };
+            
+            if (!selectedEnvironment) {
+                document.querySelectorAll('.env-card').forEach(card => card.classList.remove('active'));
+            }
         } else if (currentStep === 2) {
             document.getElementById('btnPrev').style.display = 'block';
-            document.getElementById('btnNext').innerText = '查看預算大綱 ➔';
+            nextBtn.innerText = '查看預算大綱 ➔';
+            nextBtn.className = 'btn-nav btn-next';
+            nextBtn.onclick = function() { moveStep(1); };
         } else if (currentStep === 3) {
             document.getElementById('btnPrev').style.display = 'block';
-            document.getElementById('btnNext').innerText = '再次確認配置 ➔';
+            
+            // 傳送清單大綠鈕
+            nextBtn.innerText = '傳送清單 ➔ 開啟官方LINE';
+            nextBtn.className = 'btn-nav btn-next btn-line-submit';
+            nextBtn.onclick = function() { copyToLine(); };
+            
             renderFinalSummary();
         }
     }
 
-    // 📋 步驟三：配置明細清單確認渲染
- // 🚀 最終單欄版：視線一條線看下去，字體全面放大、加深！
     function renderFinalSummary() {
         let stdCamQty = camTotalQty - lprCamQty;
         let freeMeters = camTotalQty * 15;
         let extraMeters = Math.max(0, estimatedMeters - freeMeters);
         let extraMetersCost = extraMeters * 50;
 
-        // 1. 案場環境
-        document.getElementById('resEnv').innerText = selectedEnvironment;
+        document.getElementById('resEnv').innerText = selectedEnvironment ? selectedEnvironment : '未選擇';
         
-        // 2. 主機規格
-        document.getElementById('resHost').innerText = hostChannels + "路監控主機";
-        document.getElementById('resHostNote').innerText = `附屬功能：搭載 H.265+ 高壓縮編碼、支援手機遠端 APP 連線即時觀看`;
+        document.getElementById('resHost').innerText = hostChannels > 0 ? calculatedResults.hostText : '尚未配置';
+        document.getElementById('resHostNote').innerText = hostChannels > 0 ? `附屬功能：搭載 H.265+ 高壓縮編碼、支援手機遠端 APP 連線即時觀看` : '請返回上一步選擇主機規格';
         
-        // 3. 常規鏡頭
-        document.getElementById('resStdCam').innerText = stdCamQty + " 支";
-        document.getElementById('resStdCamNote').innerText = `施工細節：500萬高畫素智慧雙光款、全機防塵防水、內建高靈敏度收音`;
+        document.getElementById('resStdCam').innerText = camTotalQty > 0 ? `${stdCamQty} 支` : '尚未配置';
+        document.getElementById('resStdCamNote').innerText = camTotalQty > 0 ? `施工細節：500萬高畫素智慧雙光款、全機防塵防水、內建高靈敏度收音` : '請返回上一步增加常規鏡頭數量';
         
-        // 4. 車牌專用
         if (lprCamQty > 0) {
             document.getElementById('boxLprCam').style.display = 'block';
             document.getElementById('resLprCam').innerText = lprCamQty + " 支";
@@ -781,16 +767,13 @@
             document.getElementById('boxLprCam').style.display = 'none';
         }
         
-        // 5. 儲存硬碟
-        document.getElementById('resHdd').innerText = hddSize + "TB";
-        document.getElementById('resHddNote').innerText = `儲存說明：24小時不間斷穩定寫入監控硬碟，依目前配置預估可留存約 ${calculatedResults.estimatedDays} 天`;
+        document.getElementById('resHdd').innerText = hddSize > 0 ? `${hddSize}TB 監控專用硬碟` : '尚未配置';
+        document.getElementById('resHddNote').innerText = hddSize > 0 ? `儲存說明：24小時不間斷穩定寫入監控硬碟，依目前配置預估可留存約 ${calculatedResults.estimatedDays} 天` : '請返回上一步選擇硬碟容量規格';
         
-        // 6. 總拉線長
-        document.getElementById('resMeters').innerText = estimatedMeters + " 米";
-        document.getElementById('resMetersNote').innerText = `線路說明：內含 ${freeMeters} 米基礎長度，本案預估線路加長 ${extraMeters} 米（加長費用為 NT$ ${extraMetersCost.toLocaleString()} 元，每米以 50 元基礎計價）。完工一律內含防曬防鼠咬壓條或浪管基礎保護`;
+        document.getElementById('resMeters').innerText = camTotalQty > 0 ? `${estimatedMeters} 米` : '0 米';
+        document.getElementById('resMetersNote').innerText = camTotalQty > 0 ? `線路說明：內含 ${freeMeters} 米基礎長度，本案預估線路加長 ${extraMeters} 米（加長費用為 NT$ ${extraMetersCost.toLocaleString()} 元，每米以 50 元基礎計價）。完工一律內含防曬防鼠咬壓條或浪管基礎保護` : '請返回上一步調整預估線路長度';
     }
 
-    // 🟢 LINE 一鍵成交發送機制
     function copyToLine() {
         const copyText = document.getElementById("hiddenSummaryText");
         copyText.select();
