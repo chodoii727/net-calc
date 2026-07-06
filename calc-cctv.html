@@ -165,7 +165,7 @@
         .ai-note-box p { margin: 0 0 12px 0; }
         .ai-note-box p:last-child { margin-bottom: 0; }
 
-        /* ⚙️ Step 2：全新黃金網格控制佈局（徹底封印文字直切瀑布） */
+        /* ⚙️ Step 2：控制元件網格組 */
         .control-group {
             background: #fff;
             border: 1px solid var(--zh-border);
@@ -173,25 +173,20 @@
             padding: 26px 30px;
             margin-bottom: 20px;
             display: grid;
-            grid-template-columns: 35% 1fr; /* 🚀 強制分配：左側文字永遠佔 35% 寬度，絕對不會被壓縮 */
+            grid-template-columns: 35% 1fr;
             align-items: center;
             row-gap: 15px;
         }
 
-        .control-label-zone {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            text-align: left;
-        }
-        .control-title { font-size: 16.5px; font-weight: 700; color: var(--zh-dark); white-space: normal; }
+        .control-label-zone { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; text-align: left; }
+        .control-title { font-size: 16.5px; font-weight: 700; color: var(--zh-dark); }
         .control-desc { font-size: 13px; color: var(--zh-text-muted); line-height: 1.4; }
 
-        /* 🎛️ 按鈕式多選一選擇器 */
+        /* 🎛️ 按鈕選擇器 */
         .btn-select-group {
             display: flex;
             gap: 10px;
-            justify-content: flex-end; /* 電腦版靠右對齊，畫面最俐落 */
+            justify-content: flex-end;
         }
         .btn-select-item {
             padding: 10px 22px;
@@ -221,14 +216,7 @@
         }
 
         /* ➕➖ 數字加減器 */
-        .counter-tool { 
-            display: flex; 
-            align-items: center; 
-            background: #f1f3f5; 
-            border-radius: 10px; 
-            padding: 4px; 
-            justify-self: end; /* 電腦版靠右對齊 */
-        }
+        .counter-tool { display: flex; align-items: center; background: #f1f3f5; border-radius: 10px; padding: 4px; justify-self: end; }
         .counter-btn { width: 40px; height: 40px; border: none; background: #fff; color: var(--zh-dark); font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
         .counter-btn:hover { background: #e4e7eb; }
         .counter-value { width: 50px; text-align: center; font-size: 16px; font-weight: 700; color: var(--zh-dark); }
@@ -238,9 +226,9 @@
         .slider-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 5px; }
         .range-slider { width: 100%; accent-color: var(--zh-orange); cursor: pointer; height: 6px; }
 
-        /* 💡 區塊內即時動態提示小文字（獨立成行，完美舒展） */
+        /* 💡 即時動態提示小文字 */
         .live-note {
-            grid-column: 1 / span 2; /* 🚀 網格橫跨兩欄：強迫提示字自己站滿整整一行，再寬都不怕擠 */
+            grid-column: 1 / span 2;
             font-size: 13.5px;
             color: #2b7af2;
             font-weight: 600;
@@ -259,7 +247,7 @@
             gap: 14px;
         }
 
-        /* 🔘 底部導航前進返回按鈕 */
+        /* 🔘 底部導航按鈕 */
         .nav-buttons { display: flex; justify-content: space-between; margin-top: 35px; gap: 15px; align-items: center; }
         .btn-nav { padding: 14px 28px; font-size: 15px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: all 0.15s ease; border: none; }
         .btn-prev { background-color: #e4e7eb; color: var(--zh-dark); }
@@ -277,7 +265,7 @@
             transform: translateY(-1px);
         }
 
-        /* 💰 右側：曜石深黑即時計價固定面板 */
+        /* 💰 右側固定計價面板 */
         .calc-sidebar-zone {
             width: 350px;
             flex-shrink: 0;
@@ -318,7 +306,7 @@
         .side-preview-list li:last-child { margin-bottom: 0; }
         .side-preview-list li span.val { color: #ffffff; font-weight: 700; text-align: right; }
 
-        /* 📱 🚀 終極重工業級 RWD 手機響應式防爆破盾 */
+        /* 📱 🚀 RWD 手機響應式防護欄 */
         @media (max-width: 992px) {
             .calc-wrapper { flex-direction: column; margin: 25px auto; gap: 25px; }
             .calc-sidebar-zone { width: 100%; }
@@ -327,12 +315,9 @@
         
         @media (max-width: 640px) {
             .calc-container { padding: 30px 20px; border-radius: 20px; }
-            
-            /* 🧭 進度條防撞車 */
             .step-progress { padding: 4px; border-radius: 10px; }
             .progress-step { font-size: 11.5px; padding: 10px 2px; letter-spacing: -0.3px; }
             
-            /* ⚙️ 手機直式螢幕：打破網格，強制回歸純直列單欄流線佈局 */
             .control-group { 
                 display: flex !important;
                 flex-direction: column !important; 
@@ -341,10 +326,7 @@
                 gap: 12px; 
             }
             
-            /* 提示字在手機上寬度全面釋放 */
             .live-note { width: 100% !important; }
-            
-            /* 按鈕群在手機上橫向均分，超級好點 */
             .btn-select-group { justify-content: flex-start !important; width: 100% !important; display: flex !important; gap: 10px !important; }
             .btn-select-item { flex: 1 !important; text-align: center; padding: 12px 8px !important; font-size: 13px !important; }
             .counter-tool { align-self: flex-start; width: 100%; max-width: 180px; justify-content: space-between; }
@@ -716,9 +698,12 @@
             hostText: hostText,
             stdCamText: camTotalQty > 0 ? `500萬智慧雙光有聲機 x ${stdCamQty}支` : '尚未配置',
             lprCamText: lprCamQty > 0 ? `車牌專用機 x ${lprCamQty}支` : '無配置',
-            hddText: hddSize > 0 ? `${hddSize}TB 監控專用規格 (可存約 ${estimatedDays} 天)` : '尚未配置',
+            hddText: hddSize > 0 ? `${hddSize}TB 監控專用規格` : '尚未配置',
             metersText: camTotalQty > 0 ? `${estimatedMeters}米 (內含${freeMeters}米 / 超額加長${extraMeters}米)` : '尚未配置',
-            estimatedDays: estimatedDays
+            estimatedDays: estimatedDays,
+            freeMeters: freeMeters,
+            extraMeters: extraMeters,
+            stdCamQty: stdCamQty
         };
         
         document.getElementById('resGrandTotal').innerText = grandTotal.toLocaleString();
@@ -728,14 +713,18 @@
         document.getElementById('sideHdd').innerText = hddSize > 0 ? `${hddSize}TB (約錄${estimatedDays}天)` : '未選擇';
         document.getElementById('sideMeters').innerText = camTotalQty > 0 ? `${estimatedMeters} 米` : '0 米';
 
-        let textForLine = `【正禾資訊】監控預算估算清單：\n` +
-                          `1. 案場環境：${selectedEnvironment ? selectedEnvironment : '未選擇'}\n` +
-                          `2. 主機規格：${hostText}\n` +
-                          `3. 鏡頭規格：${calculatedResults.stdCamText} ${lprCamQty > 0 ? '＋ ' + calculatedResults.lprCamText : ''}\n` +
-                          `4. 儲存硬碟：${calculatedResults.hddText}\n` +
-                          `5. 預估線長：${calculatedResults.metersText}\n` +
-                          `⚙️ 工法線路：完工一律包含防曬、防鼠咬軟管壓條等基礎線路保護\n` +
-                          `💰 完工估算總價：NT$ ${grandTotal.toLocaleString()} 元 (享全機保固2年)`;
+        // 🎯 核心大升級：將要發送給 LINE 專家的內容徹底清除所有彩色圖示，完全符合大廠純文字俐落範本
+        let textForLine = `【正禾資訊 ｜ 智慧監控估價需求單】\n` +
+                          `─────────────────────\n` +
+                          ` 安裝環境：${selectedEnvironment ? selectedEnvironment : '未選擇'}\n` +
+                          ` 錄影主機：${hostText}\n` +
+                          ` 常規鏡頭：${camTotalQty > 0 ? stdCamQty + ' 支（500萬智慧雙光款）' : '尚未配置'}\n` +
+                          ` 車牌專用：${lprCamQty > 0 ? lprCamQty + ' 支' : '無配置'}\n` +
+                          ` 儲存硬碟：${hddSize > 0 ? hddSize + 'TB 監控專用硬碟（預估錄 ' + estimatedDays + ' 天）' : '尚未配置'}\n` +
+                          ` 預估線長：${camTotalQty > 0 ? estimatedMeters + ' 米（內含 ' + freeMeters + ' 米 / 超額加長 ' + extraMeters + ' 米）' : '0 米'}\n` +
+                          ` 系統預估總價：NT$ ${grandTotal.toLocaleString()} 元\n` +
+                          `─────────────────────\n` +
+                          `💡 備註：完工一律內含防曬、壓條等基礎工法保護，全機享完整 2 年硬體保固。`;
         document.getElementById('hiddenSummaryText').value = textForLine;
     }
 
@@ -809,17 +798,52 @@
         document.getElementById('resMetersNote').innerText = camTotalQty > 0 ? `線路說明：內含 ${freeMeters} 米基礎長度，本案預估線路加長 ${extraMeters} 米（加長費用為 NT$ ${extraMetersCost.toLocaleString()} 元，每米以 50 元基礎計價）。完工一律內含防曬防鼠咬壓條或浪管基礎保護` : '請返回上一步調整預估線路長度';
     }
 
+    // 🚀 【手機晶片級複製技術】：徹底解決手機及三星瀏覽器攔截舊式 execCommand 的致命問題
     function copyToLine() {
-        const copyText = document.getElementById("hiddenSummaryText");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); 
+        const textToCopy = document.getElementById("hiddenSummaryText").value;
+        
+        // 優先使用現代非同步 Clipboard API
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => {
+                    triggerSuccessAlert();
+                })
+                .catch(err => {
+                    // 非同步失敗時，滑順退回到傳統後備覆蓋方案
+                    fallbackCopyProcess(textToCopy);
+                });
+        } else {
+            // 在不支援安全上下文的極端狀況下，直接採用傳統方案防禦
+            fallbackCopyProcess(textToCopy);
+        }
+    }
+
+    // 傳統後備方案（透過建立一個臨時不影響版面的文字錨點進行選取）
+    function fallbackCopyProcess(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed"; 
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
         
         try {
-            document.execCommand("copy");
-            alert("📋 預算配置明細已成功複製到您的剪貼簿！\n\n點擊確定後將跳轉官方 LINE，您只需在對話框「長按貼上」發送給正禾專家，即可直接預約現場勘查囉！");
+            const successful = document.execCommand('copy');
+            if (successful) {
+                triggerSuccessAlert();
+            } else {
+                alert("複製失敗，請直接對本頁面進行截圖，並傳送給 LINE 線上專家核對唷！");
+            }
         } catch (err) {
-            alert("請直接截圖此畫面，並傳送給 LINE 線上專家核對唷！");
+            alert("請直接對本頁面進行截圖，並傳送給 LINE 線上專家核對唷！");
         }
+        document.body.removeChild(textArea);
+    }
+
+    function triggerSuccessAlert() {
+        alert("📋 需求清單已成功複製到您的手機剪貼簿！\n\n點擊確定後將自動為您開啟官方 LINE，您只需在正禾對話框中「長按貼上」發送，即可直接預約現場勘查囉！");
         window.open("https://line.me/ti/p/~gooa168", "_blank");
     }
 </script>
