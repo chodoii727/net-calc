@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正禾資訊 | 網路佈線估價模擬器</title>
+    <style>
+        /* 🎨 全局現代化質感美學 */
+        :root {
+            --zh-orange: #f27a2b;       /* 正禾品牌橘 */
+            --zh-dark: #111111;         /* 高質感深色 */
+            --zh-bg: #f4f6f8;           /* 寬闊背景色 */
+            --zh-card-bg: #ffffff;
+            --zh-border: #e4e7eb;
+            --zh-text-muted: #545454;
+            --zh-success: #06C167;      /* 專屬加長強調綠 */
+        }
+
+        body {
+            background-color: var(--zh-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 📊 左右雙欄版面配置 */
+        .calc-wrapper {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+            box-sizing: border-box;
+            align-items: flex-start;
+        }
+
+        /* 📝 左側：工作區 */
+        .calc-main-zone {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .calc-container {
+            width: 100%;
+            background-color: var(--zh-card-bg);
+            border: 1px solid var(--zh-border);
+            border-radius: 24px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.03);
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .calc-header {
+            text-align: left;
+            margin-bottom: 35px;
+            border-left: 5px solid var(--zh-orange);
+            padding-left: 15px;
+        }
+
+        .calc-title {
+            color: var(--zh-dark);
+            margin: 0 0 6px 0;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .calc-subtitle {
+            color: var(--zh-text-muted);
+            font-size: 15px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* 🧭 步驟導航條 */
+        .step-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+            background: #e9ecef;
+            padding: 6px;
+            border-radius: 14px;
+            gap: 4px;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            padding: 12px 6px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--zh-text-muted);
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .progress-step.active {
+            background-color: var(--zh-card-bg);
+            color: var(--zh-dark);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* 📦 步驟分頁 */
+        .step-panel { display: none; }
+        .step-panel.active { display: block; animation: fadeIn 0.35s ease forwards; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 🏠 Step 1：環境選擇 */
+        .env-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .env-card {
+            border: 2px solid var(--zh-border);
+            border-radius: 16px;
+            padding: 24px 22px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #fafbfc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 85px;
+            box-sizing: border-box;
+        }
+
+        .env-card:hover {
+            border-color: var(--zh-dark);
+            background-color: #fff;
+        }
+
+        .env-card.active {
+            border-color: var(--zh-orange);
+            background-color: #fff;
+            box-shadow: 0 8px 20px rgba(242,122,43,0.06);
+        }
+
+        .env-card-title { font-size: 17px; font-weight: 700; color: var(--zh-dark); display: flex; align-items: center; gap: 8px; }
+
+        /* 💡 說明提示框 */
+        .ai-note-box {
+            background-color: #fffaf7;
+            border-left: 4px solid var(--zh-orange);
+            border-radius: 4px 12px 12px 4px;
+            padding: 22px;
+            margin-top: 25px;
+            font-size: 14.5px;
+            color: #333333;
+            line-height: 1.6;
+            display: none; 
+        }
+
+        /* ⚙️ Step 2：控制元件網格 */
+        .control-group {
+            background: #fff;
+            border: 1px solid var(--zh-border);
+            border-radius: 16px;
+            padding: 26px 30px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: 55% 1fr;
+            align-items: center;
+            row-gap: 15px;
+        }
+
+        .control-label-zone { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; text-align: left; }
+        .control-title { font-size: 16.5px; font-weight: 700; color: var(--zh-dark); }
+        .control-desc { font-size: 13px; color: var(--zh-text-muted); line-height: 1.4; }
+
+        /* 🎛️ 下拉選單 */
+        .form-select { 
+            width: 100%; 
+            max-width: 320px;
+            background-color: #fafbfc; 
+            color: #111111; 
+            border: 1px solid var(--zh-border); 
+            padding: 12px 14px; 
+            border-radius: 8px; 
+            font-size: 14.5px; 
+            outline: none; 
+            transition: all 0.15s ease; 
+            font-weight: 600; 
+            justify-self: end;
+        }
+
+        /* ➕➖ 數字與線長精密加減器 */
+        .counter-tool { display: flex; align-items: center; background: #f1f3f5; border-radius: 10px; padding: 4px; justify-self: end; }
+        .counter-btn { width: 40px; height: 40px; border: none; background: #fff; color: var(--zh-dark); font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+        .counter-btn:hover { background: #e4e7eb; }
+        .counter-value { width: 50px; text-align: center; font-size: 16px; font-weight: 700; color: var(--zh-dark); }
+
+        /* 🎚️ 滑桿組 */
+        .slider-group { display: flex; flex-direction: column; align-items: stretch; }
+        .slider-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 8px; gap: 20px; }
+        .range-slider { width: 100%; accent-color: var(--zh-orange); cursor: pointer; height: 6px; margin-top: 5px; }
+
+        /* 動態回饋文字基本樣式 */
+        .live-note {
+            grid-column: 1 / span 2;
+            font-size: 14px;
+            color: var(--zh-dark);
+            font-weight: 700;
+            margin-top: 5px;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        /* 📋 Step 3：配置明細確認區 */
+        .detail-list {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* 🔘 按鈕 */
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 35px; gap: 15px; align-items: center; }
+        .btn-nav { padding: 14px 28px; font-size: 15px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: all 0.15s ease; border: none; }
+        .btn-prev { background-color: #e4e7eb; color: var(--zh-dark); }
+        .btn-prev:hover { background-color: #cbd5e1; }
+        
+        .btn-next { padding: 14px 24px; font-size: 15px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: all 0.15s ease; border: none; background-color: var(--zh-dark); color: #fff; margin-left: auto; }
+        .btn-next:hover { background-color: #333; }
+        .btn-next.btn-line-submit {
+            background-color: #06C167;
+            box-shadow: 0 4px 12px rgba(6,193,103,0.2);
+        }
+        .btn-next.btn-line-submit:hover {
+            background-color: #05a859;
+            box-shadow: 0 6px 18px rgba(6,193,103,0.3);
+            transform: translateY(-1px);
+        }
+
+        /* 💰 右側固定計價面板 */
+        .calc-sidebar-zone {
+            width: 350px;
+            flex-shrink: 0;
+        }
+
+        .result-panel {
+            background: #1a1d21; 
+            border: 1px solid #2d3239;
+            border-radius: 20px;
+            padding: 30px 24px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 95px; 
+            box-sizing: border-box;
+            color: #ffffff;
+        }
+
+        .total-label { font-size: 13px; color: #888888; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 6px; }
+        .total-amount { font-size: 38px; font-weight: 900; color: var(--zh-orange); margin-bottom: 12px; font-family: Arial, sans-serif; }
+        .warranty-tag { color: var(--zh-orange); font-size: 13px; font-weight: 700; background: rgba(242,122,43,0.1); padding: 5px 14px; border-radius: 20px; margin-bottom: 25px; display: inline-block; text-align: center; }
+        
+        .side-preview-list {
+            list-style: none;
+            padding: 0;
+            margin: 0; 
+            border-top: 1px solid #2d3239;
+            padding-top: 15px;
+        }
+        .side-preview-list li {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #b4c6ef;
+            margin-bottom: 10px;
+        }
+        .side-preview-list li span.val { color: #ffffff; font-weight: 700; text-align: right; }
+
+        /* 🚀 底部釘選顯示列 */
+        .tesla-sticky-bar {
+            display: none; 
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.05);
+            padding: 14px 20px;
+            box-sizing: border-box;
+            z-index: 9999; 
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tesla-price-zone { display: flex; flex-direction: column; text-align: left; }
+        .tesla-main-price { font-size: 24px; font-weight: 900; color: var(--zh-dark); font-family: Arial, sans-serif; }
+        .tesla-sub-tag { font-size: 11px; color: var(--zh-orange); font-weight: 700; margin-top: 2px; }
+        .btn-tesla-action { background-color: #06C167; color: white; font-size: 13.5px; font-weight: bold; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(6,193,103,0.15); transition: all 0.15s; white-space: nowrap; }
+
+        /* 📱 RWD 手機版優化 */
+        @media (max-width: 992px) {
+            .calc-wrapper { flex-direction: column; margin: 25px auto 40px auto; gap: 25px; } 
+            .calc-sidebar-zone { display: none; } 
+            .tesla-sticky-bar.tesla-active { display: flex; }
+        }
+        
+        @media (max-width: 640px) {
+            .calc-container { padding: 30px 20px; border-radius: 20px; }
+            .step-progress { padding: 4px; border-radius: 10px; }
+            .progress-step { font-size: 11.5px; padding: 10px 2px; letter-spacing: -0.3px; }
+            
+            .control-group { display: flex !important; flex-direction: column !important; align-items: stretch !important; padding: 20px; gap: 12px; }
+            .slider-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; width: 100% !important; }
+            .form-select { max-width: 100% !important; justify-self: stretch !important; }
+            .counter-tool { align-self: flex-start !important; width: 100% !important; max-width: 180px !important; justify-content: space-between !important; }
+        }
+    </style>
+</head>
+<body>
+
+<zh-nav></zh-nav>
+
+<div class="calc-wrapper">
+    
+    <div class="calc-main-zone">
+        <div class="calc-container">
+            <div class="calc-header">
+                <h2 class="calc-title">正禾資訊 ｜ 網路佈線預算模擬</h2>
+                <p class="calc-subtitle">快速產生專屬預算明細</p>
+            </div>
+
+            <div class="step-progress">
+                <div id="stepTag1" class="progress-step active" onclick="goToStep(1)">① 選擇佈線環境</div>
+                <div id="stepTag2" class="progress-step" onclick="goToStep(2)">② 配置線路與設備</div>
+                <div id="stepTag3" class="progress-step" onclick="goToStep(3)">③ 產出預算大綱</div>
+            </div>
+
+            <div id="panelStep1" class="step-panel active">
+                <div class="env-grid">
+                    <div class="env-card" data-env="indoor" onclick="selectEnv('indoor')">
+                        <span class="env-card-title">室內網路佈線</span>
+                    </div>
+                    <div class="env-card" data-env="outdoor" onclick="selectEnv('outdoor')">
+                        <span class="env-card-title">室外網路佈線</span>
+                    </div>
+                </div>
+                <div id="aiEnvNote" class="ai-note-box"></div>
+            </div>
+
+            <div id="panelStep2" class="step-panel">
+                
+                <div id="indoorFields">
+                    <div class="control-group">
+                        <div class="control-label-zone">
+                            <span class="control-title">預計想要拉幾條網路線？</span>
+                            <span class="control-desc">基本內含 15 米 / 條</span>
+                        </div>
+                        <div class="counter-tool">
+                            <button class="counter-btn" onclick="adjustQty('net', -1)">-</button>
+                            <div id="valNetQty" class="counter-value">0</div>
+                            <button class="counter-btn" onclick="adjustQty('net', 1)">+</button>
+                        </div>
+                        <div id="netQtyNote" class="live-note" style="color: var(--zh-orange);">➔ 已選擇 0 條線路 ｜ 小計: $0</div>
+                    </div>
+
+                    <div class="control-group slider-group">
+                        <div class="slider-header">
+                            <div class="control-label-zone">
+                                <span class="control-title">預估室內總拉線長度</span>
+                                <span class="control-desc">所有室內線路加總</span>
+                            </div>
+                            <div class="counter-tool">
+                                <button class="counter-btn" onclick="adjustMeters('indoor', -1)">-</button>
+                                <button class="counter-btn" onclick="adjustMeters('indoor', 1)">+</button>
+                            </div>
+                        </div>
+                        <input type="range" id="sliderIndoorMeters" class="range-slider" min="0" max="500" value="0" oninput="updateMetersDisplay('indoor')">
+                        <div id="netExtraCostNote" class="live-note">➔ 總計 0 米 (基本內含額度 15 米內)</div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label-zone">
+                            <span class="control-title">集線交換器 (Switch) 需求</span>
+                            <span class="control-desc">依插槽埠數與需求進行配置</span>
+                        </div>
+                        <select id="netSwitch" class="form-select" onchange="runCalculations()">
+                            <option value="0" selected>不需要交換器 (或自備)</option>
+                            <option value="800">加購 5路網路交換器 - $800</option>
+                            <option value="1200">加購 8路網路交換器 - $1,200</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label-zone">
+                            <span class="control-title">網路配線架 (Patch Panel) 需求</span>
+                            <span class="control-desc">機櫃弱電箱理線專用</span>
+                        </div>
+                        <select id="netPanel" class="form-select" onchange="runCalculations()">
+                            <option value="0" selected>不需要配線架 (水晶頭直接對接)</option>
+                            <option value="900">加購 8孔網路配線架 - $900 / 組</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label-zone">
+                            <span class="control-title">線路明線美化壓條固定</span>
+                            <span class="control-desc">保護暴露線材並維持美觀</span>
+                        </div>
+                        <select id="moldingType" class="form-select" onchange="toggleMoldingBlock()">
+                            <option value="0" selected>不需要壓條 (純佈線 or 走暗管)</option>
+                            <option value="30">選用 一號壓條 - $30 / 米</option>
+                            <option value="40">選用 二號壓條 - $40 / 米</option>
+                            <option value="50">選用 三號壓條 - $50 / 米</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group slider-group" id="moldingLengthBlock" style="display: none;">
+                        <div class="slider-header">
+                            <div class="control-label-zone">
+                                <span class="control-title">預估現場壓條需要幾米？</span>
+                                <span class="control-desc">一米即為一支壓條</span>
+                            </div>
+                            <div class="counter-tool">
+                                <button class="counter-btn" onclick="adjustMeters('molding', -1)">-</button>
+                                <button class="counter-btn" onclick="adjustMeters('molding', 1)">+</button>
+                            </div>
+                        </div>
+                        <input type="range" id="sliderMoldingMeters" class="range-slider" min="0" max="200" value="0" oninput="updateMetersDisplay('molding')">
+                        <div id="moldingNote" class="live-note" style="color: var(--zh-orange);">➔ 預估使用不需要 0 米 ｜ 小計: $0</div>
+                    </div>
+                </div>
+
+                <div id="outdoorFields" style="display: none;">
+                    <div class="control-group slider-group">
+                        <div class="slider-header">
+                            <div class="control-label-zone">
+                                <span class="control-title">預估室外網路線總長度</span>
+                                <span class="control-desc">戶外專用黑皮網路線含基本線夾固定</span>
+                            </div>
+                            <div class="counter-tool">
+                                <button class="counter-btn" onclick="adjustMeters('outdoor', -1)">-</button>
+                                <button class="counter-btn" onclick="adjustMeters('outdoor', 1)">+</button>
+                            </div>
+                        </div>
+                        <input type="range" id="sliderOutdoorMeters" class="range-slider" min="0" max="300" value="15" oninput="updateMetersDisplay('outdoor')">
+                        <div id="netOutdoorExtraCostNote" class="live-note">➔ 總計 15 米 (基本內含額度 15 米內)</div>
+                    </div>
+
+                    <div class="control-group slider-group">
+                        <div class="slider-header">
+                            <div class="control-label-zone">
+                                <span class="control-title">預估架空鋼索牽引長度</span>
+                                <span class="control-desc">鋼索架空施工 ($70/米)</span>
+                            </div>
+                            <div class="counter-tool">
+                                <button class="counter-btn" onclick="adjustMeters('aerial', -1)">-</button>
+                                <button class="counter-btn" onclick="adjustMeters('aerial', 1)">+</button>
+                            </div>
+                        </div>
+                        <input type="range" id="sliderAerialMeters" class="range-slider" min="0" max="300" value="0" oninput="updateMetersDisplay('aerial')">
+                        <div id="aerialNote" class="live-note" style="color: var(--zh-orange);">➔ 鋼索牽引 0 米 ｜ 小計: $0</div>
+                    </div>
+
+                    <div class="control-group slider-group">
+                        <div class="slider-header">
+                            <div class="control-label-zone">
+                                <span class="control-title">現場是否需要防護管材包覆？</span>
+                                <span class="control-desc">管材，每支 4 米 ( $150 元)</span>
+                            </div>
+                            <div class="counter-tool">
+                                <button class="counter-btn" onclick="adjustMeters('pipe', -1)">-</button>
+                                <button class="counter-btn" onclick="adjustMeters('pipe', 1)">+</button>
+                            </div>
+                        </div>
+                        <input type="range" id="sliderPipeMeters" class="range-slider" min="0" max="200" value="0" oninput="updateMetersDisplay('pipe')">
+                        <div id="pipeNote" class="live-note" style="color: var(--zh-orange);">➔ 管材防護 0 米 (共 0 支 ｜ 小計: $0)</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="panelStep3" class="step-panel">
+                <div class="detail-list" style="background: #ffffff; border: 1px solid var(--zh-border); display: flex; flex-direction: column; gap: 24px; padding: 30px; text-align: left;">
+                    <div style="border-bottom: 1px solid #f1f3f5; padding-bottom: 18px;">
+                        <div style="font-size: 18px; color: var(--zh-dark); line-height: 1.6;">
+                            <strong>佈線類型：</strong> <span id="resEnv" style="font-weight: 700;">-</span>
+                        </div>
+                    </div>
+                    <div id="boxSummaryRows" style="display: flex; flex-direction: column; gap: 18px;"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button id="btnPrev" class="btn-nav btn-prev" onclick="moveStep(-1)" style="display:none;">返回上一步</button>
+                <button id="btnNext" class="btn-nav btn-next" onclick="moveStep(1)">配置線路 ➔</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="calc-sidebar-zone">
+        <div class="result-panel">
+            <span class="total-label">ESTIMATED TOTAL</span>
+            <div class="total-amount">NT$ <span id="resGrandTotal">0</span></div>
+            <div><span class="warranty-tag">✓ 包含完整施工．線路保固 2 年</span></div>
+            <ul class="side-preview-list" id="sidePreviewItems"></ul>
+        </div>
+        <textarea id="hiddenSummaryText" style="display:none;"></textarea>
+    </div>
+
+</div>
+
+<div id="teslaBar" class="tesla-sticky-bar tesla-active">
+    <div class="tesla-price-zone">
+        <div class="tesla-main-price">NT$ <span id="teslaGrandTotal">0</span></div>
+        <div class="tesla-sub-tag">✓ 含完整施工及2年保固</div>
+    </div>
+    <button class="btn-tesla-action" onclick="copyToLine()">傳送清單 ➔ 開啟官方LINE</button>
+</div>
+
+<zh-footer></zh-footer>
+
+<script>
+    let currentStep = 1;
+    let selectedEnvironment = ''; 
+    
+    let netQty = 0;
+    let indoorMeters = 0;
+    let moldingMeters = 0;
+    
+    let outdoorMeters = 15;
+    let aerialMeters = 0;
+    let pipeMeters = 0;
+
+    const envData = {
+        "indoor": "<p>✨ 室內網路佈線工法：選擇原廠大同網路線CAT6線材，保障高速穩定。施工一律包含資訊插座模組施作，與水晶頭對接測試。</p>",
+        "outdoor": "<p>☀️ 室外網路佈線工法：選用戶外專用黑皮網路線。遇到需要架空區域採用鋼索固定，線路對接位置一律收進專用防水盒保護。</p>"
+    };
+
+    window.onload = function() {
+        refreshState();
+    };
+
+    function selectEnv(envName) {
+        selectedEnvironment = envName;
+        
+        document.querySelectorAll('.env-card').forEach(card => {
+            if (card.getAttribute('data-env') === envName) {
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
+            }
+        });
+
+        if (envName === 'indoor') {
+            document.getElementById('indoorFields').style.display = 'block';
+            document.getElementById('outdoorFields').style.display = 'none';
+            if (netQty === 0) {
+                netQty = 1;
+                indoorMeters = 15;
+                document.getElementById('sliderIndoorMeters').value = 15;
+            }
+        } else {
+            document.getElementById('indoorFields').style.display = 'none';
+            document.getElementById('outdoorFields').style.display = 'block';
+            if (outdoorMeters === 0 || outdoorMeters === 15) {
+                outdoorMeters = 15;
+                document.getElementById('sliderOutdoorMeters').value = 15;
+            }
+        }
+        refreshState();
+    }
+
+    function adjustQty(type, num) {
+        if (type === 'net') {
+            netQty = Math.max(0, Math.min(30, netQty + num));
+            indoorMeters = netQty * 15;
+            document.getElementById('sliderIndoorMeters').value = indoorMeters;
+        }
+        refreshState();
+    }
+
+    function adjustMeters(type, num) {
+        if (type === 'indoor') {
+            indoorMeters = Math.max(0, Math.min(500, indoorMeters + num));
+            document.getElementById('sliderIndoorMeters').value = indoorMeters;
+        } else if (type === 'molding') {
+            moldingMeters = Math.max(0, Math.min(200, moldingMeters + num));
+            document.getElementById('sliderMoldingMeters').value = moldingMeters;
+        } else if (type === 'outdoor') {
+            outdoorMeters = Math.max(0, Math.min(300, outdoorMeters + num));
+            document.getElementById('sliderOutdoorMeters').value = outdoorMeters;
+        } else if (type === 'aerial') {
+            aerialMeters = Math.max(0, Math.min(300, aerialMeters + num));
+            document.getElementById('sliderAerialMeters').value = aerialMeters;
+        } else if (type === 'pipe') {
+            pipeMeters = Math.max(0, Math.min(200, pipeMeters + num));
+            document.getElementById('sliderPipeMeters').value = pipeMeters;
+        }
+        refreshState();
+    }
+
+    function updateMetersDisplay(type) {
+        if (type === 'indoor') {
+            indoorMeters = parseInt(document.getElementById('sliderIndoorMeters').value) || 0;
+        } else if (type === 'molding') {
+            moldingMeters = parseInt(document.getElementById('sliderMoldingMeters').value) || 0;
+        } else if (type === 'outdoor') {
+            outdoorMeters = parseInt(document.getElementById('sliderOutdoorMeters').value) || 0;
+        } else if (type === 'aerial') {
+            aerialMeters = parseInt(document.getElementById('sliderAerialMeters').value) || 0;
+        } else if (type === 'pipe') {
+            pipeMeters = parseInt(document.getElementById('sliderPipeMeters').value) || 0;
+        }
+        refreshState();
+    }
+
+    function toggleMoldingBlock() {
+        var p = parseInt(document.getElementById('moldingType').value) || 0;
+        if (p > 0) {
+            document.getElementById('moldingLengthBlock').style.display = 'block';
+        } else {
+            document.getElementById('moldingLengthBlock').style.display = 'none';
+            moldingMeters = 0;
+            document.getElementById('sliderMoldingMeters').value = 0;
+        }
+        runCalculations();
+    }
+
+    function refreshState() {
+        document.getElementById('valNetQty').innerText = netQty;
+
+        if (selectedEnvironment) {
+            const noteBox = document.getElementById('aiEnvNote');
+            noteBox.innerHTML = envData[selectedEnvironment];
+            noteBox.style.display = 'block';
+        } else {
+            document.getElementById('aiEnvNote').style.display = 'none';
+        }
+        runCalculations();
+    }
+
+    let grandTotal = 0;
+    function runCalculations() {
+        let sidePreview = document.getElementById('sidePreviewItems');
+        let boxSummaryRows = document.getElementById('boxSummaryRows');
+        let textForLine = "";
+
+        if (!selectedEnvironment) {
+            document.getElementById('resGrandTotal').innerText = "0";
+            document.getElementById('teslaGrandTotal').innerText = "0";
+            sidePreview.innerHTML = "<li><span>環境場域</span><span class='val'>未選擇</span></li>" +
+                                    "<li><span>總價金費用</span><span class='val'>NT$ 0</span></li>";
+            return;
+        }
+
+        if (selectedEnvironment === 'indoor') {
+            let totalBaseCost = netQty * 2000;
+            let totalBaseMeters = netQty * 15;
+            let totalExtraMeters = Math.max(0, indoorMeters - totalBaseMeters);
+            let totalExtraCost = totalExtraMeters * 50;
+
+            let switchPrice = parseInt(document.getElementById('netSwitch').value) || 0;
+            let panelPrice = parseInt(document.getElementById('netPanel').value) || 0;
+            let moldingPriceUnit = parseInt(document.getElementById('moldingType').value) || 0;
+            let totalMoldingCost = moldingPriceUnit * moldingMeters;
+
+            grandTotal = totalBaseCost + totalExtraCost + switchPrice + panelPrice + totalMoldingCost;
+
+            document.getElementById('netQtyNote').innerHTML = `➔ 已選擇 <span style='color:var(--zh-orange);'>${netQty}</span> 條線路 ｜ 小計: <span style='color:var(--zh-orange);'>$${totalBaseCost.toLocaleString()}</span>`;
+
+            // 🚀 【核心邏輯升級】：翻轉長度提示。在基本範圍內維持普通顏色且拿掉綠色；僅在「有加長」時才亮綠字強調！
+            let extraNoteEl = document.getElementById('netExtraCostNote');
+            if (totalExtraCost > 0) {
+                extraNoteEl.innerHTML = `➔ 總計 <span>${indoorMeters}</span> 米 (基本內含額度 ${totalBaseMeters} 米，另外<span style='color:var(--zh-success);'>加長 ${totalExtraMeters} 米</span> ➔ <span style='color:var(--zh-orange);'>+$${totalExtraCost.toLocaleString()}</span>)`;
+                extraNoteEl.style.color = 'var(--zh-dark)';
+            } else {
+                extraNoteEl.innerHTML = `➔ 總計 <span>${indoorMeters}</span> 米 (基本內含額度 ${totalBaseMeters} 米內)`;
+                extraNoteEl.style.color = 'var(--zh-dark)';
+            }
+
+            let moldingLabel = "不需要";
+            if (moldingPriceUnit === 30) moldingLabel = "一號壓條";
+            if (moldingPriceUnit === 40) moldingLabel = "二號壓條";
+            if (moldingPriceUnit === 50) moldingLabel = "三號壓條";
+            document.getElementById('moldingNote').innerHTML = `➔ 預估使用${moldingLabel} <span style='color:var(--zh-orange);'>${moldingMeters}</span> 米 ｜ 小計: <span style='color:var(--zh-orange);'>$${totalMoldingCost.toLocaleString()}</span>`;
+
+            let switchTextForSummary = switchPrice === 0 ? "不需要 (或使用原有弱電設備規格)" : document.getElementById('netSwitch').options[document.getElementById('netSwitch').selectedIndex].text.split(' - ')[0];
+            let switchTextForSidebar = switchPrice === 0 ? "無配置" : document.getElementById('netSwitch').options[document.getElementById('netSwitch').selectedIndex].text.split(' - ')[0].replace("加購 ", "");
+            
+            let panelTextForSummary = panelPrice === 0 ? "不需要" : "8孔網路PANEL安裝";
+            let panelTextForSidebar = panelPrice === 0 ? "無配置" : "8孔配線架";
+            let moldingTextForSummary = totalMoldingCost === 0 ? "不需要" : `${moldingLabel} × ${moldingMeters} 米 (每米 $${moldingPriceUnit})`;
+            let moldingTextForSidebar = totalMoldingCost === 0 ? "無配置" : `${moldingLabel} ${moldingMeters} 米`;
+
+            sidePreview.innerHTML = `<li><span>佈線環境</span><span class='val'>室內佈線</span></li>` +
+                                    `<li><span>網路線路</span><span class='val'>${netQty} 條</span></li>` +
+                                    `<li><span>加長線長</span><span class='val'>${totalExtraMeters} 米</span></li>` +
+                                    `<li><span>交換器</span><span class='val'>${switchTextForSidebar}</span></li>` +
+                                    `<li><span>配線架PANEL</span><span class='val'>${panelTextForSidebar}</span></li>` +
+                                    `<li><span>線槽壓條</span><span class='val'>${moldingTextForSidebar}</span></li>`;
+
+            textForLine = `【正禾資訊 ｜ 網路佈線估價需求單】\n` +
+                          `─────────────────────\n` +
+                          ` 安裝環境：室內網路佈線\n` +
+                          ` 1. 線路基本費：${netQty} 條 (共內含 ${totalBaseMeters} 米) ➔ $${totalBaseCost.toLocaleString()}\n` +
+                          ` 2. 線路加長費：共 ${totalExtraMeters} 米 (每米$50) ➔ $${totalExtraCost.toLocaleString()}\n` +
+                          ` 3. 交換器擴充：${switchTextForSummary} ➔ $${switchPrice.toLocaleString()}\n` +
+                          ` 4. 配線架PANEL：${panelPrice === 0 ? '不需要' : '8孔網路PANEL安裝'} ➔ $${panelPrice.toLocaleString()}\n` +
+                          ` 5. 壓條保護：${moldingTextForSummary} ➔ $${totalMoldingCost.toLocaleString()}\n` +
+                          ` 預估總預算：NT$ ${grandTotal.toLocaleString()} 元\n` +
+                          `─────────────────────\n` +
+                          `💡 備註： 採用原廠大同網路線CAT6線材，確保網路傳輸穩定。`;
+
+            boxSummaryRows.innerHTML = `
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>1. 線路基本費：</strong> ${netQty} 條 (內含基本長度額度 ${totalBaseMeters} 米) <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${totalBaseCost.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>2. 線路加長費：</strong> 現場加長共 ${totalExtraMeters} 米 (基礎每米計價 $50) <span style="float:right; font-weight:700;">NT$ ${totalExtraCost.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>3. 交換器擴充：</strong> ${switchTextForSummary} <span style="float:right; font-weight:700;">NT$ ${switchPrice.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>4. 配線架PANEL：</strong> ${panelTextForSummary} <span style="float:right; font-weight:700;">NT$ ${panelPrice.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>5. 壓條保護：</strong> ${moldingTextForSummary} <span style="float:right; font-weight:700;">NT$ ${totalMoldingCost.toLocaleString()}</span></div>
+                <div style="font-size: 14.5px; line-height: 1.5; color: #555; background: #fafbfc; padding: 12px; border-radius: 6px; margin-top: 5px;"><strong>💡 備註：</strong> 採用原廠大同網路線CAT6線材，確保網路傳輸穩定。</div>
+                <hr style="border:0; border-top:1px dashed var(--zh-border); margin:10px 0;">
+                <div style="font-size: 20px; font-weight:800; color:var(--zh-orange);">預估總預算：NT$ ${grandTotal.toLocaleString()} 元</div>
+            `;
+
+        } else if (selectedEnvironment === 'outdoor') {
+            let baseOutdoorPrice = 2500;
+            let baseOutdoorMeters = 15;
+            let totalExtraOutdoorMeters = Math.max(0, outdoorMeters - baseOutdoorMeters);
+            let lineCost = baseOutdoorPrice + (totalExtraOutdoorMeters * 60);
+
+            let aerialCost = aerialMeters * 70;
+            let pipesNeeded = Math.ceil(pipeMeters / 4);
+            let pipeCost = pipesNeeded * 150;
+
+            grandTotal = lineCost + aerialCost + pipeCost;
+
+            // 🚀 【核心邏輯升級】：室外線路長度提示翻轉，沒超出不用綠色
+            let outExtraNoteEl = document.getElementById('netOutdoorExtraCostNote');
+            if (totalExtraOutdoorMeters > 0) {
+                outExtraNoteEl.innerHTML = `➔ 總計 <span>${outdoorMeters}</span> 米 (內含基本額度 15 米，另外<span style='color:var(--zh-success);'>加長 ${totalExtraOutdoorMeters} 米</span> ➔ <span style='color:var(--zh-orange);'>+$${(totalExtraOutdoorMeters * 60).toLocaleString()}</span>)`;
+            } else {
+                outExtraNoteEl.innerHTML = `➔ 總計 <span>${outdoorMeters}</span> 米 (內含基本額度 15 米內)`;
+            }
+
+            document.getElementById('aerialNote').innerHTML = `➔ 鋼索牽引 <span style='color:var(--zh-orange);'>${aerialMeters}</span> 米 ｜ 小計: <span style='color:var(--zh-orange);'>$${aerialCost.toLocaleString()}</span>`;
+            document.getElementById('pipeNote').innerHTML = `➔ 管材防護 <span style='color:var(--zh-orange);'>${pipeMeters}</span> 米 (共 <span style='color:var(--zh-orange);'>${pipesNeeded}</span> 支 ｜ 小計: <span style='color:var(--zh-orange);'>$${pipeCost.toLocaleString()}</span>)`;
+
+            sidePreview.innerHTML = `<li><span>佈線環境</span><span class='val'>室外拉線</span></li>` +
+                                    `<li><span>戶外網線</span><span class='val'>${outdoorMeters} 米</span></li>` +
+                                    `<li><span>鋼索架空</span><span class='val'>${aerialMeters} 米</span></li>` +
+                                    `<li><span>交換器</span><span class='val'>無配置</span></li>` +
+                                    `<li><span>配線架PANEL</span><span class='val'>無配置</span></li>` +
+                                    `<li><span>防護硬管</span><span class='val'>${pipeMeters} 米 (${pipesNeeded}支)</span></li>`;
+
+            textForLine = `【正禾資訊 ｜ 網路佈線估價需求單】\n` +
+                          `─────────────────────\n` +
+                          ` 安裝環境：室外網路佈線\n` +
+                          ` 1. 室外黑皮網路線：共 ${outdoorMeters} 米 (內含基本費$2,500，加長 ${totalExtraOutdoorMeters} 米) ➔ $${lineCost.toLocaleString()}\n` +
+                          ` 2. 鋼索架空長度：共 ${aerialMeters} 米 ➔ $${aerialCost.toLocaleString()}\n` +
+                          ` 3. 硬管保護：共 ${pipeMeters} 米 (共 ${pipesNeeded} 支) ➔ $${pipeCost.toLocaleString()}\n` +
+                          ` 預估總預算：NT$ ${grandTotal.toLocaleString()} 元\n` +
+                          `─────────────────────\n` +
+                          `💡 備註： 架空區域採用鋼索固定，線路對接位置一律收進專用防水盒保護。`;
+
+            boxSummaryRows.innerHTML = `
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>1. 室外黑皮網路線：</strong> 共 ${outdoorMeters} 米 (內含15米基本費，加長 ${totalExtraOutdoorMeters} 米) <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${lineCost.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>2. 鋼索架空長度：</strong> 共 ${aerialMeters} 米 <span style="float:right; font-weight:700;">NT$ ${aerialCost.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>3. 硬管保護：</strong> 共 ${pipeMeters} 米 (需進位採購 ${pipesNeeded} 支) <span style="float:right; font-weight:700;">NT$ ${pipeCost.toLocaleString()}</span></div>
+                <div style="font-size: 14.5px; line-height: 1.5; color: #555; background: #fafbfc; padding: 12px; border-radius: 6px; margin-top: 5px;"><strong>💡 備註：</strong> 架空區域採用鋼索固定，線路對接位置一律收進專用防水盒保護。</div>
+                <hr style="border:0; border-top:1px dashed var(--zh-border); margin:10px 0;">
+                <div style="font-size: 20px; font-weight:800; color:var(--zh-orange);">預估總預算：NT$ ${grandTotal.toLocaleString()} 元</div>
+            `;
+        }
+
+        document.getElementById('resGrandTotal').innerText = grandTotal.toLocaleString();
+        document.getElementById('teslaGrandTotal').innerText = grandTotal.toLocaleString();
+        document.getElementById('hiddenSummaryText').value = textForLine;
+    }
+
+    function moveStep(direction) {
+        goToStep(currentStep + direction);
+    }
+
+    function goToStep(stepNum) {
+        if (stepNum < 1 || stepNum > 3) return;
+        currentStep = stepNum;
+
+        document.querySelectorAll('.step-panel').forEach(panel => panel.classList.remove('active'));
+        document.getElementById('panelStep' + stepNum).classList.add('active');
+
+        document.querySelectorAll('.progress-step').forEach(tag => tag.classList.remove('active'));
+        document.getElementById('stepTag' + stepNum).classList.add('active');
+
+        const nextBtn = document.getElementById('btnNext');
+        const teslaBar = document.getElementById('teslaBar');
+
+        if (currentStep === 1) {
+            document.getElementById('btnPrev').style.display = 'none';
+            nextBtn.innerText = '配置線路 ➔';
+            nextBtn.className = 'btn-nav btn-next';
+            nextBtn.onclick = function() { moveStep(1); };
+            teslaBar.classList.add('tesla-active');
+        } else if (currentStep === 2) {
+            document.getElementById('btnPrev').style.display = 'block';
+            nextBtn.innerText = '查看預算大綱 ➔';
+            nextBtn.className = 'btn-nav btn-next';
+            nextBtn.onclick = function() { moveStep(1); };
+            teslaBar.classList.add('tesla-active');
+        } else if (currentStep === 3) {
+            document.getElementById('btnPrev').style.display = 'block';
+            nextBtn.innerText = '傳送清單 ➔ 開啟官方LINE';
+            nextBtn.className = 'btn-nav btn-next btn-line-submit';
+            nextBtn.onclick = function() { copyToLine(); };
+            teslaBar.classList.remove('tesla-active');
+            
+            runCalculations();
+            document.getElementById('resEnv').innerText = selectedEnvironment === 'indoor' ? '室內網路佈線專案' : '室外網路佈線專案';
+        }
+    }
+
+    function copyToLine() {
+        const textToCopy = document.getElementById("hiddenSummaryText").value;
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => { triggerSuccessAlert(); })
+                .catch(err => { fallbackCopyProcess(textToCopy); });
+        } else {
+            fallbackCopyProcess(textToCopy);
+        }
+    }
+
+    function fallbackCopyProcess(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed"; 
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                triggerSuccessAlert();
+            } else {
+                alert("複製失敗，請直接對本頁面進行截圖，並傳送給 LINE 線上專家核對唷！");
+            }
+        } catch (err) {
+            alert("請直接對本頁面進行截圖，並傳送給 LINE 線上專家核對唷！");
+        }
+        document.body.removeChild(textArea);
+    }
+
+    function triggerSuccessAlert() {
+        alert("📋 網路需求清單已成功複製 to 您的手機剪貼簿！\n\n點擊確定後將自動為您開啟官方 LINE，您只需在對話框中「長按貼上」發送，即可直接預約現場勘查囉！");
+        window.open("https://line.me/ti/p/~gooa168", "_blank");
+    }
+</script>
+
+<script src="nav.js"></script>
+<script src="footer.js"></script>
+
+</body>
+</html>
