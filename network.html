@@ -200,14 +200,14 @@
         .counter-tool { display: flex; align-items: center; background: #f1f3f5; border-radius: 10px; padding: 4px; justify-self: end; }
         .counter-btn { width: 40px; height: 40px; border: none; background: #fff; color: var(--zh-dark); font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
         .counter-btn:hover { background: #e4e7eb; }
-        .counter-value { width: 50px; text-align: center; font-size: 16px; font-weight: 700; color: var(--zh-dark); }
+        .counter-value { width: 65px; text-align: center; font-size: 16px; font-weight: 700; color: var(--zh-dark); }
 
         /* 🎚️ 滑桿組 */
         .slider-group { display: flex; flex-direction: column; align-items: stretch; }
         .slider-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 8px; gap: 20px; }
         .range-slider { width: 100%; accent-color: var(--zh-orange); cursor: pointer; height: 6px; margin-top: 5px; }
 
-        /* 動態回饋文字基本樣式 */
+        /* 統一動態回饋小字樣式 */
         .live-note {
             grid-column: 1 / span 2;
             font-size: 14px;
@@ -369,7 +369,7 @@
                         </div>
                         <div class="counter-tool">
                             <button class="counter-btn" onclick="adjustQty('net', -1)">-</button>
-                            <div id="valNetQty" class="counter-value">0</div>
+                            <div id="valNetQty" class="counter-value">0 條</div>
                             <button class="counter-btn" onclick="adjustQty('net', 1)">+</button>
                         </div>
                         <div id="netQtyNote" class="live-note" style="color: var(--zh-orange);">➔ 已選擇 0 條線路 ｜ 小計: $0</div>
@@ -383,6 +383,7 @@
                             </div>
                             <div class="counter-tool">
                                 <button class="counter-btn" onclick="adjustMeters('indoor', -1)">-</button>
+                                <div id="valIndoorMeters" class="counter-value">0 米</div>
                                 <button class="counter-btn" onclick="adjustMeters('indoor', 1)">+</button>
                             </div>
                         </div>
@@ -434,6 +435,7 @@
                             </div>
                             <div class="counter-tool">
                                 <button class="counter-btn" onclick="adjustMeters('molding', -1)">-</button>
+                                <div id="valMoldingMeters" class="counter-value">0 米</div>
                                 <button class="counter-btn" onclick="adjustMeters('molding', 1)">+</button>
                             </div>
                         </div>
@@ -451,6 +453,7 @@
                             </div>
                             <div class="counter-tool">
                                 <button class="counter-btn" onclick="adjustMeters('outdoor', -1)">-</button>
+                                <div id="valOutdoorMeters" class="counter-value">15 米</div>
                                 <button class="counter-btn" onclick="adjustMeters('outdoor', 1)">+</button>
                             </div>
                         </div>
@@ -466,6 +469,7 @@
                             </div>
                             <div class="counter-tool">
                                 <button class="counter-btn" onclick="adjustMeters('aerial', -1)">-</button>
+                                <div id="valAerialMeters" class="counter-value">0 米</div>
                                 <button class="counter-btn" onclick="adjustMeters('aerial', 1)">+</button>
                             </div>
                         </div>
@@ -481,6 +485,7 @@
                             </div>
                             <div class="counter-tool">
                                 <button class="counter-btn" onclick="adjustMeters('pipe', -1)">-</button>
+                                <div id="valPipeMeters" class="counter-value">0 米</div>
                                 <button class="counter-btn" onclick="adjustMeters('pipe', 1)">+</button>
                             </div>
                         </div>
@@ -639,7 +644,13 @@
     }
 
     function refreshState() {
-        document.getElementById('valNetQty').innerText = netQty;
+        // 🎯 連動按鈕中間核心顯示數字
+        document.getElementById('valNetQty').innerText = netQty + " 條";
+        document.getElementById('valIndoorMeters').innerText = indoorMeters + " 米";
+        document.getElementById('valMoldingMeters').innerText = moldingMeters + " 米";
+        document.getElementById('valOutdoorMeters').innerText = outdoorMeters + " 米";
+        document.getElementById('valAerialMeters').innerText = aerialMeters + " 米";
+        document.getElementById('valPipeMeters').innerText = pipeMeters + " 米";
 
         if (selectedEnvironment) {
             const noteBox = document.getElementById('aiEnvNote');
@@ -680,7 +691,6 @@
 
             document.getElementById('netQtyNote').innerHTML = `➔ 已選擇 <span style='color:var(--zh-orange);'>${netQty}</span> 條線路 ｜ 小計: <span style='color:var(--zh-orange);'>$${totalBaseCost.toLocaleString()}</span>`;
 
-            // 🚀 【核心邏輯升級】：翻轉長度提示。在基本範圍內維持普通顏色且拿掉綠色；僅在「有加長」時才亮綠字強調！
             let extraNoteEl = document.getElementById('netExtraCostNote');
             if (totalExtraCost > 0) {
                 extraNoteEl.innerHTML = `➔ 總計 <span>${indoorMeters}</span> 米 (基本內含額度 ${totalBaseMeters} 米，另外<span style='color:var(--zh-success);'>加長 ${totalExtraMeters} 米</span> ➔ <span style='color:var(--zh-orange);'>+$${totalExtraCost.toLocaleString()}</span>)`;
@@ -746,7 +756,6 @@
 
             grandTotal = lineCost + aerialCost + pipeCost;
 
-            // 🚀 【核心邏輯升級】：室外線路長度提示翻轉，沒超出不用綠色
             let outExtraNoteEl = document.getElementById('netOutdoorExtraCostNote');
             if (totalExtraOutdoorMeters > 0) {
                 outExtraNoteEl.innerHTML = `➔ 總計 <span>${outdoorMeters}</span> 米 (內含基本額度 15 米，另外<span style='color:var(--zh-success);'>加長 ${totalExtraOutdoorMeters} 米</span> ➔ <span style='color:var(--zh-orange);'>+$${(totalExtraOutdoorMeters * 60).toLocaleString()}</span>)`;
@@ -864,13 +873,10 @@
     }
 
     function triggerSuccessAlert() {
-        alert("📋 網路需求清單已成功複製 to 您的手機剪貼簿！\n\n點擊確定後將自動為您開啟官方 LINE，您只需在對話框中「長按貼上」發送，即可直接預約現場勘查囉！");
+        alert("📋 網路需求清單已成功複製到您的手機剪貼簿！\n\n點擊確定後將自動為您開啟官方 LINE，您只需在對話框中「長按貼上」發送，即可直接預約現場勘查囉！");
         window.open("https://line.me/ti/p/~gooa168", "_blank");
     }
 </script>
-
-<script src="nav.js"></script>
-<script src="footer.js"></script>
 
 </body>
 </html>
