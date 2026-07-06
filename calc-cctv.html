@@ -253,7 +253,7 @@
         .btn-prev { background-color: #e4e7eb; color: var(--zh-dark); }
         .btn-prev:hover { background-color: #cbd5e1; }
         
-        .btn-next { background-color: var(--zh-dark); color: #fff; margin-left: auto; }
+        .btn-next { padding: 14px 24px; font-size: 15px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: all 0.15s ease; border: none; background-color: var(--zh-dark); color: #fff; margin-left: auto; }
         .btn-next:hover { background-color: #333; }
         .btn-next.btn-line-submit {
             background-color: #06C167;
@@ -306,21 +306,21 @@
         .side-preview-list li:last-child { margin-bottom: 0; }
         .side-preview-list li span.val { color: #ffffff; font-weight: 700; text-align: right; }
 
-        /* 🚀 【特斯拉級】底部釘選顯示列（手機版專用隱藏積木） */
+        /* 🚀 【特斯拉級】底部釘選顯示列 */
         .tesla-sticky-bar {
-            display: none; /* 電腦版預設不顯示 */
+            display: none; 
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.93); /* 純白半透明底座 */
-            backdrop-filter: blur(10px); /* 現代化高級毛玻璃質感 */
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px);
             border-top: 1px solid rgba(0, 0, 0, 0.08);
             box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.05);
-            padding: 16px 24px;
+            padding: 14px 20px;
             box-sizing: border-box;
-            z-index: 9999; /* 絕對防禦置頂 */
+            z-index: 9999; 
             justify-content: space-between;
             align-items: center;
         }
@@ -344,24 +344,25 @@
         .btn-tesla-action {
             background-color: #06C167;
             color: white;
-            font-size: 14.5px;
+            font-size: 13.5px;
             font-weight: bold;
-            padding: 12px 24px;
+            padding: 12px 20px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(6,193,103,0.15);
             transition: all 0.15s;
+            white-space: nowrap;
         }
         .btn-tesla-action:active { transform: scale(0.97); }
 
-        /* 📱 🚀 終極重工業級 RWD 手機響應式防爆破盾 */
+        /* 📱 🚀 RWD 手機響應式防護盾 */
         @media (max-width: 992px) {
-            .calc-wrapper { flex-direction: column; margin: 25px auto 100px auto; gap: 25px; } /* 🚀 完美修復：底部留白 100px 防止表單內容被特斯拉釘選列遮擋 */
-            .calc-sidebar-zone { display: none; } /* 🚀 完美修復：手機版直接拔掉沉重的右側黑面板 */
+            .calc-wrapper { flex-direction: column; margin: 25px auto 40px auto; gap: 25px; } 
+            .calc-sidebar-zone { display: none; } 
             
-            /* 🚀 解放特斯拉釘選列：讓它在手機版漂亮地浮現吸附 */
-            .tesla-sticky-bar { display: flex; }
+            /* 🚀 初始狀態：在步驟一、二時，讓特斯拉列正常浮現吸附 */
+            .tesla-sticky-bar.tesla-active { display: flex; }
         }
         
         @media (max-width: 640px) {
@@ -386,10 +387,10 @@
         @media (max-width: 480px) {
             .env-grid { grid-template-columns: 1fr; gap: 12px; }
             .progress-step { font-size: 10.5px; }
-            .btn-nav { padding: 12px 18px; font-size: 14px; }
-            .tesla-sticky-bar { padding: 14px 18px; }
+            .btn-nav { padding: 12px 16px; font-size: 14px; }
+            .tesla-sticky-bar { padding: 12px 15px; }
             .tesla-main-price { font-size: 21px; }
-            .btn-tesla-action { padding: 10px 18px; font-size: 13.5px; }
+            .btn-tesla-action { padding: 10px 14px; font-size: 12.5px; }
         }
     </style>
 </head>
@@ -586,13 +587,13 @@
 
 </div>
 
-<!-- 🚀 【特斯拉級】底部吸附式即時顯示列（手機版限定，隨時隨地看價格與一鍵傳送） -->
-<div class="tesla-sticky-bar">
+<!-- 🚀 【特斯拉級】底部吸附式顯示列（🎯 按鈕文字已完美對齊：傳送清單 ➔ 開啟官方LINE） -->
+<div id="teslaBar" class="tesla-sticky-bar tesla-active">
     <div class="tesla-price-zone">
         <div class="tesla-main-price">NT$ <span id="teslaGrandTotal">0</span></div>
         <div class="tesla-sub-tag">✓ 含完整施工及2年保固</div>
     </div>
-    <button class="btn-tesla-action" onclick="copyToLine()">傳送清單 ➔</button>
+    <button class="btn-tesla-action" onclick="copyToLine()">傳送清單 ➔ 開啟官方LINE</button>
 </div>
 
 <zh-footer></zh-footer>
@@ -781,7 +782,6 @@
             stdCamQty: stdCamQty
         };
         
-        // ⚡ 電腦面板與【特斯拉手機釘選列】同步即時重新刷新計價！
         document.getElementById('resGrandTotal').innerText = grandTotal.toLocaleString();
         document.getElementById('teslaGrandTotal').innerText = grandTotal.toLocaleString();
         
@@ -809,6 +809,7 @@
         goToStep(currentStep + direction);
     }
 
+    // 🎯 核心控制連動優化（按鈕分流防禦）
     function goToStep(stepNum) {
         if (stepNum < 1 || stepNum > 3) return;
         currentStep = stepNum;
@@ -820,12 +821,16 @@
         document.getElementById('stepTag' + stepNum).classList.add('active');
 
         const nextBtn = document.getElementById('btnNext');
+        const teslaBar = document.getElementById('teslaBar');
 
         if (currentStep === 1) {
             document.getElementById('btnPrev').style.display = 'none';
             nextBtn.innerText = '配置鏡頭 ➔';
             nextBtn.className = 'btn-nav btn-next';
             nextBtn.onclick = function() { moveStep(1); };
+            
+            // 🚀 在第一步，手機版特斯拉釘選列要完美展示
+            teslaBar.classList.add('tesla-active');
             
             if (!selectedEnvironment) {
                 document.querySelectorAll('.env-card').forEach(card => card.classList.remove('active'));
@@ -835,12 +840,18 @@
             nextBtn.innerText = '查看預算大綱 ➔';
             nextBtn.className = 'btn-nav btn-next';
             nextBtn.onclick = function() { moveStep(1); };
+            
+            // 🚀 在第二步，手機版特斯拉釘選列也完美展示
+            teslaBar.classList.add('tesla-active');
         } else if (currentStep === 3) {
             document.getElementById('btnPrev').style.display = 'block';
             
             nextBtn.innerText = '傳送清單 ➔ 開啟官方LINE';
             nextBtn.className = 'btn-nav btn-next btn-line-submit';
             nextBtn.onclick = function() { copyToLine(); };
+            
+            // 🚀 【終極修復點】：進入第三步時，因為左下角已經有傳送按鈕了，強行將手機最底部的特斯拉釘選列隱藏拔掉！防止重疊！
+            teslaBar.classList.remove('tesla-active');
             
             renderFinalSummary();
         }
@@ -915,7 +926,7 @@
     }
 
     function triggerSuccessAlert() {
-        alert("📋 需求清單已成功複製到您的手機剪貼簿！\n\n點擊確定後將自動為您開啟官方 LINE，您只需在正禾對話框中「長按貼上」發送，即可直接預約現場勘查囉！");
+        alert("📋 需求清單已成功複製到您的手機剪貼簿！\n\n點擊確定後將自動為您開啟官方 LINE，您只需在對話框中「長按貼上」發送，即可直接預約現場勘查囉！");
         window.open("https://line.me/ti/p/~gooa168", "_blank");
     }
 </script>
