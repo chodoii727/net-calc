@@ -265,7 +265,7 @@
             transform: translateY(-1px);
         }
 
-        /* 💰 右側固定計價面板 */
+        /* 💰 右側固定計價面板（電腦版） */
         .calc-sidebar-zone {
             width: 350px;
             flex-shrink: 0;
@@ -306,11 +306,62 @@
         .side-preview-list li:last-child { margin-bottom: 0; }
         .side-preview-list li span.val { color: #ffffff; font-weight: 700; text-align: right; }
 
-        /* 📱 🚀 RWD 手機響應式防護欄 */
+        /* 🚀 【特斯拉級】底部釘選顯示列（手機版專用隱藏積木） */
+        .tesla-sticky-bar {
+            display: none; /* 電腦版預設不顯示 */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.93); /* 純白半透明底座 */
+            backdrop-filter: blur(10px); /* 現代化高級毛玻璃質感 */
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.05);
+            padding: 16px 24px;
+            box-sizing: border-box;
+            z-index: 9999; /* 絕對防禦置頂 */
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tesla-price-zone {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+        .tesla-main-price {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--zh-dark);
+            font-family: Arial, sans-serif;
+        }
+        .tesla-sub-tag {
+            font-size: 11px;
+            color: var(--zh-orange);
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .btn-tesla-action {
+            background-color: #06C167;
+            color: white;
+            font-size: 14.5px;
+            font-weight: bold;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(6,193,103,0.15);
+            transition: all 0.15s;
+        }
+        .btn-tesla-action:active { transform: scale(0.97); }
+
+        /* 📱 🚀 終極重工業級 RWD 手機響應式防爆破盾 */
         @media (max-width: 992px) {
-            .calc-wrapper { flex-direction: column; margin: 25px auto; gap: 25px; }
-            .calc-sidebar-zone { width: 100%; }
-            .result-panel { position: static; }
+            .calc-wrapper { flex-direction: column; margin: 25px auto 100px auto; gap: 25px; } /* 🚀 完美修復：底部留白 100px 防止表單內容被特斯拉釘選列遮擋 */
+            .calc-sidebar-zone { display: none; } /* 🚀 完美修復：手機版直接拔掉沉重的右側黑面板 */
+            
+            /* 🚀 解放特斯拉釘選列：讓它在手機版漂亮地浮現吸附 */
+            .tesla-sticky-bar { display: flex; }
         }
         
         @media (max-width: 640px) {
@@ -336,6 +387,9 @@
             .env-grid { grid-template-columns: 1fr; gap: 12px; }
             .progress-step { font-size: 10.5px; }
             .btn-nav { padding: 12px 18px; font-size: 14px; }
+            .tesla-sticky-bar { padding: 14px 18px; }
+            .tesla-main-price { font-size: 21px; }
+            .btn-tesla-action { padding: 10px 18px; font-size: 13.5px; }
         }
     </style>
 </head>
@@ -345,6 +399,7 @@
 
 <div class="calc-wrapper">
     
+    <!-- 📝 左側功能工作區 -->
     <div class="calc-main-zone">
         <div class="calc-container">
             <div class="calc-header">
@@ -352,12 +407,14 @@
                 <p class="calc-subtitle">快速產生專屬預算明細</p>
             </div>
 
+            <!-- 三部曲導航面板 -->
             <div class="step-progress">
                 <div id="stepTag1" class="progress-step active" onclick="goToStep(1)">① 選擇安裝環境</div>
                 <div id="stepTag2" class="progress-step" onclick="goToStep(2)">② 配置鏡頭與線路</div>
                 <div id="stepTag3" class="progress-step" onclick="goToStep(3)">③ 產出預算大綱</div>
             </div>
 
+            <!-- Panel 1: 環境選擇 -->
             <div id="panelStep1" class="step-panel active">
                 <div class="env-grid">
                     <div class="env-card" data-env="一般透天" onclick="selectEnv('一般透天')">
@@ -383,8 +440,10 @@
                 <div id="aiEnvNote" class="ai-note-box"></div>
             </div>
 
+            <!-- Panel 2: 數量配線 -->
             <div id="panelStep2" class="step-panel">
                 
+                <!-- 主機選擇 -->
                 <div class="control-group">
                     <div class="control-label-zone">
                         <span class="control-title">錄影主機路數規格</span>
@@ -397,6 +456,7 @@
                     </div>
                 </div>
 
+                <!-- 鏡頭總數 -->
                 <div class="control-group">
                     <div class="control-label-zone">
                         <span class="control-title">預計安裝鏡頭總數量</span>
@@ -409,6 +469,7 @@
                     </div>
                 </div>
 
+                <!-- 車牌數量 -->
                 <div class="control-group">
                     <div class="control-label-zone">
                         <span class="control-title">其中包含「車牌專用機」數量</span>
@@ -421,6 +482,7 @@
                     </div>
                 </div>
 
+                <!-- 儲存硬碟 -->
                 <div class="control-group">
                     <div class="control-label-zone">
                         <span class="control-title">儲存硬碟容量規格</span>
@@ -434,6 +496,7 @@
                     <div id="hddLiveNote" class="live-note"></div>
                 </div>
 
+                <!-- 拉線長度 -->
                 <div class="control-group slider-group">
                     <div class="slider-header">
                         <span class="control-title">預估現場總拉線長度</span>
@@ -445,6 +508,7 @@
 
             </div>
 
+            <!-- Panel 3: 最終配置大綱明細 -->
             <div id="panelStep3" class="step-panel">
                 <div class="detail-list" style="background: #ffffff; border: 1px solid var(--zh-border); display: flex; flex-direction: column; gap: 24px; padding: 30px; text-align: left;">
                     
@@ -492,6 +556,7 @@
                 </div>
             </div>
 
+            <!-- 🔘 底部導航按鈕區 -->
             <div class="nav-buttons">
                 <button id="btnPrev" class="btn-nav btn-prev" onclick="moveStep(-1)" style="display:none;">返回上一步</button>
                 <button id="btnNext" class="btn-nav btn-next" onclick="moveStep(1)">配置鏡頭 ➔</button>
@@ -499,6 +564,7 @@
         </div>
     </div>
 
+    <!-- 💰 右側固定吸附面板（電腦版限定） -->
     <div class="calc-sidebar-zone">
         <div class="result-panel">
             <span class="total-label">ESTIMATED TOTAL</span>
@@ -518,6 +584,15 @@
         <textarea id="hiddenSummaryText" style="display:none;"></textarea>
     </div>
 
+</div>
+
+<!-- 🚀 【特斯拉級】底部吸附式即時顯示列（手機版限定，隨時隨地看價格與一鍵傳送） -->
+<div class="tesla-sticky-bar">
+    <div class="tesla-price-zone">
+        <div class="tesla-main-price">NT$ <span id="teslaGrandTotal">0</span></div>
+        <div class="tesla-sub-tag">✓ 含完整施工及2年保固</div>
+    </div>
+    <button class="btn-tesla-action" onclick="copyToLine()">傳送清單 ➔</button>
 </div>
 
 <zh-footer></zh-footer>
@@ -706,14 +781,16 @@
             stdCamQty: stdCamQty
         };
         
+        // ⚡ 電腦面板與【特斯拉手機釘選列】同步即時重新刷新計價！
         document.getElementById('resGrandTotal').innerText = grandTotal.toLocaleString();
+        document.getElementById('teslaGrandTotal').innerText = grandTotal.toLocaleString();
+        
         document.getElementById('sideEnv').innerText = selectedEnvironment ? selectedEnvironment : '未選擇';
         document.getElementById('sideHost').innerText = hostChannels > 0 ? `${hostChannels}路高規主機` : '未選擇';
         document.getElementById('sideCamCount').innerText = camTotalQty > 0 ? `${camTotalQty} 支 (車牌${lprCamQty})` : '0 支';
         document.getElementById('sideHdd').innerText = hddSize > 0 ? `${hddSize}TB (約錄${estimatedDays}天)` : '未選擇';
         document.getElementById('sideMeters').innerText = camTotalQty > 0 ? `${estimatedMeters} 米` : '0 米';
 
-        // 🎯 核心大升級：將要發送給 LINE 專家的內容徹底清除所有彩色圖示，完全符合大廠純文字俐落範本
         let textForLine = `【正禾資訊 ｜ 智慧監控估價需求單】\n` +
                           `─────────────────────\n` +
                           ` 安裝環境：${selectedEnvironment ? selectedEnvironment : '未選擇'}\n` +
@@ -798,27 +875,22 @@
         document.getElementById('resMetersNote').innerText = camTotalQty > 0 ? `線路說明：內含 ${freeMeters} 米基礎長度，本案預估線路加長 ${extraMeters} 米（加長費用為 NT$ ${extraMetersCost.toLocaleString()} 元，每米以 50 元基礎計價）。完工一律內含防曬防鼠咬壓條或浪管基礎保護` : '請返回上一步調整預估線路長度';
     }
 
-    // 🚀 【手機晶片級複製技術】：徹底解決手機及三星瀏覽器攔截舊式 execCommand 的致命問題
     function copyToLine() {
         const textToCopy = document.getElementById("hiddenSummaryText").value;
         
-        // 優先使用現代非同步 Clipboard API
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(textToCopy)
                 .then(() => {
                     triggerSuccessAlert();
                 })
                 .catch(err => {
-                    // 非同步失敗時，滑順退回到傳統後備覆蓋方案
                     fallbackCopyProcess(textToCopy);
                 });
         } else {
-            // 在不支援安全上下文的極端狀況下，直接採用傳統方案防禦
             fallbackCopyProcess(textToCopy);
         }
     }
 
-    // 傳統後備方案（透過建立一個臨時不影響版面的文字錨點進行選取）
     function fallbackCopyProcess(text) {
         const textArea = document.createElement("textarea");
         textArea.value = text;
