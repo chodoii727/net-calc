@@ -82,18 +82,20 @@
             background: #e9ecef;
             padding: 6px;
             border-radius: 14px;
+            gap: 4px;
         }
 
         .progress-step {
             flex: 1;
             text-align: center;
-            padding: 12px 10px;
+            padding: 12px 6px;
             font-size: 14px;
             font-weight: 700;
             color: var(--zh-text-muted);
             border-radius: 10px;
             transition: all 0.2s ease;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .progress-step.active {
@@ -173,9 +175,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 20px;
         }
 
-        .control-label-zone { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+        .control-label-zone { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
         .control-title { font-size: 16.5px; font-weight: 700; color: var(--zh-dark); }
         .control-desc { font-size: 13px; color: var(--zh-text-muted); }
 
@@ -183,6 +186,7 @@
         .btn-select-group {
             display: flex;
             gap: 10px;
+            flex-shrink: 0;
         }
         .btn-select-item {
             padding: 10px 18px;
@@ -194,6 +198,7 @@
             color: var(--zh-dark);
             cursor: pointer;
             transition: all 0.15s;
+            white-space: nowrap;
         }
         .btn-select-item:hover:not(.disabled) {
             border-color: var(--zh-dark);
@@ -211,7 +216,7 @@
         }
 
         /* ➕➖ 數字加減器 */
-        .counter-tool { display: flex; align-items: center; background: #f1f3f5; border-radius: 10px; padding: 4px; }
+        .counter-tool { display: flex; align-items: center; background: #f1f3f5; border-radius: 10px; padding: 4px; flex-shrink: 0; }
         .counter-btn { width: 40px; height: 40px; border: none; background: #fff; color: var(--zh-dark); font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
         .counter-btn:hover { background: #e4e7eb; }
         .counter-value { width: 50px; text-align: center; font-size: 16px; font-weight: 700; color: var(--zh-dark); }
@@ -281,7 +286,6 @@
         .total-amount { font-size: 38px; font-weight: 900; color: var(--zh-orange); margin-bottom: 12px; font-family: Arial, sans-serif; }
         .warranty-tag { color: var(--zh-orange); font-size: 13px; font-weight: 700; background: rgba(242,122,43,0.1); padding: 5px 14px; border-radius: 20px; margin-bottom: 25px; display: inline-block; text-align: center; }
         
-        /* 側邊即時小明細面板 */
         .side-preview-list {
             list-style: none;
             padding: 0;
@@ -299,19 +303,34 @@
         .side-preview-list li:last-child { margin-bottom: 0; }
         .side-preview-list li span.val { color: #ffffff; font-weight: 700; text-align: right; }
 
-        /* 📱 RWD 手機響應式面板打散防壓迫 */
+        /* 📱 🚀 終極重工業級 RWD 手機響應式防爆破盾 */
         @media (max-width: 992px) {
             .calc-wrapper { flex-direction: column; margin: 25px auto; gap: 25px; }
             .calc-sidebar-zone { width: 100%; }
             .result-panel { position: static; }
         }
-        @media (max-width: 576px) {
-            .calc-container { padding: 25px 16px; border-radius: 16px; }
+        
+        @media (max-width: 640px) {
+            .calc-container { padding: 30px 20px; border-radius: 20px; }
+            
+            /* 🧭 完美校正：進度條文字防重疊破裂 */
+            .step-progress { padding: 4px; border-radius: 10px; }
+            .progress-step { font-size: 11.5px; padding: 10px 2px; letter-spacing: -0.3px; }
+            
+            /* ⚙️ 終極消滅文字垂直掉落：控制面板全面改為上下直列 */
+            .control-group { flex-direction: column; align-items: stretch; padding: 20px; gap: 14px; }
+            .control-label-zone { text-align: left; }
+            
+            /* 按鈕與加減器在手機版自己站一整行，寬度撐滿或置左 */
+            .btn-select-group { justify-content: flex-start; width: 100%; }
+            .btn-select-item { flex: 1; text-align: center; padding: 12px 8px; font-size: 13px; }
+            .counter-tool { align-self: flex-start; width: 100%; max-width: 180px; justify-content: space-between; }
+        }
+
+        @media (max-width: 480px) {
             .env-grid { grid-template-columns: 1fr; gap: 12px; }
-            .control-group { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .counter-tool { width: 100%; justify-content: space-between; }
-            .progress-step { font-size: 12px; padding: 10px 4px; }
-            .btn-select-group { width: 100%; justify-content: space-between; }
+            .progress-step { font-size: 10.5px; }
+            .btn-nav { padding: 12px 18px; font-size: 14px; }
         }
     </style>
 </head>
@@ -398,7 +417,7 @@
                 </div>
 
                 <div class="control-group" style="flex-direction: column; align-items: stretch; gap: 10px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; flex-direction: var(--zh-fd, row); justify-content: space-between; align-items: var(--zh-ai, center); gap: 12px;" class="hdd-mobile-layout">
                         <div class="control-label-zone">
                             <span class="control-title">儲存硬碟容量規格</span>
                             <span class="control-desc">監控專用硬碟，容量越大可存放天數越久</span>
@@ -515,7 +534,7 @@
         "店面商鋪": "<p>大多會配合店面輕鋼架天花板或裝潢夾層進行佈線。</p><p>針對收銀台下或沿牆部分，使用壓條配合裝潢顏色收線。</p><p>櫃檯收銀和貨架是看守重點。門口玻璃容易反光死白，我們會特別調整安裝角度避開。收銀台上方會配置『畫面拉比較近』的鏡頭用來看清點鈔，且目前的鏡頭基本上都有搭配收音功能，聽清對話才能避免消費糾紛。</p>",
         "傳統三合院": "<p>三合院多為紅磚 or 水泥實牆，且天花板多為木造 or 無夾層，因此「不適合大量使用壓條」。我們會改用固定線夾沿著屋簷、樑柱邊緣緊密固定。</p><p>若必須跨越護龍或中庭，會採用懸空鋼索掛線或地埋管路保護。</p><p>三合院面寬大、夜間幾乎無光，施作時可以使用「智慧雙光」鏡頭的夜間紅外線/白光補光切換設定，確保夜間暗處防盜無死角。</p>",
         "大型工廠": "<p>廠房多為鋼骨鐵皮結構，佈線時線材一律穿入 PVC 管內固定保護，避免外力拉扯 or 老鼠咬線。</p><p>明線部分一律走專用線槽（Cable Tray）或架鋼索吊掛固定。</p><p>由於廠內大型機具運作容易產生電磁干擾，我們會選用抗干擾的屏蔽線材，並與動力大電保持安全距離，畫面才不會有雜訊。另外硬碟容量幕也加大，才夠應付多支鏡頭的錄影。</p>",
-        "農場果園": "<p>大多為空曠地形。佈線需要依靠現場的電線桿、圍籬或特製立柱. 線材必須使用耐曬、耐高溫的戶外專用線材（或走地埋管）。</p><p>跨距過長時，會採用鋼索吊掛或設置分段傳輸節點盒（防雨箱）。</p><p>所有攝影機的變壓器、接線端子，我們一律會收進專用的工業防水盒內固定，防止雨水滲入造成線路短路燒毀。</p>",
+        "農場果園": "<p>大多為空曠地形. 佈線需要依靠現場的電線桿、圍籬或特製立柱. 線材必須使用耐曬、耐高溫的戶外專用線材（或走地埋管）。</p><p>跨距過長時，會採用鋼索吊掛或設置分段傳輸節點盒（防雨箱）。</p><p>所有攝影機的變壓器、接線端子，我們一律會收進專用的工業防水盒內固定，防止雨水滲入造成線路短路燒毀。</p>",
         "馬路路口": "<p>施作多依附於現有的路燈桿或電線桿。</p><p>外露線材一律以束帶或鋼索緊固於立柱上，嚴禁任意垂吊。</p><p>這類場景通常有「車牌專用機」，安裝時的角度、高度、下傾角非常嚴格，不能太高 or 太斜，否則會拍不到車牌；且夜間必須設定好「強光抑制（HLC）」與「高快門速度」，防止遠光燈直射時車牌變成一片死白。</p>"
     };
 
