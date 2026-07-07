@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正禾資訊 | 電話總機實績</title>
+    <style>
+        /* 🎨 全局現代化大廠質感美學 */
+        :root {
+            --zh-orange: #f27a2b;       /* 正禾品牌橘 */
+            --zh-dark: #111111;         /* 高質感深色 */
+            --zh-bg: #f4f6f8;           /* 寬闊背景色 */
+            --zh-card-bg: #ffffff;
+            --zh-border: #e4e7eb;
+            --zh-text-muted: #545454;
+            --zh-success: #06C167;
+        }
+
+        body {
+            background-color: var(--zh-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 🏢 頂部案場 Header 大標題區 */
+        .page-header {
+            max-width: 1200px;
+            margin: 50px auto 10px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .header-title-zone {
+            border-left: 5px solid var(--zh-orange);
+            padding-left: 15px;
+            text-align: left;
+        }
+        .header-title {
+            color: var(--zh-dark);
+            margin: 0 0 8px 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .header-subtitle {
+            color: var(--zh-text-muted);
+            font-size: 16px;
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* 🚀 頂部動作引導區 (CTA) */
+        .cta-section {
+            max-width: 1200px;
+            margin: 30px auto 40px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .cta-box {
+            background-color: #1a1d21;
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .cta-title {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 12px 0;
+        }
+        .cta-desc {
+            color: #b4c6ef;
+            font-size: 15px;
+            margin: 0 0 25px 0;
+        }
+        .btn-cta-action {
+            background-color: #06C167; /* LINE 官方綠 */
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px 36px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-cta-action:hover {
+            background-color: #05a95a;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(6, 193, 103, 0.3);
+        }
+
+        /* 📸 實績展示大網格 (空狀態編排樣式) */
+        .gallery-grid {
+            max-width: 1200px;
+            margin: 0 auto 60px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        /* 🔄 載入中轉圈圈動畫 */
+        @keyframes zh-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 📱 RWD 手機版完美防護 */
+        @media (max-width: 768px) {
+            .header-title { font-size: 26px; }
+            .cta-box { padding: 40px 20px; }
+            .cta-title { font-size: 21px; }
+        }
+    </style>
+</head>
+<body>
+
+<zh-nav></zh-nav>
+
+<main>
+    <div class="page-header">
+        <div class="header-title-zone">
+            <h1 class="header-title">電話總機實績案例</h1>
+            <p class="header-subtitle">包含商業總機部署、分機管路佈線、智慧雙模語音系統規劃，正禾資訊具備完善的垂直整合能力。</p>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <div class="cta-box">
+            <h2 class="cta-title">讓專業工法，成為您案場的標配</h2>
+            <p class="cta-desc">跨足各類案場的電話總機系統架設經驗，正禾為您把關微小細節。</p>
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 25px;">
+                <a href="https://line.me/ti/p/~gooa168" target="_blank" class="btn-cta-action">立即加LINE諮詢 ➔ 傳送圖面評估</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-grid" style="display: block; text-align: center; padding: 60px 20px 100px 20px;">
+        
+        <div style="max-width: 400px; margin: 0 auto; background: #ffffff; border: 1px solid var(--zh-border); border-radius: 16px; padding: 40px 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+            <div style="width: 40px; height: 40px; border: 3px solid #e4e7eb; border-top: 3px solid var(--zh-orange); border-radius: 50%; margin: 0 auto 20px auto; animation: zh-spin 1s linear infinite;"></div>
+            
+            <h3 style="color: var(--zh-dark); margin: 0 0 10px 0; font-size: 18px; font-weight: 800; letter-spacing: 0.5px;">新實績編排中</h3>
+            <p style="color: var(--zh-text-muted); margin: 0; font-size: 14px; line-height: 1.6; font-weight: 500;">正禾專業工法案例持續更新中<br>如需特定場域規劃，歡迎直接加 LINE 諮詢</p>
+        </div>
+
+    </div>
+</main>
+
+<zh-footer></zh-footer>
+
+<script src="nav.js"></script>
+<script src="footer.js"></script>
+
+</body>
+</html>

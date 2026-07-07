@@ -221,8 +221,8 @@ class ZhNavBar extends HTMLElement {
               <a href="#" class="zh-dropdown-toggle">施工實績</a>
               <ul class="zh-dropdown-menu">
                 <li><a href="cases-ncc.html">NCC 電信送審</a></li>
-                <li><a href="cases-fiber.html">光纖熔接</a></li>
-                <li><a href="cases-cctv.html">監控安裝實例</a></li>
+                <li><a href="cases-cctv.html">監控系統</a></li>
+                <li><a href="cases-fiber.html">光纖熔接</a></li>               
                 <li><a href="cases-phone.html">電話總機</a></li>
                 <li><a href="cases-broadcast.html">廣播系統</a></li>
                 <li><a href="cases-access.html">門禁捲門控制</a></li>

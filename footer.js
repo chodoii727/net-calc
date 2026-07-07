@@ -106,9 +106,11 @@ class ZhWebFooter extends HTMLElement {
           margin-bottom: 20px;
           letter-spacing: 0.5px;
         }
+        
+        /* 🟢 LINE 綠色按鈕樣式調整 */
         .zh-card-btn {
           display: block;
-          background-color: #f27a2b;
+          background-color: #06C167; /* 轉為完美的 LINE 專屬綠色 */
           color: #ffffff !important;
           text-decoration: none;
           font-size: 16px;
@@ -116,12 +118,12 @@ class ZhWebFooter extends HTMLElement {
           padding: 13px 0;
           border-radius: 8px;
           transition: all 0.2s ease;
-          box-shadow: 0 4px 12px rgba(242, 122, 43, 0.3);
+          box-shadow: 0 4px 12px rgba(6, 193, 103, 0.25); /* 綠色微光暈 */
         }
         .zh-card-btn:hover {
-          background-color: #d6641e;
+          background-color: #05a95a; /* 高級沉穩深綠 */
           transform: translateY(-2px);
-          box-shadow: 0 6px 18px rgba(242, 122, 43, 0.4);
+          box-shadow: 0 6px 18px rgba(6, 193, 103, 0.4); /* 增強懸停光暈 */
         }
         
         /* 底部最迷你的版權宣告 */
@@ -162,9 +164,9 @@ class ZhWebFooter extends HTMLElement {
           
           <div class="zh-footer-card-box">
             <div class="zh-footer-card">
-              <div class="zh-card-hours">BUSINESS HOURS</div>
+              <div class="zh-card-hours">營業時間</div>
               <div class="zh-card-hours-val">週一至週五 08:00 - 17:30</div>
-              <div class="zh-card-phone-label">🔧 聯絡專線</div>
+              <div class="zh-card-phone-label"> 聯絡專線</div>
               <div class="zh-card-phone">0933-560468</div>
               <a href="https://line.me/ti/p/~gooa168" target="_blank" class="zh-card-btn">LINE 快速報價</a>
             </div>
