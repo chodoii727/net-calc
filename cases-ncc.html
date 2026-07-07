@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正禾資訊 | NCC 電信送審實績</title>
+    <style>
+        /* 🎨 全局現代化大廠質感美學 */
+        :root {
+            --zh-orange: #f27a2b;       /* 正禾品牌橘 */
+            --zh-dark: #111111;         /* 高質感深色 */
+            --zh-bg: #f4f6f8;           /* 寬闊背景色 */
+            --zh-card-bg: #ffffff;
+            --zh-border: #e4e7eb;
+            --zh-text-muted: #545454;
+            --zh-success: #06C167;
+        }
+
+        body {
+            background-color: var(--zh-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 🏢 頂部案場 Header 大標題區 */
+        .page-header {
+            max-width: 1200px;
+            margin: 50px auto 10px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .header-title-zone {
+            border-left: 5px solid var(--zh-orange);
+            padding-left: 15px;
+            text-align: left;
+        }
+        .header-title {
+            color: var(--zh-dark);
+            margin: 0 0 8px 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .header-subtitle {
+            color: var(--zh-text-muted);
+            font-size: 16px;
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* 🎛️ Apple 風格智慧分類篩選條 */
+        .filter-zone {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+        }
+        .filter-btn {
+            padding: 10px 24px;
+            border: 1px solid var(--zh-border);
+            background-color: var(--zh-card-bg);
+            color: var(--zh-dark);
+            font-size: 14.5px;
+            font-weight: 700;
+            border-radius: 30px; /* 膠囊圓角 */
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+        .filter-btn:hover {
+            border-color: var(--zh-dark);
+            background-color: #fafbfc;
+        }
+        .filter-btn.active {
+            background-color: var(--zh-dark);
+            color: #ffffff;
+            border-color: var(--zh-dark);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        /* 📸 照片實績展示大網格 */
+        .gallery-grid {
+            max-width: 1200px;
+            margin: 0 auto 60px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            box-sizing: border-box;
+        }
+        .gallery-card {
+            background-color: var(--zh-card-bg);
+            border: 1px solid var(--zh-border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: block;
+        }
+        
+        /* 篩選動畫控制類別 */
+        .gallery-card.hidden {
+            display: none;
+        }
+        .gallery-card.fade-in {
+            animation: cardFadeIn 0.4s ease forwards;
+        }
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            border-color: #cbd5e1;
+        }
+        .img-box {
+            width: 100%;
+            height: 240px;
+            background-color: #eaeeef;
+            position: relative;
+            overflow: hidden;
+        }
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .env-card:hover .img-box img {
+            transform: scale(1.03);
+        }
+        
+        /* 內含占位符示意字樣（當還沒有放照片時會顯示灰色優雅置中字，放了圖片會自動壓過去） */
+        .img-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #adb5bd;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .card-info-zone {
+            padding: 22px;
+            text-align: left;
+        }
+        .tag-env {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--zh-orange);
+            background: rgba(242,122,43,0.08);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--zh-dark);
+            margin: 0 0 6px 0;
+        }
+        .card-desc {
+            font-size: 13.5px;
+            color: var(--zh-text-muted);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* 🚀 底部動作引導區 (CTA) */
+        .cta-section {
+            max-width: 1200px;
+            margin: 60px auto 100px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .cta-box {
+            background-color: #1a1d21;
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .cta-title {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 12px 0;
+        }
+        .cta-desc {
+            color: #b4c6ef;
+            font-size: 15px;
+            margin: 0 0 25px 0;
+        }
+        .btn-cta-action {
+            background-color: var(--zh-orange);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px 36px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-cta-action:hover {
+            background-color: #e0671d;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(242,122,43,0.3);
+        }
+
+        /* 🎆 頂級大圖跳出燈箱 (Lightbox) 視窗樣式 */
+        .zh-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(17, 17, 17, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 999999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .zh-lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .lightbox-content {
+            max-width: 85%;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            object-fit: contain;
+        }
+        .zh-lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            color: #ffffff;
+            font-size: 35px;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+        .lightbox-close:hover { color: var(--zh-orange); }
+
+        /* 📱 RWD 手機版完美防護 */
+        @media (max-width: 992px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        }
+        @media (max-width: 768px) {
+            .header-title { font-size: 26px; }
+            .gallery-grid { grid-template-columns: 1fr; gap: 20px; }
+            .cta-box { padding: 40px 20px; }
+            .cta-title { font-size: 21px; }
+        }
+    </style>
+</head>
+<body>
+
+<zh-nav></zh-nav>
+
+<main>
+    <div class="page-header">
+        <div class="header-title-zone">
+            <h1 class="header-title">NCC 電信送審實績案例</h1>
+            <p class="header-subtitle">嚴格遵循法規標準，一條龍實施建築物電信設備審驗，保障百分之百審驗通過。</p>
+        </div>
+    </div>
+
+    <div class="filter-zone">
+        <button class="filter-btn active" onclick="filterGallery('all')">全部實績</button>
+        <button class="filter-btn" onclick="filterGallery('house')">透天獨棟住宅</button>
+        <button class="filter-btn" onclick="filterGallery('building')">集合式大樓</button>
+        <button class="filter-btn" onclick="filterGallery('factory')">廠辦工廠</button>
+    </div>
+
+    <div class="gallery-grid">
+
+        <div class="gallery-card fade-in" data-category="factory" onclick="openLightbox('images/cases-ncc/cpc-beiyang/main.jpg')">
+            <div class="img-box">
+                <img src="images/cases-ncc/cpc-beiyang/main.jpg" alt="台灣中油北陽路加油站電信送審" onerror="this.style.opacity='0'">
+            </div>
+            <div class="card-info-zone">
+                <span class="tag-env">廠辦工廠</span>
+                <h3 class="card-title">臺灣中油 · 北陽路加油站</h3>
+                <p class="card-desc">2024.09 完工實績。標準化建築物電信設備審驗，包含主電信箱理線、光纜配線盤施作。全面通過專用精密儀器 DSX-602 測試並產出合格報告。</p>
+            </div>
+        </div>
+
+
+
+<div class="gallery-card fade-in" data-category="factory" onclick="openLightbox('images/cases-ncc/cpc-taz/main.jpg')">
+            <div class="img-box">
+                <img src="images/cases-ncc/cpc-taz/main.jpg" alt="台塑石油-中華太子八卦山加油站電信送審" onerror="this.style.opacity='0'">
+            </div>
+            <div class="card-info-zone">
+                <span class="tag-env">廠辦工廠</span>
+                <h3 class="card-title">台塑石油 · 中華太子八卦山加油站</h3>
+                <p class="card-desc">2024.09 完工實績。標準化建築物電信設備審驗，包含主電信箱理線、光纜配線盤施作。全面通過專用精密儀器 DSX-602 測試並產出合格報告。</p>
+            </div>
+        </div>
+
+<div class="gallery-card fade-in" data-category="house" onclick="openLightbox('images/cases-ncc/taiping/main.jpg')">
+            <div class="img-box">
+                <img src="images/cases-ncc/taiping/main.jpg" alt="台中太平住宅電信送審" onerror="this.style.opacity='0'">
+            </div>
+            <div class="card-info-zone">
+                <span class="tag-env">透天獨棟住宅</span>
+                <h3 class="card-title">台中太平 · 四戶住宅</h3>
+                <p class="card-desc">2020.07 完工實績。標準化建築物電信設備審驗，包含主電信箱理線、光纜配線盤施作。全面通過專用精密儀器 DSX-602 測試並產出合格報告。</p>
+            </div>
+        </div>
+
+
+
+
+        <div class="gallery-card fade-in" data-category="building" onclick="openLightbox('img/ncc-bld-1.jpg')">
+            <div class="img-box">
+                <span class="img-placeholder">📸 點擊放大查看實績照</span>
+                <img src="img/ncc-bld-1.jpg" alt="大樓主弱電箱審驗實績" onerror="this.style.opacity='0'">
+            </div>
+            <div class="card-info-zone">
+                <span class="tag-env">集合式大樓</span>
+                <h3 class="card-title">台中期艦大樓 · 主弱電箱審驗</h3>
+                <p class="card-desc">配合建商實施大樓地下室主電信箱、各樓層分線箱跳線配置。全面使用專用儀器測試並產出合法數據報告，保障管線流暢清爽。</p>
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="factory" onclick="openLightbox('img/ncc-fac-1.jpg')">
+            <div class="img-box">
+                <span class="img-placeholder">📸 點擊放大查看實績照</span>
+                <img src="img/ncc-fac-1.jpg" alt="科技廠房電信送審" onerror="this.style.opacity='0'">
+            </div>
+            <div class="card-info-zone">
+                <span class="tag-env">廠辦工廠</span>
+                <h3 class="card-title">彰濱工業區 · 智慧廠房電信送審</h3>
+                <p class="card-desc">大型鋼骨鐵皮結構場勘佈線。電信明線一律採用工業高強度 PVC 保護管包覆，抗干擾屏蔽隔離施作，完工直取官方核發審驗合格證書。</p>
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="house" onclick="openLightbox('img/ncc-house-2.jpg')">
+            <div class="img-box">
+                <span class="img-placeholder">📸 點擊放大查看實績照</span>
+                <img src="img/ncc-house-2.jpg" alt="社區透天送審理線" onerror="this.style.opacity='0'">
+            </div>
+            <div class="card-info-zone">
+                <span class="tag-env">透天獨棟住宅</span>
+                <h3 class="card-title">和美社區別墅 · 弱電理線工序</h3>
+                <p class="card-desc">標準化資訊插座施作與水晶頭對接壓力測試。採用高密合度美化壓條沿樑柱固定，外觀無雜亂散線，順利包辦通過審驗。</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="cta-section">
+        <div class="cta-box">
+            <h2 class="cta-title">看完了專業的 NCC 送審工法實績？</h2>
+            <p class="cta-desc">不論您的場域是住宅、大樓還是科技廠房，正禾都能為您精準估算最划算的佈線預算。</p>
+            <a href="network.html" class="btn-cta-action">立即線上精算佈線預算 ➔</a>
+        </div>
+    </div>
+</main>
+
+<div id="zhLightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(17,17,17,0.95); z-index: 999999; justify-content: center; align-items: center; padding: 20px;" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" style="max-width: 90%; max-height: 80vh; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain; transition: transform 0.3s ease;">
+    <div style="position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; font-weight: bold; cursor: pointer;">✕</div>
+</div>
+
+<zh-footer></zh-footer>
+
+<script>
+    // 🖼️ 燈箱放大控制核心（精準路徑版）
+    function openLightbox(src) {
+        const lightbox = document.getElementById('zhLightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        if (src && !src.includes('undefined')) {
+            lightboxImg.src = src;
+            lightbox.style.display = 'flex';
+            // 增加一個縮放微動畫
+            setTimeout(() => { lightboxImg.style.transform = 'scale(1)'; }, 10);
+        }
+    }
+
+    function closeLightbox() {
+        const lightbox = document.getElementById('zhLightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        lightboxImg.style.transform = 'scale(0.95)';
+        lightbox.style.display = 'none';
+    }
+
+    // 🎛️ 智慧分類篩選大腦（修復並精簡原本衝突的舊程式碼）
+    function filterGallery(type) {
+        // 1. 切換按鈕 active 樣式
+        const btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // 2. 篩選照片網格卡片
+        const galleryCards = document.querySelectorAll('.gallery-card');
+        galleryCards.forEach(card => {
+            const cat = card.getAttribute('data-category');
+            if (type === 'all' || cat === type) {
+                card.style.setProperty('display', 'block', 'important');
+                card.classList.add('fade-in');
+            } else {
+                card.style.setProperty('display', 'none', 'important');
+                card.classList.remove('fade-in');
+            }
+        });
+    }
+</script>
+
+<script src="nav.js"></script>
+<script src="footer.js"></script>
+
+</body>
+</html>

@@ -337,7 +337,7 @@
     <div class="calc-main-zone">
         <div class="calc-container">
             <div class="calc-header">
-                <h2 class="calc-title">正禾資訊 ｜ 網路佈線預算模擬</h2>
+                <h2 class="calc-title">正禾資訊 ｜ 網路佈線線上估價</h2>
                 <p class="calc-subtitle">快速產生專屬預算明細</p>
             </div>
 
@@ -787,7 +787,7 @@
                 <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>1. 室外黑皮網路線：</strong> 共 ${outdoorMeters} 米 (內含15米基本費，加長 ${totalExtraOutdoorMeters} 米) <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${lineCost.toLocaleString()}</span></div>
                 <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>2. 鋼索架空長度：</strong> 共 ${aerialMeters} 米 <span style="float:right; font-weight:700;">NT$ ${aerialCost.toLocaleString()}</span></div>
                 <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>3. 硬管保護：</strong> 共 ${pipeMeters} 米 (需進位採購 ${pipesNeeded} 支) <span style="float:right; font-weight:700;">NT$ ${pipeCost.toLocaleString()}</span></div>
-                <div style="font-size: 14.5px; line-height: 1.5; color: #555; background: #fafbfc; padding: 12px; border-radius: 6px; margin-top: 5px;"><strong>💡 備註：</strong> 架空區域採用鋼索固定，線路對接位置一律收進專用防水盒保護。</div>
+                <div style="font-size: 14.5px; line-height: 1.5; color: #555; background: #fafbfc; padding: 12px; border-radius: 6px; margin-top: 5px;"><strong>💡 備註：</strong> 架空區域採用鋼索固定，線路對接位置一律收進專用防水盒保護.</div>
                 <hr style="border:0; border-top:1px dashed var(--zh-border); margin:10px 0;">
                 <div style="font-size: 20px; font-weight:800; color:var(--zh-orange);">預估總預算：NT$ ${grandTotal.toLocaleString()} 元</div>
             `;
@@ -877,6 +877,9 @@
         window.open("https://line.me/ti/p/~gooa168", "_blank");
     }
 </script>
+
+<script src="nav.js"></script>
+<script src="footer.js"></script>
 
 </body>
 </html>

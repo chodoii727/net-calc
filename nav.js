@@ -213,7 +213,7 @@ class ZhNavBar extends HTMLElement {
               <a href="#" class="zh-dropdown-toggle">線上估價</a>
               <ul class="zh-dropdown-menu">
                 <li><a href="calc-cctv.html">攝影機系統_線上估價</a></li>
-                <li><a href="network.html">網路佈線_線上估價</a></li>
+                <li><a href="calc-network.html">網路佈線_線上估價</a></li>
               </ul>
             </li>
             
