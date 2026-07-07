@@ -182,6 +182,17 @@
             transform: translateY(-1px);
             box-shadow: 0 5px 15px rgba(242,122,43,0.3);
         }
+        /* 🌟 新增的估價按鈕滑鼠懸停特效 */
+        .btn-cta-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(255,255,255,0.1);
+        }
+        /* 🌟 新增的 LINE 綠色按鈕專屬滑鼠懸停變色特效 */
+        .btn-cta-action[style*="#06C167"]:hover {
+            background-color: #05a95a !important; /* 高級沉穩深綠 */
+            box-shadow: 0 5px 15px rgba(6, 193, 103, 0.35) !important; /* 科技綠微光暈 */
+        }
 
         /* 📱 RWD 手機版完美防護 */
         @media (max-width: 992px) {
@@ -204,7 +215,7 @@
     <div class="page-header">
         <div class="header-title-zone">
             <h1 class="header-title">監視器安裝實績案例</h1>
-            <p class="header-subtitle">從現場勘查、動態佈線、防水盒與高解析攝影機安裝，正禾資訊具備完善的垂直整合能力。</p>
+            <p class="header-subtitle">從現場勘查、佈線、防水盒與高解析攝影機安裝，正禾資訊具備完善的垂直整合能力。</p>
         </div>
     </div>
 
@@ -213,7 +224,13 @@
         <div class="cta-box">
             <h2 class="cta-title">讓專業工法，守護您的資產安全</h2>
             <p class="cta-desc">跨足廠辦、社區與校園的監控系統安裝經驗，正禾為您把關微小細節。</p>
-            <a href="https://line.me/ti/p/~gooa168" target="_blank" class="btn-cta-action">立即諮詢 ➔ 規劃防護配置</a>
+            
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 25px;">
+                <!-- 🎯 這裡加上了 style 設定，按鈕在維持完美間距、結構下，直接轉為完美的 LINE 專屬綠色 -->
+                <a href="https://line.me/ti/p/~gooa168" target="_blank" class="btn-cta-action" style="background-color: #06C167; color: #ffffff;">立即加LINE諮詢</a>
+                
+                <a href="calc-cctv.html" class="btn-cta-secondary" style="background-color: transparent; color: #ffffff; font-size: 16px; font-weight: 700; padding: 14px 36px; border: 2px solid #ffffff; border-radius: 12px; cursor: pointer; transition: all 0.15s; text-decoration: none; display: inline-block;">預算多少？點我馬上算➔</a>
+            </div>
         </div>
     </div>
 
@@ -236,74 +253,239 @@
             </div>
         </div>
 
-
         <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/2.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/2.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
 
- <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/3.jpg')">
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/3.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/3.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
- <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/4.jpg')">
+
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/4.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/4.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
- <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/5.jpg')">
+
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/5.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/5.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
-<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/6.jpg')">
+
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/6.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/6.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
 
-
- <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/7.jpg')">
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/7.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/7.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
-<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/8.jpg')">
+
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/8.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/8.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
-<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/9.jpg')">
+
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/9.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/9.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
-<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/10.jpg')">
+
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/10.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/10.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
-<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/11.jpg')">
+
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/11.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/11.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
-<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/12.jpg')">
+
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/12.jpg')">
             <div class="img-box">
                 <img src="images/cases-cctv/12.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
             </div>
         </div>
 
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/13.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/13.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
 
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/14.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/14.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
 
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/15.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/15.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
 
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/16.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/16.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
 
+        <div class="gallery-card fade-in" data-category="indoor" onclick="openLightbox('images/cases-cctv/IN1.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/IN1.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
 
+        <div class="gallery-card fade-in" data-category="indoor" onclick="openLightbox('images/cases-cctv/IN2.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/IN2.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
 
-        
-        
+        <div class="gallery-card fade-in" data-category="indoor" onclick="openLightbox('images/cases-cctv/IN3.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/IN3.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="indoor" onclick="openLightbox('images/cases-cctv/IN4.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/IN4.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="indoor" onclick="openLightbox('images/cases-cctv/IN5.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/IN5.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="indoor" onclick="openLightbox('images/cases-cctv/IN6.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/IN6.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P1.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P1.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P2.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P2.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P3.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P3.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P4.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P4.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P5.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P5.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P6.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P6.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P7.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P7.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P8.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P8.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P9.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P9.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P10.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P10.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P11.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P11.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P12.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P12.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P13.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P13.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="pole" onclick="openLightbox('images/cases-cctv/P14.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/P14.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="rack" onclick="openLightbox('images/cases-cctv/R1.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/R1.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="rack" onclick="openLightbox('images/cases-cctv/R2.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/R2.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="rack" onclick="openLightbox('images/cases-cctv/R3.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/R3.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+        <div class="gallery-card fade-in" data-category="rack" onclick="openLightbox('images/cases-cctv/R4.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/R4.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
 
     </div>
 </main>
