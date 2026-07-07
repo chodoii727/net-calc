@@ -216,7 +216,8 @@ class ZhNavBar extends HTMLElement {
                 <li><a href="calc-network.html">網路佈線_線上估價</a></li>
               </ul>
             </li>
-            
+           
+ 
             <li class="zh-dropdown">
               <a href="#" class="zh-dropdown-toggle">施工實績</a>
               <ul class="zh-dropdown-menu">
@@ -229,17 +230,9 @@ class ZhNavBar extends HTMLElement {
                 <li><a href="cases-office.html">辦公室設備</a></li>
               </ul>
             </li>
+          
+
             
-            <li class="zh-dropdown">
-              <a href="#" class="zh-dropdown-toggle">標準工序流程</a>
-              <ul class="zh-dropdown-menu">
-                <li><a href="process-cctv.html">監控系統工序</a></li>
-                <li><a href="process-ncc.html">NCC電信審驗流程工序</a></li>
-              </ul>
-            </li>
-            
-            <li><a href="faq.html">常見問題</a></li>
-            <li><a href="tutorials.html">使用教學</a></li>
             <li><a href="about.html">關於我們</a></li>
             <li><a href="https://line.me/ti/p/~gooa168" target="_blank" class="zh-nav-btn">聯絡我們</a></li>
           </ul>
