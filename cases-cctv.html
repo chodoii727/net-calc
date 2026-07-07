@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正禾資訊 | 監視器安裝實績</title>
+    <style>
+        /* 🎨 全局現代化大廠質感美學 */
+        :root {
+            --zh-orange: #f27a2b;       /* 正禾品牌橘 */
+            --zh-dark: #111111;         /* 高質感深色 */
+            --zh-bg: #f4f6f8;           /* 寬闊背景色 */
+            --zh-card-bg: #ffffff;
+            --zh-border: #e4e7eb;
+            --zh-text-muted: #545454;
+            --zh-success: #06C167;
+        }
+
+        body {
+            background-color: var(--zh-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 🏢 頂部案場 Header 大標題區 */
+        .page-header {
+            max-width: 1200px;
+            margin: 50px auto 10px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .header-title-zone {
+            border-left: 5px solid var(--zh-orange);
+            padding-left: 15px;
+            text-align: left;
+        }
+        .header-title {
+            color: var(--zh-dark);
+            margin: 0 0 8px 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .header-subtitle {
+            color: var(--zh-text-muted);
+            font-size: 16px;
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* 🎛️ Apple 風格智慧分類篩選條 */
+        .filter-zone {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+        }
+        .filter-btn {
+            padding: 10px 24px;
+            border: 1px solid var(--zh-border);
+            background-color: var(--zh-card-bg);
+            color: var(--zh-dark);
+            font-size: 14.5px;
+            font-weight: 700;
+            border-radius: 30px; /* 膠囊圓角 */
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+        .filter-btn:hover {
+            border-color: var(--zh-dark);
+            background-color: #fafbfc;
+        }
+        .filter-btn.active {
+            background-color: var(--zh-dark);
+            color: #ffffff;
+            border-color: var(--zh-dark);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        /* 📸 純實績影像精緻網格 (改為 4 欄式，最適合展示大量技術照片牆) */
+        .gallery-grid {
+            max-width: 1200px;
+            margin: 0 auto 60px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            box-sizing: border-box;
+        }
+        .gallery-card {
+            background-color: var(--zh-card-bg);
+            border: 1px solid var(--zh-border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: block;
+        }
+        
+        /* 篩選動畫控制類別 */
+        .gallery-card.hidden {
+            display: none;
+        }
+        .gallery-card.fade-in {
+            animation: cardFadeIn 0.4s ease forwards;
+        }
+        @keyframes cardFadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+            border-color: #cbd5e1;
+        }
+        .img-box {
+            width: 100%;
+            height: 220px; /* 固定照片牆高度，確保完美對齊 */
+            background-color: #eaeeef;
+            position: relative;
+            overflow: hidden;
+        }
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .gallery-card:hover .img-box img {
+            transform: scale(1.04);
+        }
+
+        /* 🚀 頂部動作引導區 (CTA) */
+        .cta-section {
+            max-width: 1200px;
+            margin: 30px auto 40px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        .cta-box {
+            background-color: #1a1d21;
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+        .cta-title {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 12px 0;
+        }
+        .cta-desc {
+            color: #b4c6ef;
+            font-size: 15px;
+            margin: 0 0 25px 0;
+        }
+        .btn-cta-action {
+            background-color: var(--zh-orange);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 14px 36px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-cta-action:hover {
+            background-color: #e0671d;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(242,122,43,0.3);
+        }
+
+        /* 📱 RWD 手機版完美防護 */
+        @media (max-width: 992px) {
+            .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        }
+        @media (max-width: 768px) {
+            .header-title { font-size: 26px; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 12px; }
+            .cta-box { padding: 40px 20px; }
+            .cta-title { font-size: 21px; }
+        }
+    </style>
+</head>
+<body>
+
+<zh-nav></zh-nav>
+
+<main>
+    <!-- 🏢 頂部標題區 -->
+    <div class="page-header">
+        <div class="header-title-zone">
+            <h1 class="header-title">監視器安裝實績案例</h1>
+            <p class="header-subtitle">從現場勘查、動態佈線、防水盒與高解析攝影機安裝，正禾資訊具備完善的垂直整合能力。</p>
+        </div>
+    </div>
+
+    <!-- 🚀 Hero Zone 頂部高級諮詢引流區 -->
+    <div class="cta-section">
+        <div class="cta-box">
+            <h2 class="cta-title">讓專業工法，守護您的資產安全</h2>
+            <p class="cta-desc">跨足廠辦、社區與校園的監控系統安裝經驗，正禾為您把關微小細節。</p>
+            <a href="https://line.me/ti/p/~gooa168" target="_blank" class="btn-cta-action">立即諮詢 ➔ 規劃防護配置</a>
+        </div>
+    </div>
+
+    <!-- 🎛️ 智慧分類按鈕列（已更新為四大工序類別） -->
+    <div class="filter-zone">
+        <button class="filter-btn active" onclick="filterGallery('all')">全部實績</button>
+        <button class="filter-btn" onclick="filterGallery('outdoor')">室外</button>
+        <button class="filter-btn" onclick="filterGallery('indoor')">室內</button>
+        <button class="filter-btn" onclick="filterGallery('pole')">電線桿</button>
+        <button class="filter-btn" onclick="filterGallery('rack')">機櫃</button>
+    </div>
+
+    <!-- 📸 純照片實績展示大網格 (拿掉了底部註解與文字區域) -->
+    <div class="gallery-grid">
+
+        <!-- 範例卡片 1：室外 (outdoor) -->
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/1.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/1.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+
+        <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/2.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/2.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+ <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/3.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/3.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+ <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/4.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/4.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+ <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/5.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/5.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/6.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/6.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+
+ <div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/7.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/7.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/8.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/8.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/9.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/9.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/10.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/10.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/11.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/11.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+<div class="gallery-card fade-in" data-category="outdoor" onclick="openLightbox('images/cases-cctv/12.jpg')">
+            <div class="img-box">
+                <img src="images/cases-cctv/12.jpg" alt="監視器安裝實績" onerror="this.style.opacity='0'">
+            </div>
+        </div>
+
+
+
+
+
+
+
+        
+        
+
+    </div>
+</main>
+
+<!-- 🎆 手機完美防護版大圖燈箱 -->
+<div id="zhLightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(17,17,17,0.95); z-index: 999999; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;" onclick="closeLightbox()">
+    <div style="position: absolute; top: env(safe-area-inset-top, 20px); right: 20px; width: 44px; height: 44px; background: rgba(0,0,0,0.5); color: #ffffff; font-size: 24px; font-weight: bold; display: flex; justify-content: center; align-items: center; border-radius: 50%; cursor: pointer; z-index: 1000000; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">✕</div>
+    <img id="lightboxImg" src="" style="max-width: 100%; max-height: 75vh; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain; transition: transform 0.3s ease; transform: scale(0.95);">
+</div>
+
+<zh-footer></zh-footer>
+
+<script>
+    // 🖼️ 燈箱控制核心
+    function openLightbox(src) {
+        const lightbox = document.getElementById('zhLightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        if (src && !src.includes('undefined')) {
+            lightboxImg.src = src;
+            lightbox.style.display = 'flex';
+            setTimeout(() => { lightboxImg.style.transform = 'scale(1)'; }, 10);
+        }
+    }
+
+    function closeLightbox() {
+        const lightbox = document.getElementById('zhLightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        lightboxImg.style.transform = 'scale(0.95)';
+        lightbox.style.display = 'none';
+    }
+
+    // 🎛️ 智慧篩選大腦
+    function filterGallery(type) {
+        const btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        const galleryCards = document.querySelectorAll('.gallery-card');
+        galleryCards.forEach(card => {
+            const cat = card.getAttribute('data-category');
+            if (type === 'all' || cat === type) {
+                card.style.setProperty('display', 'block', 'important');
+                card.classList.add('fade-in');
+            } else {
+                card.style.setProperty('display', 'none', 'important');
+                card.classList.remove('fade-in');
+            }
+        });
+    }
+</script>
+
+<script src="nav.js"></script>
+<script src="footer.js"></script>
+
+</body>
+</html>
