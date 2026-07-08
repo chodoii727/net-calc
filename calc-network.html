@@ -293,11 +293,11 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95); 
+            background: rgba(255, 255, 255, 0.98); 
             backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px);
             border-top: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.08);
             padding: 14px 20px;
             box-sizing: border-box;
             z-index: 9999; 
@@ -307,13 +307,13 @@
         .tesla-price-zone { display: flex; flex-direction: column; text-align: left; }
         .tesla-main-price { font-size: 24px; font-weight: 900; color: var(--zh-dark); font-family: Arial, sans-serif; }
         .tesla-sub-tag { font-size: 11px; color: var(--zh-orange); font-weight: 700; margin-top: 2px; }
-        .btn-tesla-action { background-color: #06C167; color: white; font-size: 13.5px; font-weight: bold; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 12px rgba(6,193,103,0.15); transition: all 0.15s; white-space: nowrap; }
+        .btn-tesla-action { background-color: #06C167; color: white; font-size: 14px; font-weight: bold; padding: 12px 24px; border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(6,193,103,0.15); transition: all 0.15s; white-space: nowrap; }
 
         /* 📱 RWD 手機版優化 */
         @media (max-width: 992px) {
-            .calc-wrapper { flex-direction: column; margin: 25px auto 40px auto; gap: 25px; } 
+            .calc-wrapper { flex-direction: column; margin: 25px auto 80px auto; gap: 25px; } 
             .calc-sidebar-zone { display: none; } 
-            .tesla-sticky-bar.tesla-active { display: flex; }
+            .tesla-sticky-bar { display: flex; } /* 窄視窗手機平板時，底部列永遠顯現 */
         }
         
         @media (max-width: 640px) {
@@ -325,6 +325,15 @@
             .slider-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; width: 100% !important; }
             .form-select { max-width: 100% !important; justify-self: stretch !important; }
             .counter-tool { align-self: flex-start !important; width: 100% !important; max-width: 180px !important; justify-content: space-between !important; }
+        }
+
+        @media (max-width: 480px) {
+            .env-grid { grid-template-columns: 1fr; gap: 12px; }
+            .progress-step { font-size: 10.5px; }
+            .btn-nav { padding: 12px 16px; font-size: 14px; }
+            .tesla-sticky-bar { padding: 12px 15px; }
+            .tesla-main-price { font-size: 21px; }
+            .btn-tesla-action { padding: 10px 14px; font-size: 13px; }
         }
     </style>
 </head>
@@ -526,12 +535,12 @@
 
 </div>
 
-<div id="teslaBar" class="tesla-sticky-bar tesla-active">
+<div id="teslaBar" class="tesla-sticky-bar">
     <div class="tesla-price-zone">
         <div class="tesla-main-price">NT$ <span id="teslaGrandTotal">0</span></div>
         <div class="tesla-sub-tag">✓ 含完整施工及2年保固</div>
     </div>
-    <button class="btn-tesla-action" onclick="copyToLine()">傳送清單 ➔ 開啟官方LINE</button>
+    <button id="teslaBtnAction" class="btn-tesla-action" onclick="handleTeslaBtnClick()">配置線路 ➔</button>
 </div>
 
 <zh-footer></zh-footer>
@@ -644,7 +653,6 @@
     }
 
     function refreshState() {
-        // 🎯 連動按鈕中間核心顯示數字
         document.getElementById('valNetQty').innerText = netQty + " 條";
         document.getElementById('valIndoorMeters').innerText = indoorMeters + " 米";
         document.getElementById('valMoldingMeters').innerText = moldingMeters + " 米";
@@ -733,12 +741,13 @@
                           `─────────────────────\n` +
                           `💡 備註： 採用原廠大同網路線CAT6線材，確保網路傳輸穩定。`;
 
+            // 🚀 【金額橘色加粗修正】：將 1. 至 5. 以及總預算項目的金額全部加上變橘色樣式
             boxSummaryRows.innerHTML = `
                 <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>1. 線路基本費：</strong> ${netQty} 條 (內含基本長度額度 ${totalBaseMeters} 米) <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${totalBaseCost.toLocaleString()}</span></div>
-                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>2. 線路加長費：</strong> 現場加長共 ${totalExtraMeters} 米 (基礎每米計價 $50) <span style="float:right; font-weight:700;">NT$ ${totalExtraCost.toLocaleString()}</span></div>
-                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>3. 交換器擴充：</strong> ${switchTextForSummary} <span style="float:right; font-weight:700;">NT$ ${switchPrice.toLocaleString()}</span></div>
-                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>4. 配線架PANEL：</strong> ${panelTextForSummary} <span style="float:right; font-weight:700;">NT$ ${panelPrice.toLocaleString()}</span></div>
-                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>5. 壓條保護：</strong> ${moldingTextForSummary} <span style="float:right; font-weight:700;">NT$ ${totalMoldingCost.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>2. 線路加長費：</strong> 現場加長共 ${totalExtraMeters} 米 (基礎每米計價 $50) <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${totalExtraCost.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>3. 交換器擴充：</strong> ${switchTextForSummary} <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${switchPrice.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>4. 配線架PANEL：</strong> ${panelTextForSummary} <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${panelPrice.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>5. 壓條保護：</strong> ${moldingTextForSummary} <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${totalMoldingCost.toLocaleString()}</span></div>
                 <div style="font-size: 14.5px; line-height: 1.5; color: #555; background: #fafbfc; padding: 12px; border-radius: 6px; margin-top: 5px;"><strong>💡 備註：</strong> 採用原廠大同網路線CAT6線材，確保網路傳輸穩定。</div>
                 <hr style="border:0; border-top:1px dashed var(--zh-border); margin:10px 0;">
                 <div style="font-size: 20px; font-weight:800; color:var(--zh-orange);">預估總預算：NT$ ${grandTotal.toLocaleString()} 元</div>
@@ -783,10 +792,11 @@
                           `─────────────────────\n` +
                           `💡 備註： 架空區域採用鋼索固定，線路對接位置一律收進專用防水盒保護。`;
 
+            // 🚀 【金額橘色加粗修正】：將 1. 至 3. 以及總預算項目的金額全部加上變橘色樣式
             boxSummaryRows.innerHTML = `
                 <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>1. 室外黑皮網路線：</strong> 共 ${outdoorMeters} 米 (內含15米基本費，加長 ${totalExtraOutdoorMeters} 米) <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${lineCost.toLocaleString()}</span></div>
-                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>2. 鋼索架空長度：</strong> 共 ${aerialMeters} 米 <span style="float:right; font-weight:700;">NT$ ${aerialCost.toLocaleString()}</span></div>
-                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>3. 硬管保護：</strong> 共 ${pipeMeters} 米 (需進位採購 ${pipesNeeded} 支) <span style="float:right; font-weight:700;">NT$ ${pipeCost.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>2. 鋼索架空長度：</strong> 共 ${aerialMeters} 米 <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${aerialCost.toLocaleString()}</span></div>
+                <div style="font-size: 17px; line-height: 1.6; border-bottom:1px solid #f1f3f5; padding-bottom:12px;"><strong>3. 硬管保護：</strong> 共 ${pipeMeters} 米 (需進位採購 ${pipesNeeded} 支) <span style="float:right; font-weight:700; color:var(--zh-orange);">NT$ ${pipeCost.toLocaleString()}</span></div>
                 <div style="font-size: 14.5px; line-height: 1.5; color: #555; background: #fafbfc; padding: 12px; border-radius: 6px; margin-top: 5px;"><strong>💡 備註：</strong> 架空區域採用鋼索固定，線路對接位置一律收進專用防水盒保護.</div>
                 <hr style="border:0; border-top:1px dashed var(--zh-border); margin:10px 0;">
                 <div style="font-size: 20px; font-weight:800; color:var(--zh-orange);">預估總預算：NT$ ${grandTotal.toLocaleString()} 元</div>
@@ -799,7 +809,21 @@
     }
 
     function moveStep(direction) {
+        // 🚀 防呆優化：若沒點選環境就按下一步，跳出溫柔提示
+        if (currentStep === 1 && direction === 1 && !selectedEnvironment) {
+            alert("😊 請先點選您的「佈線環境類型」，再進行下一步配置線路喔！");
+            return;
+        }
         goToStep(currentStep + direction);
+    }
+
+    // 🚀 手機底部按鈕同步點擊邏輯
+    function handleTeslaBtnClick() {
+        if (currentStep === 3) {
+            copyToLine();
+        } else {
+            moveStep(1);
+        }
     }
 
     function goToStep(stepNum) {
@@ -814,25 +838,39 @@
 
         const nextBtn = document.getElementById('btnNext');
         const teslaBar = document.getElementById('teslaBar');
+        const teslaBtn = document.getElementById('teslaBtnAction');
 
         if (currentStep === 1) {
             document.getElementById('btnPrev').style.display = 'none';
             nextBtn.innerText = '配置線路 ➔';
             nextBtn.className = 'btn-nav btn-next';
             nextBtn.onclick = function() { moveStep(1); };
-            teslaBar.classList.add('tesla-active');
+            
+            // 手機底部列同步狀態
+            teslaBtn.innerText = '配置線路 ➔';
+            teslaBtn.style.backgroundColor = 'var(--zh-dark)';
+            
+            if (!selectedEnvironment) {
+                document.querySelectorAll('.env-card').forEach(card => card.classList.remove('active'));
+            }
         } else if (currentStep === 2) {
             document.getElementById('btnPrev').style.display = 'block';
             nextBtn.innerText = '查看預算大綱 ➔';
             nextBtn.className = 'btn-nav btn-next';
             nextBtn.onclick = function() { moveStep(1); };
-            teslaBar.classList.add('tesla-active');
+            
+            // 手機底部列同步狀態
+            teslaBtn.innerText = '查看預算大綱 ➔';
+            teslaBtn.style.backgroundColor = 'var(--zh-dark)';
         } else if (currentStep === 3) {
             document.getElementById('btnPrev').style.display = 'block';
             nextBtn.innerText = '傳送清單 ➔ 開啟官方LINE';
             nextBtn.className = 'btn-nav btn-next btn-line-submit';
             nextBtn.onclick = function() { copyToLine(); };
-            teslaBar.classList.remove('tesla-active');
+            
+            // 🚀 手機版優化同步：走到第三步時底部列不隱藏，按鈕轉為 LINE 綠色
+            teslaBtn.innerText = '傳送清單 ➔ 開啟官方LINE';
+            teslaBtn.style.backgroundColor = '#06C167'; 
             
             runCalculations();
             document.getElementById('resEnv').innerText = selectedEnvironment === 'indoor' ? '室內網路佈線專案' : '室外網路佈線專案';
@@ -873,7 +911,7 @@
     }
 
     function triggerSuccessAlert() {
-        alert("📋 網路需求清單已成功複製到您的手機剪貼簿！\n\n點擊確定後將自動為您開啟官方 LINE，您只需在對話框中「長按貼上」發送，即可直接預約現場勘查囉！");
+        alert("📋 網路需求清單已成功複製到您的手機剪貼簿！\n\n點擊確定後將自動為您開啟官方 LINE，您只需在對話框中/長按貼上/發送，即可直接預約現場勘查囉！");
         window.open("https://line.me/ti/p/~gooa168", "_blank");
     }
 </script>

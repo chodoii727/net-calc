@@ -844,7 +844,7 @@
                           ` 預估線長：${camTotalQty > 0 ? estimatedMeters + ' 米（內含 ' + freeMeters + ' 米 / 超額加長 ' + extraMeters + ' 米）' : '0 米'}\n` +
                           ` 系統預估總價：NT$ ${grandTotal.toLocaleString()} 元\n` +
                           `───────────────\n` +
-                          `💡 備註：完工一律內含防曬、壓條等基礎工法保護，全機設備線路享完整 2 年保固。`;
+                          `💡 備註：施工一律內含防水防曬、壓條等基礎工法保護，全機設備線路享完整 2 年保固。`;
         document.getElementById('hiddenSummaryText').value = textForLine;
     }
 
@@ -910,7 +910,7 @@
         }
     }
 
-    function renderFinalSummary() {
+   function renderFinalSummary() {
         let stdCamQty = camTotalQty - lprCamQty;
         let freeMeters = camTotalQty * 15;
         let extraMeters = Math.max(0, estimatedMeters - freeMeters);
@@ -935,8 +935,40 @@
         document.getElementById('resHdd').innerText = hddSize > 0 ? `${hddSize}TB 監控專用硬碟` : '尚未配置';
         document.getElementById('resHddNote').innerText = hddSize > 0 ? `儲存說明：24小時不間斷穩定寫入監控硬碟，依目前配置預估可留存約 ${calculatedResults.estimatedDays} 天` : '請返回上一步選擇硬碟容量規格';
         
+        // 🚀 1. 把大標題變回高質感黑色（覆蓋原本可能殘留的橘色設定）
+        document.getElementById('resMeters').parentElement.style.color = "var(--zh-dark)";
+        document.getElementById('resMeters').style.color = "var(--zh-dark)";
         document.getElementById('resMeters').innerText = camTotalQty > 0 ? `${estimatedMeters} 米` : '0 米';
-        document.getElementById('resMetersNote').innerText = camTotalQty > 0 ? `線路說明：內含 ${freeMeters} 米基礎長度，本案預估線路加長 ${extraMeters} 米（加長費用為 NT$ ${extraMetersCost.toLocaleString()} 元，每米以 50 元基礎計價）。完工一律內含防曬防鼠咬壓條或浪管基礎保護` : '請返回上一步調整預估線路長度';
+        
+        // 🚀 2. 將加長費用的說明文字精準點亮成品牌橘色
+        if (camTotalQty > 0) {
+            document.getElementById('resMetersNote').innerHTML = `線路說明：內含 ${freeMeters} 米基礎長度，<span style="color: var(--zh-orange); font-weight: 700;">本案預估線路加長 ${extraMeters} 米（加長費用為 NT$ ${extraMetersCost.toLocaleString()} 元，每米以 50 元基礎計價）</span>。完工一律內含線夾固定、壓條或浪管基礎保護`;
+        } else {
+            document.getElementById('resMetersNote').innerText = '請返回上一步調整預估線路長度';
+        }
+
+        const oldHr = document.getElementById('resFinalHr');
+        const oldTotal = document.getElementById('resFinalTotalBlock');
+        if (oldHr) oldHr.remove();
+        if (oldTotal) oldTotal.remove();
+
+        // 抓到白色的明細大框框
+        const detailList = document.querySelector('#panelStep3 .detail-list');
+        
+        // 建立虛線分隔線
+        const hr = document.createElement('hr');
+        hr.id = 'resFinalHr';
+        hr.style.cssText = "border:0; border-top:1px dashed var(--zh-border); margin:10px 0; width:100%;";
+        
+        // 建立總預算文字區塊
+        const totalBlock = document.createElement('div');
+        totalBlock.id = 'resFinalTotalBlock';
+        totalBlock.style.cssText = "font-size: 20px; font-weight:800; color:var(--zh-orange); width:100%; margin-top:5px;";
+        totalBlock.innerHTML = `預估總預算：NT$ ${calculatedResults.grandTotal.toLocaleString()} 元`;
+        
+        // 塞進框框最底部
+        detailList.appendChild(hr);
+        detailList.appendChild(totalBlock);
     }
 
     function copyToLine() {
