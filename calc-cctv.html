@@ -567,7 +567,7 @@
 
                     <div style="border-bottom: 1px solid #f1f3f5; padding-bottom: 18px;">
                         <div style="font-size: 18px; color: var(--zh-dark); line-height: 1.6; margin-bottom: 6px;">
-                            <strong>常規鏡頭：</strong> <span id="resStdCam" style="font-weight: 700;">-</span>
+                            <strong>鏡頭：</strong> <span id="resStdCam" style="font-weight: 700;">-</span>
                         </div>
                         <div id="resStdCamNote" style="font-size: 14.5px; color: #333333; line-height: 1.5; padding-left: 0;">-</div>
                     </div>
@@ -834,16 +834,16 @@
         document.getElementById('sideHdd').innerText = hddSize > 0 ? `${hddSize}TB (約錄${estimatedDays}天)` : '未選擇';
         document.getElementById('sideMeters').innerText = camTotalQty > 0 ? `${estimatedMeters} 米` : '0 米';
 
-        let textForLine = `【正禾資訊 ｜ 智慧監控估價需求單】\n` +
-                          `─────────────────\n` +
+        let textForLine = `【正禾資訊 ｜ 監控估價需求單】\n` +
+                          `───────────────\n` +
                           ` 案場環境：${selectedEnvironment ? selectedEnvironment : '未選擇'}\n` +
                           ` 錄影主機：${hostText}\n` +
-                          ` 常規鏡頭：${camTotalQty > 0 ? stdCamQty + ' 支（500萬智慧雙光款）' : '尚未配置'}\n` +
+                          ` 鏡頭：${camTotalQty > 0 ? stdCamQty + ' 支（500萬智慧雙光款）' : '尚未配置'}\n` +
                           ` 車牌專用：${lprCamQty > 0 ? lprCamQty + ' 支' : '無配置'}\n` +
                           ` 儲存硬碟：${hddSize > 0 ? hddSize + 'TB 監控專用硬碟（預估錄 ' + estimatedDays + ' 天）' : '尚未配置'}\n` +
                           ` 預估線長：${camTotalQty > 0 ? estimatedMeters + ' 米（內含 ' + freeMeters + ' 米 / 超額加長 ' + extraMeters + ' 米）' : '0 米'}\n` +
                           ` 系統預估總價：NT$ ${grandTotal.toLocaleString()} 元\n` +
-                          `─────────────────\n` +
+                          `───────────────\n` +
                           `💡 備註：完工一律內含防曬、壓條等基礎工法保護，全機設備線路享完整 2 年保固。`;
         document.getElementById('hiddenSummaryText').value = textForLine;
     }
