@@ -835,7 +835,7 @@
         document.getElementById('sideMeters').innerText = camTotalQty > 0 ? `${estimatedMeters} 米` : '0 米';
 
         let textForLine = `【正禾資訊 ｜ 智慧監控估價需求單】\n` +
-                          `─────────────────────\n` +
+                          `─────────────────\n` +
                           ` 案場環境：${selectedEnvironment ? selectedEnvironment : '未選擇'}\n` +
                           ` 錄影主機：${hostText}\n` +
                           ` 常規鏡頭：${camTotalQty > 0 ? stdCamQty + ' 支（500萬智慧雙光款）' : '尚未配置'}\n` +
@@ -843,8 +843,8 @@
                           ` 儲存硬碟：${hddSize > 0 ? hddSize + 'TB 監控專用硬碟（預估錄 ' + estimatedDays + ' 天）' : '尚未配置'}\n` +
                           ` 預估線長：${camTotalQty > 0 ? estimatedMeters + ' 米（內含 ' + freeMeters + ' 米 / 超額加長 ' + extraMeters + ' 米）' : '0 米'}\n` +
                           ` 系統預估總價：NT$ ${grandTotal.toLocaleString()} 元\n` +
-                          `─────────────────────\n` +
-                          `💡 備註：完工一律內含防曬、壓條等基礎工法保護，全機享完整 2 年硬體保固。`;
+                          `─────────────────\n` +
+                          `💡 備註：完工一律內含防曬、壓條等基礎工法保護，全機設備線路享完整 2 年保固。`;
         document.getElementById('hiddenSummaryText').value = textForLine;
     }
 
@@ -919,7 +919,7 @@
         document.getElementById('resEnv').innerText = selectedEnvironment ? selectedEnvironment : '未選擇';
         
         document.getElementById('resHost').innerText = hostChannels > 0 ? calculatedResults.hostText : '尚未配置';
-        document.getElementById('resHostNote').innerText = hostChannels > 0 ? `附屬功能：搭載 H.265+ 高壓縮編碼、支援手機遠端 APP 連線即時觀看` : '請返回上一步選擇主機規格';
+        document.getElementById('resHostNote').innerText = hostChannels > 0 ? `附屬功能：搭載 H.265+ 高壓縮編碼、支援手機遠端 APP 連線即時觀看、跨線自動推播、智能回放搜索` : '請返回上一步選擇主機規格';
         
         document.getElementById('resStdCam').innerText = camTotalQty > 0 ? `${stdCamQty} 支` : '尚未配置';
         document.getElementById('resStdCamNote').innerText = camTotalQty > 0 ? `施工細節：500萬高畫素智慧雙光款、全機防塵防水、內建高靈敏度收音` : '請返回上一步增加常規鏡頭數量';
