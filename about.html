@@ -270,11 +270,30 @@
             transform: scale(1.08);
         }
 
-        /* 📱 RWD 行動版精密優化 */
+       /* 📱 RWD 行動版精密優化 */
         @media (max-width: 992px) {
-            .about-wrapper { flex-direction: column; gap: 30px; }
-            .license-zone { position: static; }
-            .license-card { max-width: 100%; }
+            /* 🚀 核心魔法：利用 flex 排序，在手機版時強行調整上下順序 */
+            .about-wrapper { 
+                flex-direction: column; 
+                gap: 35px; 
+            }
+            
+            /* 🥇 讓證照專區在手機版排序變為第 1 個（置頂） */
+            .license-zone { 
+                position: static; 
+                order: 1; 
+                width: 100%;
+            }
+            
+            /* 🥈 讓四大承諾區排序變為第 2 個（在證照下方接續呈現） */
+            .promises-zone {
+                order: 2;
+                width: 100%;
+            }
+
+            .license-card { 
+                max-width: 100%; 
+            }
         }
 
         /* 小手機導航：將關閉按鈕移進圖片內部右上角，防止被手機螢幕邊緣裁切 */
@@ -356,7 +375,7 @@
                     </div>
 
                     <p class="license-footer-text" style="margin-top: 25px;">
-                        預算透明不追加、嚴格按圖施工、硬體保固 2 年
+                        預算透明、按圖施工、硬體保固 2 年
                     </p>
                 </div>
             </aside>
