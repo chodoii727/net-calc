@@ -5,12 +5,294 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>正禾資訊 | 關於我們</title>
     <style>
-        /* 🎨 這一頁專屬的 Tesla/Apple 風格美學 CSS 寫在這裡 */
+        /* 🎨 全局現代化質感美學 */
+        :root {
+            --zh-orange: #f27a2b;       /* 正禾品牌橘 */
+            --zh-dark: #111111;         /* 高質感深色 */
+            --zh-bg: #f4f6f8;           /* 寬闊背景色 */
+            --zh-card-bg: #ffffff;
+            --zh-border: #e4e7eb;
+            --zh-text-muted: #545454;
+        }
+
+        body {
+            background-color: var(--zh-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 📊 關於我們專屬佈局 */
         .page-content {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 60px auto;
             padding: 0 20px;
-            font-family: -apple-system, sans-serif;
+            box-sizing: border-box;
+        }
+
+        /* 🏛️ 頂部大氣標題區 */
+        .about-header {
+            text-align: left;
+            margin-bottom: 45px;
+            border-left: 5px solid var(--zh-orange);
+            padding-left: 20px;
+        }
+
+        .about-title {
+            color: var(--zh-dark);
+            margin: 0 0 8px 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .about-subtitle {
+            color: var(--zh-text-muted);
+            font-size: 16px;
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* 📋 左右雙欄主力工作區 */
+        .about-wrapper {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        /* 📝 左側：四大職人承諾區（純用排版字體撐起質感，絕無廉價圖標） */
+        .promises-zone {
+            flex: 1.3;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .promise-card {
+            background-color: var(--zh-card-bg);
+            border: 1px solid var(--zh-border);
+            border-radius: 20px;
+            padding: 30px 35px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            text-align: left;
+        }
+
+        .promise-title-bar {
+            border-bottom: 1px solid #f1f3f5;
+            padding-bottom: 12px;
+            margin-bottom: 14px;
+        }
+
+        .promise-title {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--zh-dark);
+            letter-spacing: 0.5px;
+        }
+
+        .promise-title span {
+            color: var(--zh-orange);
+        }
+
+        .promise-desc {
+            font-size: 14.5px;
+            color: var(--zh-text-muted);
+            line-height: 1.7;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .service-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .tag-item {
+            background-color: #fafbfc;
+            border: 1px solid var(--zh-border);
+            color: var(--zh-dark);
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* 📜 右側：國家證照榮譽卡片區 */
+        .license-zone {
+            flex: 0.7;
+            width: 100%;
+            min-width: 320px;
+            position: sticky;
+            top: 40px;
+        }
+
+        .license-card {
+            background-color: #1a1d21; /* 大廠深色層次卡片 */
+            border: 1px solid #2d3239;
+            border-radius: 24px;
+            padding: 35px 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            text-align: center;
+            box-sizing: border-box;
+            cursor: pointer; /* 讓滑鼠移過去呈現可點擊的手型 */
+        }
+
+        .license-label {
+            font-size: 12px;
+            color: var(--zh-orange);
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .license-main-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 25px 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* 📷 完美套用實績 img-box 格式，修正照片大小，全自動鎖定直式黃金比例 */
+        .img-box {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            border-radius: 14px;
+            overflow: hidden;
+            background-color: #24292f;
+            margin-bottom: 0;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        /* 滑鼠懸停時卡片內圖片微微放大，增加精緻互動感 */
+        .license-card:hover .img-box img {
+            transform: scale(1.03);
+        }
+
+        .license-footer-text {
+            font-size: 16px;
+            color: #888888;
+            line-height: 1.6;
+            margin: 0;
+            font-weight: 500;
+
+        }
+
+        /* 🌌 獨立彈窗（Lightbox）原生 CSS 樣式 */
+        .zh-about-lightbox {
+            display: none; /* 預設完全隱藏 */
+            position: fixed;
+            z-index: 9999; /* 確保壓在最上層，包含導覽列 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); /* 高級電影感超深黑背景 */
+            backdrop-filter: blur(8px); /* 背景模糊，突顯大圖 */
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* 燈箱啟動時的類別 */
+        .zh-about-lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* 🖼️ 大圖包覆外殼：將圖片與叉叉綁定在一起，相對定位 */
+        .lightbox-content-wrapper {
+            position: relative;
+            max-width: 90%;
+            max-height: 85vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .zh-about-lightbox img {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .zh-about-lightbox.active img {
+            transform: scale(1);
+        }
+
+        /* ❌ 全新重構：大廠級圓形半透明關閉按鈕，死死鎖定在圖片右上角外緣 */
+        .zh-about-lightbox-close {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 44px;      /* Apple 官方規範最完美的觸控點擊尺寸 */
+            height: 44px;
+            background-color: rgba(30, 30, 30, 0.8); /* 半透明深灰黑 */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* 精緻微白邊 */
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+            user-select: none;
+            z-index: 10000;
+        }
+
+        /* 懸停時按鈕轉為正禾品牌橘色 */
+        .zh-about-lightbox-close:hover {
+            background-color: var(--zh-orange);
+            border-color: var(--zh-orange);
+            transform: scale(1.08);
+        }
+
+        /* 📱 RWD 行動版精密優化 */
+        @media (max-width: 992px) {
+            .about-wrapper { flex-direction: column; gap: 30px; }
+            .license-zone { position: static; }
+            .license-card { max-width: 100%; }
+        }
+
+        /* 小手機導航：將關閉按鈕移進圖片內部右上角，防止被手機螢幕邊緣裁切 */
+        @media (max-width: 768px) {
+            .zh-about-lightbox-close {
+                top: 15px;
+                right: 15px;
+                width: 38px;
+                height: 38px;
+                font-size: 20px;
+                background-color: rgba(0, 0, 0, 0.6);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-title { font-size: 26px; }
+            .promise-card { padding: 24px 20px; }
+            .promise-title { font-size: 17px; }
         }
     </style>
 </head>
@@ -19,14 +301,97 @@
     <zh-nav></zh-nav>
 
     <main class="page-content">
-        <h1>關於我們</h1>
-        <p>歡迎來到正禾資訊，我們提供最專業的監控與佈線服務。</p>
+        <header class="about-header">
+            <h1 class="about-title">關於正禾資訊</h1>
+            <p class="about-subtitle">以長期穩定為核心的施工標準。</p>
+        </header>
+
+        <div class="about-wrapper">
+            
+            <section class="promises-zone">
+                
+                <div class="promise-card">
+                    <div class="promise-title-bar">
+                        <div class="promise-title">價格透明<span>。</span></div>
+                    </div>
+                    <p class="promise-desc">全站線上估價模擬器與現場勘查報價完全公開透明，不在完工後巧立名目、隨意追加任何隱藏款項。</p>
+                </div>
+
+                <div class="promise-card">
+                    <div class="promise-title-bar">
+                        <div class="promise-title">按圖施工<span>。</span></div>
+                    </div>
+                    <p class="promise-desc">嚴格遵循國家標準電信與弱電工法，完工一律提供線路編碼與理線位置，不論是建商驗收、廠房交屋還是後續維護，皆能一目了然。</p>
+                </div>
+
+                <div class="promise-card">
+                    <div class="promise-title-bar">
+                        <div class="promise-title">硬體保固兩年<span>。</span></div>
+                    </div>
+                    <p class="promise-desc">在地深耕經營，擁有實體店面永續服務。我們對施工品質抱持絕對信心，全案線路與核心硬體設備一律提供 2 年的完善工程保固。</p>
+                </div>
+
+                <div class="promise-card">
+                    <div class="promise-title-bar">
+                        <div class="promise-title">服務範圍<span>。</span></div>
+                    </div>
+                    <p class="promise-desc">我們提供中部地區最快速的現場勘查與售後服務：</p>
+                    <div class="service-tags">
+                        <div class="tag-item">彰化</div>
+                        <div class="tag-item">台中</div>
+                        <div class="tag-item">南投</div>
+                        <div class="tag-item">員林</div>
+                    </div>
+                </div>
+
+            </section>
+
+            <aside class="license-zone">
+                <div class="license-card" onclick="openAboutLightbox('images/Certificate/book.jpg')">
+                    
+                    <h2 class="license-main-title">國家級乙級技術士認證</h2>
+                    
+                    <div class="img-box">
+                        <img src="images/Certificate/book.jpg" alt="正禾資訊 國家級乙級技術士證照" onerror="this.style.opacity='0'">
+                    </div>
+
+                    <p class="license-footer-text" style="margin-top: 25px;">
+                        預算透明不追加、嚴格按圖施工、硬體保固 2 年
+                    </p>
+                </div>
+            </aside>
+
+        </div>
     </main>
+
+    <div id="aboutLightbox" class="zh-about-lightbox" onclick="closeAboutLightbox()">
+        <div class="lightbox-content-wrapper" onclick="event.stopPropagation()">
+            <span class="zh-about-lightbox-close" onclick="closeAboutLightbox()">&times;</span>
+            <img id="aboutLightboxImg" src="" alt="正禾證照高清大圖">
+        </div>
+    </div>
 
     <zh-footer></zh-footer>
 
     <script src="nav.js"></script>
     <script src="footer.js"></script>
+
+    <script>
+        function openAboutLightbox(imgSrc) {
+            const lightbox = document.getElementById('aboutLightbox');
+            const lightboxImg = document.getElementById('aboutLightboxImg');
+            
+            lightboxImg.src = imgSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; /* 放大時鎖定網頁背景，不讓網頁亂滾動 */
+        }
+
+        function closeAboutLightbox() {
+            const lightbox = document.getElementById('aboutLightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = ''; /* 關閉後恢復網頁正常滾動 */
+        }
+    </script>
 
 </body>
 </html>
