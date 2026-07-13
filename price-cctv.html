@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正禾資訊 | 監控套餐配備對比</title>
+    <style>
+        /* 🎨 全局現代化質感美學（完美繼承正禾風格變數） */
+        :root {
+            --zh-orange: #f27a2b;       /* 正禾品牌橘 */
+            --zh-dark: #111111;         /* 高質感深色 */
+            --zh-bg: #f4f6f8;           /* 寬闊背景色 */
+            --zh-card-bg: #ffffff;
+            --zh-border: #e4e7eb;
+            --zh-text-muted: #545454;
+        }
+
+        body {
+            background-color: var(--zh-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 📊 獨立頁面主力佈局區 */
+        .page-content {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        /* 🏛️ 頂部大氣標題區（繼承左側橘色粗線設計） */
+        .specs-header {
+            text-align: left;
+            margin-bottom: 45px;
+            border-left: 5px solid var(--zh-orange);
+            padding-left: 20px;
+        }
+
+        .specs-page-title {
+            color: var(--zh-dark);
+            margin: 0 0 8px 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .specs-page-subtitle {
+            color: var(--zh-text-muted);
+            font-size: 16px;
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* 📋 汽車規格表級對比區域（升級大廠精細細節，圓角與關於我們對齊） */
+        .specs-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--zh-border);
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            background-color: var(--zh-card-bg);
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+            min-width: 720px;
+        }
+
+        /* 🌟 核心優化：放大字級、微調字距，消除原本死板、普通的感覺 */
+        .specs-table th, .specs-table td {
+            padding: 18px 20px;       /* 拉大上下間距，創造大廠配備表的透氣感 */
+            font-size: 15.5px;         /* 稍微放大字體，讓規格文字非常清晰好讀 */
+            border: 1px solid var(--zh-border);
+            text-align: center;
+            box-sizing: border-box;
+            color: var(--zh-dark);
+            line-height: 1.5;
+            letter-spacing: 0.3px;    /* 微調字距，徹底擺脫新細明體般的生硬感 */
+        }
+
+        /* 欄位寬度比例精密控制 */
+        .specs-table th:nth-child(1), .specs-table td:nth-child(1) { width: 160px; text-align: left; }
+        .specs-table th:nth-child(2), .specs-table td:nth-child(2) { width: 210px; }
+        .specs-table th:nth-child(3), .specs-table td:nth-child(3) { width: 210px; }
+        .specs-table th:nth-child(4), .specs-table td:nth-child(4) { width: 210px; }
+
+        /* 👑 表頭方案名稱：字體加粗加大，建立強烈視覺階層 */
+        .plan-th { 
+            background-color: var(--zh-bg); 
+            color: var(--zh-dark); 
+            font-weight: 800; 
+            font-size: 18px; 
+        }
+        .plan-desc { 
+            font-size: 13px; 
+            color: var(--zh-text-muted); 
+            font-weight: 500; 
+            display: block; 
+            margin-top: 6px; 
+        }
+
+        /* 🏛️ 項目大分類分隔橫列（加深灰底，像鋼骨一樣壓住版面段落） */
+        .section-divider td {
+            font-weight: 800;
+            color: var(--zh-dark);
+            font-size: 15px;
+            padding: 14px 20px;
+            background-color: #ebedf0; /* 背景微加深，滑動橫移時絕不看錯行 */
+            text-align: left;
+            letter-spacing: 0.8px;
+            border-top: 2px solid var(--zh-border);
+        }
+
+        /* 📝 左側「細項配備」標籤欄：顏色加深加粗，作為水平視覺定錨 */
+        .row-label { 
+            font-weight: 800; 
+            background-color: #fafbfc; 
+            color: var(--zh-dark); 
+        }
+
+        /* 🔢 核心數據單元格：讓 4支、2TB、25天 等關鍵規格字體更有分量 */
+        .specs-table td:not(.row-label):not(.merge-row) {
+            font-weight: 600; /* 比普通字體更黑一點，凸顯規格對比 */
+        }
+
+        /* 🔗 橫向合併區塊（工法、保固）：維持高質感規格字重 */
+        .merge-row { 
+            background-color: var(--zh-card-bg); 
+            color: var(--zh-dark); 
+            font-weight: 600;
+        }
+        
+        /* 💡 修正：取消斜體設定，因為中文字體套用網頁斜體會發毛、不清晰 */
+        .font-italic { 
+            font-style: normal; 
+            color: var(--zh-text-muted); 
+            font-weight: 500;
+        }
+
+        /* 💰 完工價格欄：全面加重讀取感 */
+        .price-row td { 
+            padding: 24px 20px; 
+            background-color: #fafbfc; 
+        }
+        .price-td { 
+            font-size: 19px; 
+            font-weight: 800; 
+            color: var(--zh-dark); 
+            letter-spacing: 0.5px;
+        }
+
+        /* 預約行動欄 */
+        .action-row td { padding: 24px; background-color: var(--zh-card-bg); }
+
+        /* 📱 RWD 行動裝置精密導航優化（手機版同步微調字級，防擠壓） */
+        @media (max-width: 768px) {
+            .page-content { margin: 40px auto; }
+            .specs-page-title { font-size: 26px; }
+            .specs-table th, .specs-table td { 
+                padding: 14px 10px; 
+                font-size: 13.5px; 
+            }
+            .plan-th { font-size: 16px; }
+        }
+/* 📊 表格底部雙按鈕專屬大廠級排版 */
+.table-cta-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px 0;
+}
+
+/* LINE 綠色按鈕樣式 */
+.table-btn-line {
+    display: inline-block;
+    background-color: #06C167;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 4px 12px rgba(6, 193, 103, 0.15);
+    letter-spacing: 0.5px;
+    box-sizing: border-box;
+}
+.table-btn-line:hover {
+    background-color: #05a95a;
+}
+.table-btn-line:active {
+    transform: scale(0.98);
+}
+
+/* 估價白框按鈕樣式 (配合表格內部淺色背景，維持深底高質感) */
+.table-btn-calc {
+    display: inline-block;
+    background-color: var(--zh-dark); /* 繼承正禾高質感深色 #111111 */
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 36px;
+    border: 2px solid var(--zh-dark);
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+    box-sizing: border-box;
+}
+.table-btn-calc:hover {
+    background-color: transparent;
+    color: var(--zh-dark);
+}
+.table-btn-calc:active {
+    transform: scale(0.98);
+}
+
+/* 📱 手機版滿版優化 */
+@media (max-width: 768px) {
+    .table-cta-group {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+    .table-btn-line, .table-btn-calc {
+        width: 100%;
+        max-width: 320px;
+        text-align: center;
+        padding: 14px 0;
+    }
+}
+
+    </style>
+</head>
+<body>
+
+    <zh-nav></zh-nav>
+
+    <main class="page-content">
+        
+        <header class="specs-header">
+            <h1 class="specs-page-title">監控套餐配備對比表</h1>
+            <p class="specs-page-subtitle">規格透明公開，給您最穩定、放心的施工標準。</p>
+        </header>
+
+        <div class="specs-table-wrapper">
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th class="row-label">細項配備</th>
+                        <th class="plan-th">4路專案<br><span class="plan-desc">適合：居家住宅、小型店面</span></th>
+                        <th class="plan-th">8路專案<br><span class="plan-desc">適合：透天全棟、中型廠辦</span></th>
+                        <th class="plan-th">16路專案<br><span class="plan-desc">適合：社區大樓、大型場域規劃</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="section-divider">
+                        <td colspan="4">主機規格</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">路數</td>
+                        <td>4路高規監控主機</td>
+                        <td>8路高規監控主機</td>
+                        <td>16路高規監控主機</td>
+                    </tr>
+
+                    <tr class="section-divider">
+                        <td colspan="4">鏡頭</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">鏡頭畫素</td>
+                        <td colspan="3" class="merge-row">500萬畫素</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">夜視</td>
+                        <td colspan="3" class="merge-row">智慧雙光全彩</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">錄音功能</td>
+                        <td colspan="3" class="merge-row">有聲</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">標配數量</td>
+                        <td>4 支</td>
+                        <td>8 支</td>
+                        <td>16 支</td>
+                    </tr>
+
+                    <tr class="section-divider">
+                        <td colspan="4">儲存效能</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">硬碟規格</td>
+                        <td>2TB 監控專用硬碟</td>
+                        <td>4TB 監控專用硬碟</td>
+                        <td>8TB 監控專用硬碟</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">錄製天數</td>
+                        <td>預估錄製約 25 天</td>
+                        <td>預估錄製約 22 天</td>
+                        <td>預估錄製約 22 天</td>
+                    </tr>
+
+                    <tr class="section-divider">
+                        <td colspan="4">佈線</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">標配線長</td>
+                        <td>60 米</td>
+                        <td>120 米</td>
+                        <td>240 米</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">線材等級</td>
+                        <td colspan="3" class="merge-row">大同原廠加粗純銅線</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">超額線長</td>
+                        <td colspan="3" class="merge-row font-italic">(超過依現場實計)</td>
+                    </tr>
+
+                    <tr class="section-divider">
+                        <td colspan="4">施工標準</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">佈線工法</td>
+                        <td colspan="3" class="merge-row">管線橫平豎直固定</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">接頭防護</td>
+                        <td colspan="3" class="merge-row">手工銲錫 / 防水盒防護</td>
+                    </tr>
+
+                    <tr class="section-divider">
+                        <td colspan="4">保固</td>
+                    </tr>
+                    <tr>
+                        <td class="row-label">硬體保固</td>
+                        <td colspan="3" class="merge-row">全機 2 年保固</td>
+                    </tr>
+
+                    <tr class="section-divider">
+                        <td colspan="4">完工定價</td>
+                    </tr>
+                    <tr class="price-row">
+                        <td class="row-label">標準完工價</td>
+                        <td class="price-td">NT$27,500</td>
+                        <td class="price-td">NT$47,000</td>
+                        <td class="price-td">NT$93,500</td>
+                    </tr>
+                    
+                   <tr class="action-row">
+          <td class="row-label">線上預約</td>
+          <td colspan="3" class="merge-row">
+            <div class="table-cta-group">
+              
+              <a href="https://line.me/ti/p/~gooa168" target="_blank" class="table-btn-line">立即加LINE諮詢</a>
+              
+              <a href="calc-cctv.html" class="table-btn-calc">預算多少？點我馬上算➔</a>
+              
+            </div>
+          </td>
+        </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <zh-footer></zh-footer>
+
+    <script src="nav.js"></script>
+    <script src="footer.js"></script>
+
+</body>
+</html>
