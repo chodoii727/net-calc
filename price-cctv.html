@@ -21,6 +21,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            overflow-x: hidden; /* 🚀 關鍵防禦：防止外層元素或導覽列寬度意外溢出，確保手機版畫面不切邊 */
         }
 
         /* 📊 獨立頁面主力佈局區 */
@@ -71,12 +72,12 @@
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            min-width: 800px;           /* 🚀 關鍵修正：強行撐開表格內部寬度，確保手機上有足夠空間橫移，絕對不切字！ */
+            min-width: 800px;           /* 電腦版維持 800px 大氣比對 */
         }
 
         /* 🌟 核心優化：放大字級、微調字距，消除原本死板、普通的感覺 */
         .specs-table th, .specs-table td {
-            padding: 18px 20px;       /* 拉大上下間距，創造大廠配備表的透氣感 */
+            padding: 18px 20px;        /* 拉大上下間距，創造大廠配備表的透氣感 */
             font-size: 15.5px;         /* 稍微放大字體，讓規格文字非常清晰好讀 */
             border: 1px solid var(--zh-border);
             text-align: center;
@@ -171,79 +172,88 @@
             }
             .plan-th { font-size: 16px; }
             .zh-btn-main { width: 100%; max-width: 100%; padding: 14px 0; }
+            
+            /* 🚀 關鍵修正：在手機版將固定寬度解鎖，使其完美收納，完全防止右側文字切掉 */
+            .specs-table {
+                min-width: 100% !important;
+                table-layout: auto !important;
+            }
+            .specs-table th, .specs-table td {
+                width: auto !important;
+            }
         }
-/* 📊 表格底部雙按鈕專屬大廠級排版 */
-.table-cta-group {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-    padding: 10px 0;
-}
+        
+        /* 📊 表格底部雙按鈕專屬大廠級排版 */
+        .table-cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 10px 0;
+        }
 
-/* LINE 綠色按鈕樣式 */
-.table-btn-line {
-    display: inline-block;
-    background-color: #06C167;
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 14px 36px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    box-shadow: 0 4px 12px rgba(6, 193, 103, 0.15);
-    letter-spacing: 0.5px;
-    box-sizing: border-box;
-}
-.table-btn-line:hover {
-    background-color: #05a95a;
-}
-.table-btn-line:active {
-    transform: scale(0.98);
-}
+        /* LINE 綠色按鈕樣式 */
+        .table-btn-line {
+            display: inline-block;
+            background-color: #06C167;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 14px 36px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(6, 193, 103, 0.15);
+            letter-spacing: 0.5px;
+            box-sizing: border-box;
+        }
+        .table-btn-line:hover {
+            background-color: #05a95a;
+        }
+        .table-btn-line:active {
+            transform: scale(0.98);
+        }
 
-/* 估價白框按鈕樣式 (配合表格內部淺色背景，維持深底高質感) */
-.table-btn-calc {
-    display: inline-block;
-    background-color: var(--zh-dark); /* 繼承正禾高質感深色 #111111 */
-    color: #ffffff;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 14px 36px;
-    border: 2px solid var(--zh-dark);
-    border-radius: 12px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    letter-spacing: 0.5px;
-    box-sizing: border-box;
-}
-.table-btn-calc:hover {
-    background-color: transparent;
-    color: var(--zh-dark);
-}
-.table-btn-calc:active {
-    transform: scale(0.98);
-}
+        /* 估價白框按鈕樣式 (配合表格內部淺色背景，維持深底高質感) */
+        .table-btn-calc {
+            display: inline-block;
+            background-color: var(--zh-dark); /* 繼承正禾高質感深色 #111111 */
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 14px 36px;
+            border: 2px solid var(--zh-dark);
+            border-radius: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            letter-spacing: 0.5px;
+            box-sizing: border-box;
+        }
+        .table-btn-calc:hover {
+            background-color: transparent;
+            color: var(--zh-dark);
+        }
+        .table-btn-calc:active {
+            transform: scale(0.98);
+        }
 
-/* 📱 手機版滿版優化 */
-@media (max-width: 768px) {
-    .table-cta-group {
-        flex-direction: column;
-        gap: 12px;
-        align-items: center;
-    }
-    .table-btn-line, .table-btn-calc {
-        width: 100%;
-        max-width: 320px;
-        text-align: center;
-        padding: 14px 0;
-    }
-}
-
+        /* 📱 手機版滿版優化 */
+        @media (max-width: 768px) {
+            .table-cta-group {
+                flex-direction: column;
+                gap: 12px;
+                align-items: center;
+            }
+            .table-btn-line, .table-btn-calc {
+                width: 100%;
+                max-width: 320px;
+                text-align: center;
+                padding: 14px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -364,18 +374,15 @@
                         <td class="price-td">NT$93,500</td>
                     </tr>
                     
-                   <tr class="action-row">
-          <td class="row-label">線上預約</td>
-          <td colspan="3" class="merge-row">
-            <div class="table-cta-group">
-              
-              <a href="https://line.me/ti/p/~gooa168" target="_blank" class="table-btn-line">立即加LINE諮詢</a>
-              
-              <a href="calc-cctv.html" class="table-btn-calc">預算多少？點我馬上算➔</a>
-              
-            </div>
-          </td>
-        </tr>
+                    <tr class="action-row">
+                        <td class="row-label">線上預約</td>
+                        <td colspan="3" class="merge-row">
+                            <div class="table-cta-group">
+                                <a href="https://line.me/ti/p/~gooa168" target="_blank" class="table-btn-line">立即加LINE諮詢</a>
+                                <a href="calc-cctv.html" class="table-btn-calc">預算多少？點我馬上算➔</a>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
