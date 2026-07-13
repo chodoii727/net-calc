@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=0.25, maximum-scale=5.0">
     <title>正禾資訊 | 監控套餐配備對比</title>
     <style>
         /* 🎨 全局現代化質感美學（完美繼承正禾風格變數） */
@@ -55,21 +55,23 @@
             line-height: 1.6;
         }
 
-        /* 📋 汽車規格表級對比區域（升級大廠精細細節，圓角與關於我們對齊） */
+        /* 📋 汽車規格表級對比區域（修復手機版橫向滑動 Bug） */
         .specs-table-wrapper {
             width: 100%;
-            overflow-x: auto;
+            overflow-x: auto;           /* 核心：允許單獨橫向滾動 */
+            -webkit-overflow-scrolling: touch; /* 讓 iPhone 滑動時有像 App 一樣的滑順阻尼感 */
             border: 1px solid var(--zh-border);
             border-radius: 20px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.02);
             background-color: var(--zh-card-bg);
+            margin-bottom: 30px;
         }
 
         .specs-table {
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            min-width: 720px;
+            min-width: 800px;           /* 🚀 關鍵修正：強行撐開表格內部寬度，確保手機上有足夠空間橫移，絕對不切字！ */
         }
 
         /* 🌟 核心優化：放大字級、微調字距，消除原本死板、普通的感覺 */
@@ -158,15 +160,17 @@
         /* 預約行動欄 */
         .action-row td { padding: 24px; background-color: var(--zh-card-bg); }
 
-        /* 📱 RWD 行動裝置精密導航優化（手機版同步微調字級，防擠壓） */
+        /* 📱 RWD 行動裝置精密導航優化 */
         @media (max-width: 768px) {
-            .page-content { margin: 40px auto; }
+            .page-content { margin: 30px auto; }
             .specs-page-title { font-size: 26px; }
+            /* 手機版微調表格襯墊，讓字體在水平滾動時看起來更清爽、更透氣 */
             .specs-table th, .specs-table td { 
-                padding: 14px 10px; 
-                font-size: 13.5px; 
+                padding: 14px 12px; 
+                font-size: 14px; 
             }
             .plan-th { font-size: 16px; }
+            .zh-btn-main { width: 100%; max-width: 100%; padding: 14px 0; }
         }
 /* 📊 表格底部雙按鈕專屬大廠級排版 */
 .table-cta-group {
