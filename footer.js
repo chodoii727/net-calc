@@ -174,6 +174,8 @@ class ZhWebFooter extends HTMLElement {
               <li><strong>聯絡電話</strong> <span>04-8221966</span></li>
               <li><strong>傳真號碼</strong> <span>04-8227689</span></li>
               <li><strong>統一編號</strong> <span>24865834</span></li>
+              <li><strong>服務區域</strong> <span>彰化、台中、南投、雲林</span></li>
+
             </ul>
           </div>
           
