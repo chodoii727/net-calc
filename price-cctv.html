@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=0.25, maximum-scale=5.0">
     <title>正禾資訊 | 監控套餐配備對比與自選估價</title>
     <style>
-        /* 🎨 全局現代化質感美學 */
+        /* 全局現代化質感美學 */
         :root {
             --zh-orange: #f27a2b;       /* 正禾品牌橘 */
             --zh-dark: #111111;         /* 高質感深色 */
@@ -55,7 +55,7 @@
             line-height: 1.5;
         }
 
-        /* 📋 緊湊型 Excel 規格表包裝區 */
+        /* 緊湊型 Excel 規格表包裝區 */
         .specs-table-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -221,12 +221,38 @@
         }
         .table-btn-calc:hover { background-color: transparent; color: var(--zh-dark); transform: translateY(-1px); }
 
+        /* 行動裝置極致縮緊與防破版規則 */
         @media (max-width: 768px) {
             .page-content { margin: 15px auto; }
             .specs-page-title { font-size: 22px; }
+            
+            /* 精密縮小手機版間距，讓規格表縮在一起 */
+            .specs-table th, .specs-table td { 
+                padding: 10px 8px; 
+                font-size: 13px; 
+            }
+            .plan-th { font-size: 14px; }
+            .plan-desc { font-size: 10px; }
+            
+            /* 關鍵修正：手機版將固定寬度解鎖並使其自適應收縮，縮在一起 */
             .specs-table {
-                min-width: 980px !important;
-                table-layout: fixed !important;
+                min-width: 100% !important;
+                table-layout: auto !important;
+            }
+            .specs-table th, .specs-table td {
+                width: auto !important;
+            }
+            
+            .table-cta-group {
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+            }
+            .table-btn-line, .table-btn-calc {
+                width: 100%;
+                max-width: 280px;
+                text-align: center;
+                padding: 10px 0;
             }
         }
     </style>
@@ -430,11 +456,11 @@
             const cameras = parseInt(document.getElementById("select-cameras").value) || 4;
             const hdd = parseInt(document.getElementById("select-hdd").value);
 
-            // 1️⃣ 標配線長描述更新（維持每支鏡頭 15 米標配）
+            // 標配線長描述更新（維持每支鏡頭 15 米標配）
             const freeMeters = cameras * 15;
             document.getElementById("custom-wire-desc").textContent = `${freeMeters} 米 (每支標配15米)`;
 
-            // 2️⃣ 載入老闆專屬的「儲存天數計算公式」
+            // 載入老闆專屬的「儲存天數計算公式」
             let estimatedDays = 0;
             if (cameras > 0 && hdd > 0) {
                 let totalCapacityGB = hdd * 1000;      // 老闆公式：hddSize * 1000
@@ -445,7 +471,7 @@
                 document.getElementById("custom-days").textContent = `請選擇規格`;
             }
 
-            // 3️⃣ 載入老闆最新調整的「完工價格數據」
+            // 載入老闆最新調整的「完工價格數據」
             let hostPrice = 0;   // 主機費
             let cameraCost = 0;  // 鏡頭與拉線基本費
             let hddPrice = 0;    // 硬碟升級費
@@ -473,7 +499,7 @@
             // 即時呈現至網頁 Excel 自選欄位
             document.getElementById("custom-price").textContent = `NT$${totalPrice.toLocaleString()}`;
 
-            // 4️⃣ 接通 LINE 按鈕的「自動複製 + 跳轉官方 LINE 聊天室」雙軌連動電路
+            // 接通 LINE 按鈕的「自動複製 + 跳轉官方 LINE 聊天室」雙軌連動電路
             let textForLine = `【正禾資訊 ｜ 監控自選需求單】\n` +
                               `───────────────\n` +
                               ` 錄影主機：${channels}路高規監控主機\n` +
