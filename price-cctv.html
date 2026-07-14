@@ -264,7 +264,7 @@
     <main class="page-content">
         
         <header class="specs-header">
-            <h1 class="specs-page-title">監控套餐價格</h1>
+            <h1 class="specs-page-title">監視器套餐價格</h1>
             <p class="specs-page-subtitle">※ 專案皆可依實際需求增減。右側【自選專案】欄位支援即時搭配計算，歡迎動手試算！</p>
         </header>
 
@@ -290,8 +290,8 @@
                         <td>16路高規監控主機</td>
                         <td class="custom-td">
                             <select id="select-channels" class="table-select">
-                                <option value="4">4路高規監控主機</option>
-                                <option value="8" selected>8路高規監控主機</option>
+                                <option value="4" selected>4路高規監控主機</option>
+                                <option value="8">8路高規監控主機</option>
                                 <option value="16">16路高規監控主機</option>
                             </select>
                         </td>
@@ -342,8 +342,8 @@
                         <td>8TB 監控專用硬碟</td>
                         <td class="custom-td">
                             <select id="select-hdd" class="table-select" onchange="calculateCustomProject()">
-                                <option value="2">2TB 監控專用硬碟</option>
-                                <option value="4" selected>4TB 監控專用硬碟</option>
+                                <option value="2" selected>2TB 監控專用硬碟</option>
+                                <option value="4">4TB 監控專用硬碟</option>
                                 <option value="8">8TB 監控專用硬碟</option>
                             </select>
                         </td>
@@ -367,7 +367,7 @@
                         <td>120 米</td>
                         <td>240 米</td>
                         <td class="custom-td" id="custom-wire-desc">
-                            120 米
+                            60 米
                         </td>
                     </tr>
                     <tr>
@@ -421,7 +421,12 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            populateCameraSelect(8); // 預設 8路主機
+            populateCameraSelect(4); // 預設初始最大可選為 4路主機的上限
+            
+            // 強制設定鏡頭預設選中 4支
+            const cameraSelect = document.getElementById("select-cameras");
+            cameraSelect.value = 4;
+            
             calculateCustomProject();
         });
 
