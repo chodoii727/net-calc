@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=0.25, maximum-scale=5.0">
-    <title>正禾資訊 | 監控套餐配備對比</title>
+    <title>正禾資訊 | 監控套餐配備對比與自選估價</title>
     <style>
-        /* 🎨 全局現代化質感美學（完美繼承正禾風格變數） */
+        /* 🎨 全局現代化質感美學 */
         :root {
             --zh-orange: #f27a2b;       /* 正禾品牌橘 */
             --zh-dark: #111111;         /* 高質感深色 */
             --zh-bg: #f4f6f8;           /* 寬闊背景色 */
             --zh-card-bg: #ffffff;
-            --zh-border: #e4e7eb;
+            --zh-border: #d1d5db;       /* 俐落邊框線 */
             --zh-text-muted: #545454;
+            --zh-highlight-bg: #fffbf7; /* 自選欄專用淡淡黃橘底 */
         }
 
         body {
@@ -21,237 +22,211 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            overflow-x: hidden; /* 🚀 關鍵防禦：防止外層元素或導覽列寬度意外溢出，確保手機版畫面不切邊 */
+            overflow-x: hidden;
         }
 
-        /* 📊 獨立頁面主力佈局區 */
         .page-content {
-            max-width: 1200px;
-            margin: 60px auto;
-            padding: 0 20px;
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 0 15px;
             box-sizing: border-box;
         }
 
-        /* 🏛️ 頂部大氣標題區（繼承左側橘色粗線設計） */
         .specs-header {
             text-align: left;
-            margin-bottom: 45px;
+            margin-bottom: 25px;
             border-left: 5px solid var(--zh-orange);
-            padding-left: 20px;
+            padding-left: 15px;
         }
 
         .specs-page-title {
             color: var(--zh-dark);
-            margin: 0 0 8px 0;
-            font-size: 32px;
+            margin: 0 0 4px 0;
+            font-size: 28px;
             font-weight: 800;
             letter-spacing: -0.5px;
         }
 
         .specs-page-subtitle {
             color: var(--zh-text-muted);
-            font-size: 18px;
+            font-size: 15px;
             margin: 0;
             font-weight: 500;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        /* 📋 汽車規格表級對比區域（修復手機版橫向滑動 Bug） */
+        /* 📋 緊湊型 Excel 規格表包裝區 */
         .specs-table-wrapper {
             width: 100%;
-            overflow-x: auto;           /* 核心：允許單獨橫向滾動 */
-            -webkit-overflow-scrolling: touch; /* 讓 iPhone 滑動時有像 App 一樣的滑順阻尼感 */
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             border: 1px solid var(--zh-border);
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             background-color: var(--zh-card-bg);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .specs-table {
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
-            min-width: 800px;           /* 電腦版維持 800px 大氣比對 */
+            min-width: 980px;
         }
 
-        /* 🌟 核心優化：放大字級、微調字距，消除原本死板、普通的感覺 */
         .specs-table th, .specs-table td {
-            padding: 18px 20px;        /* 拉大上下間距，創造大廠配備表的透氣感 */
-            font-size: 15.5px;         /* 稍微放大字體，讓規格文字非常清晰好讀 */
+            padding: 10px 12px;        /* 緊湊 Excel 內距 */
+            font-size: 14px;
             border: 1px solid var(--zh-border);
             text-align: center;
             box-sizing: border-box;
             color: var(--zh-dark);
-            line-height: 1.5;
-            letter-spacing: 0.3px;    /* 微調字距，徹底擺脫新細明體般的生硬感 */
+            line-height: 1.4;
+            letter-spacing: 0.2px;
         }
 
         /* 欄位寬度比例精密控制 */
-        .specs-table th:nth-child(1), .specs-table td:nth-child(1) { width: 160px; text-align: left; }
-        .specs-table th:nth-child(2), .specs-table td:nth-child(2) { width: 210px; }
-        .specs-table th:nth-child(3), .specs-table td:nth-child(3) { width: 210px; }
-        .specs-table th:nth-child(4), .specs-table td:nth-child(4) { width: 210px; }
+        .specs-table th:nth-child(1), .specs-table td:nth-child(1) { width: 120px; text-align: left; }
+        .specs-table th:nth-child(2), .specs-table td:nth-child(2) { width: 200px; }
+        .specs-table th:nth-child(3), .specs-table td:nth-child(3) { width: 200px; }
+        .specs-table th:nth-child(4), .specs-table td:nth-child(4) { width: 200px; }
+        .specs-table th:nth-child(5), .specs-table td:nth-child(5) { width: 260px; }
 
-        /* 👑 表頭方案名稱：字體加粗加大，建立強烈視覺階層 */
         .plan-th { 
-            background-color: var(--zh-bg); 
+            background-color: #ebedf0; 
             color: var(--zh-dark); 
             font-weight: 800; 
-            font-size: 18px; 
+            font-size: 16px; 
         }
         .plan-desc { 
-            font-size: 13px; 
+            font-size: 11px; 
             color: var(--zh-text-muted); 
             font-weight: 500; 
             display: block; 
-            margin-top: 6px; 
+            margin-top: 4px; 
         }
 
-        /* 🏛️ 項目大分類分隔橫列（加深灰底，像鋼骨一樣壓住版面段落） */
+        .custom-plan-th {
+            background-color: #fef3e6;
+            color: var(--zh-orange);
+            font-weight: 800;
+            font-size: 17px;
+            border-bottom: 3px solid var(--zh-orange) !important;
+        }
+        .custom-td {
+            background-color: var(--zh-highlight-bg);
+            font-weight: 700;
+        }
+
         .section-divider td {
             font-weight: 800;
             color: var(--zh-dark);
-            font-size: 15px;
-            padding: 14px 20px;
-            background-color: #ebedf0; /* 背景微加深，滑動橫移時絕不看錯行 */
+            font-size: 13.5px;
+            padding: 8px 12px;
+            background-color: #e2e8f0; 
             text-align: left;
-            letter-spacing: 0.8px;
-            border-top: 2px solid var(--zh-border);
+            letter-spacing: 0.5px;
         }
 
-        /* 📝 左側「細項配備」標籤欄：顏色加深加粗，作為水平視覺定錨 */
         .row-label { 
             font-weight: 800; 
-            background-color: #fafbfc; 
+            background-color: #f8fafc; 
             color: var(--zh-dark); 
         }
 
-        /* 🔢 核心數據單元格：讓 4支、2TB、25天 等關鍵規格字體更有分量 */
         .specs-table td:not(.row-label):not(.merge-row) {
-            font-weight: 600; /* 比普通字體更黑一點，凸顯規格對比 */
+            font-weight: 600;
         }
 
-        /* 🔗 橫向合併區塊（工法、保固）：維持高質感規格字重 */
         .merge-row { 
             background-color: var(--zh-card-bg); 
             color: var(--zh-dark); 
             font-weight: 600;
         }
-        
-        /* 💡 修正：取消斜體設定，因為中文字體套用網頁斜體會發毛、不清晰 */
-        .font-italic { 
-            font-style: normal; 
-            color: var(--zh-text-muted); 
-            font-weight: 500;
+
+        .table-select {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1.5px solid var(--zh-orange);
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--zh-dark);
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        .table-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(242, 122, 43, 0.2);
         }
 
-        /* 💰 完工價格欄：全面加重讀取感 */
+        .dynamic-days {
+            color: #059669;
+            font-size: 14px;
+            font-weight: 800;
+        }
+        .dynamic-price {
+            color: var(--zh-orange);
+            font-size: 20px;
+            font-weight: 900;
+            display: block;
+        }
+
         .price-row td { 
-            padding: 24px 20px; 
-            background-color: #fafbfc; 
+            padding: 15px 12px; 
+            background-color: #f8fafc; 
         }
         .price-td { 
-            font-size: 19px; 
+            font-size: 17px; 
             font-weight: 800; 
             color: var(--zh-dark); 
-            letter-spacing: 0.5px;
         }
 
-        /* 預約行動欄 */
-        .action-row td { padding: 24px; background-color: var(--zh-card-bg); }
+        .action-row td { padding: 15px; background-color: var(--zh-card-bg); }
 
-        /* 📱 RWD 行動裝置精密導航優化 */
-        @media (max-width: 768px) {
-            .page-content { margin: 30px auto; }
-            .specs-page-title { font-size: 26px; }
-            /* 手機版微調表格襯墊，讓字體在水平滾動時看起來更清爽、更透氣 */
-            .specs-table th, .specs-table td { 
-                padding: 14px 12px; 
-                font-size: 14px; 
-            }
-            .plan-th { font-size: 16px; }
-            .zh-btn-main { width: 100%; max-width: 100%; padding: 14px 0; }
-            
-            /* 🚀 關鍵修正：在手機版將固定寬度解鎖，使其完美收納，完全防止右側文字切掉 */
-            .specs-table {
-                min-width: 100% !important;
-                table-layout: auto !important;
-            }
-            .specs-table th, .specs-table td {
-                width: auto !important;
-            }
-        }
-        
-        /* 📊 表格底部雙按鈕專屬大廠級排版 */
         .table-cta-group {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
-            padding: 10px 0;
         }
 
-        /* LINE 綠色按鈕樣式 */
         .table-btn-line {
             display: inline-block;
             background-color: #06C167;
             color: #ffffff;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
-            padding: 14px 36px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            box-shadow: 0 4px 12px rgba(6, 193, 103, 0.15);
-            letter-spacing: 0.5px;
-            box-sizing: border-box;
-        }
-        .table-btn-line:hover {
-            background-color: #05a95a;
-        }
-        .table-btn-line:active {
-            transform: scale(0.98);
-        }
-
-        /* 估價白框按鈕樣式 (配合表格內部淺色背景，維持深底高質感) */
-        .table-btn-calc {
-            display: inline-block;
-            background-color: var(--zh-dark); /* 繼承正禾高質感深色 #111111 */
-            color: #ffffff;
-            font-size: 15px;
-            font-weight: 700;
-            padding: 14px 36px;
-            border: 2px solid var(--zh-dark);
-            border-radius: 12px;
-            cursor: pointer;
+            padding: 10px 24px;
+            border-radius: 8px;
             text-decoration: none;
             transition: all 0.2s ease;
-            letter-spacing: 0.5px;
-            box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(6, 193, 103, 0.15);
+            cursor: pointer;
         }
-        .table-btn-calc:hover {
-            background-color: transparent;
-            color: var(--zh-dark);
-        }
-        .table-btn-calc:active {
-            transform: scale(0.98);
-        }
+        .table-btn-line:hover { background-color: #05a95a; transform: translateY(-1px); }
 
-        /* 📱 手機版滿版優化 */
+        .table-btn-calc {
+            display: inline-block;
+            background-color: var(--zh-dark);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 10px 24px;
+            border: 2px solid var(--zh-dark);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .table-btn-calc:hover { background-color: transparent; color: var(--zh-dark); transform: translateY(-1px); }
+
         @media (max-width: 768px) {
-            .table-cta-group {
-                flex-direction: column;
-                gap: 12px;
-                align-items: center;
-            }
-            .table-btn-line, .table-btn-calc {
-                width: 100%;
-                max-width: 320px;
-                text-align: center;
-                padding: 14px 0;
+            .page-content { margin: 15px auto; }
+            .specs-page-title { font-size: 22px; }
+            .specs-table {
+                min-width: 980px !important;
+                table-layout: fixed !important;
             }
         }
     </style>
@@ -264,7 +239,7 @@
         
         <header class="specs-header">
             <h1 class="specs-page-title">監控套餐價格</h1>
-            <p class="specs-page-subtitle">※ 專案皆可依實際需求增減鏡頭數量、硬碟容量，並為您預留日後升級擴充空間。</p>
+            <p class="specs-page-subtitle">※ 專案皆可依實際需求增減。右側【自選專案】欄位支援即時搭配計算，歡迎動手試算！</p>
         </header>
 
         <div class="specs-table-wrapper">
@@ -274,116 +249,137 @@
                         <th class="row-label">細項配備</th>
                         <th class="plan-th">4路專案<br><span class="plan-desc">適合：居家住宅、小型店面</span></th>
                         <th class="plan-th">8路專案<br><span class="plan-desc">適合：透天全棟、中型廠辦</span></th>
-                        <th class="plan-th">16路專案<br><span class="plan-desc">適合：社區大樓、大型場域規劃</span></th>
+                        <th class="plan-th">16路專案<br><span class="plan-desc">適合：社區大樓、大型規劃</span></th>
+                        <th class="custom-plan-th">✨ 您的自選專案<br><span class="plan-desc" style="color: #c25e14;">客製化規格，即時自動算</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="section-divider">
-                        <td colspan="4">主機規格</td>
+                        <td colspan="5">主機規格</td>
                     </tr>
                     <tr>
                         <td class="row-label">路數</td>
                         <td>4路高規監控主機</td>
                         <td>8路高規監控主機</td>
                         <td>16路高規監控主機</td>
+                        <td class="custom-td">
+                            <select id="select-channels" class="table-select">
+                                <option value="4">4路高規監控主機</option>
+                                <option value="8" selected>8路高規監控主機</option>
+                                <option value="16">16路高規監控主機</option>
+                            </select>
+                        </td>
                     </tr>
-
+                    <tr>
+                        <td class="row-label">主機功能</td>
+                        <td colspan="4" class="merge-row">
+                            智慧快速搜索、跨線入侵手機推播、人形車輛精準識別、斷網自動備援錄影(ANR)、手機App遠端操作
+                        </td>
+                    </tr>
                     <tr class="section-divider">
-                        <td colspan="4">鏡頭</td>
+                        <td colspan="5">鏡頭</td>
                     </tr>
                     <tr>
                         <td class="row-label">鏡頭畫素</td>
-                        <td colspan="3" class="merge-row">500萬畫素</td>
+                        <td colspan="4" class="merge-row">500萬畫素 (標配大廠主流機型)</td>
                     </tr>
                     <tr>
                         <td class="row-label">鏡頭焦距</td>
-                        <td colspan="3" class="merge-row">2.8mm(廣角)   3.6mm(標準)   6mm(中距離)  依現場環境選擇安裝</td>
+                        <td colspan="4" class="merge-row">2.8mm(廣角) / 3.6mm(標準) / 6mm(中距離) 依現場環境工法選擇安裝</td>
                     </tr>
                     <tr>
                         <td class="row-label">夜視</td>
-                        <td colspan="3" class="merge-row">智慧雙光全彩(夜晚白光可選開啟或關閉)</td>
+                        <td colspan="4" class="merge-row">智慧雙光全彩 (夜晚白光可依需求開啟或關閉)</td>
                     </tr>
                     <tr>
                         <td class="row-label">錄音功能</td>
-                        <td colspan="3" class="merge-row">有聲</td>
+                        <td colspan="4" class="merge-row">有聲 (現場環境音清晰收錄)</td>
                     </tr>
                     <tr>
                         <td class="row-label">標配數量</td>
                         <td>4 支</td>
                         <td>8 支</td>
                         <td>16 支</td>
+                        <td class="custom-td">
+                            <select id="select-cameras" class="table-select" onchange="calculateCustomProject()">
+                            </select>
+                        </td>
                     </tr>
 
                     <tr class="section-divider">
-                        <td colspan="4">儲存效能</td>
+                        <td colspan="5">儲存效能</td>
                     </tr>
                     <tr>
                         <td class="row-label">硬碟規格</td>
                         <td>2TB 監控專用硬碟</td>
                         <td>4TB 監控專用硬碟</td>
                         <td>8TB 監控專用硬碟</td>
+                        <td class="custom-td">
+                            <select id="select-hdd" class="table-select" onchange="calculateCustomProject()">
+                                <option value="2">2TB 監控專用硬碟</option>
+                                <option value="4" selected>4TB 監控專用硬碟</option>
+                                <option value="8">8TB 監控專用硬碟</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td class="row-label">錄製天數</td>
-                        <td>預估錄製約 25 天</td>
                         <td>預估錄製約 22 天</td>
                         <td>預估錄製約 22 天</td>
+                        <td>預估錄製約 22 天</td>
+                        <td class="custom-td">
+                            <span id="custom-days" class="dynamic-days">計算中...</span>
+                        </td>
                     </tr>
 
                     <tr class="section-divider">
-                        <td colspan="4">佈線</td>
+                        <td colspan="5">佈線與施工標準</td>
                     </tr>
                     <tr>
                         <td class="row-label">標配線長</td>
                         <td>60 米</td>
                         <td>120 米</td>
                         <td>240 米</td>
+                        <td class="custom-td" id="custom-wire-desc">
+                            120 米
+                        </td>
                     </tr>
                     <tr>
                         <td class="row-label">線材等級</td>
-                        <td colspan="3" class="merge-row">大同原廠網路線 / 越祥光電純銅網路複合線</td>
-                    </tr>
-                    <tr>
-                        <td class="row-label">超額線長</td>
-                        <td colspan="3" class="merge-row font-italic">(超過依現場實計)</td>
-                    </tr>
-
-                    <tr class="section-divider">
-                        <td colspan="4">施工標準</td>
+                        <td colspan="4" class="merge-row">大同原廠網路線 / 越祥光電純銅網路複合線 </td>
                     </tr>
                     <tr>
                         <td class="row-label">佈線工法</td>
-                        <td colspan="3" class="merge-row">管線橫平豎直，依環境選擇線夾或壓條固定</td>
+                        <td colspan="4" class="merge-row">管線橫平豎直，依環境選擇線夾或壓條固定保護</td>
                     </tr>
                     <tr>
                         <td class="row-label">接頭防護</td>
-                        <td colspan="3" class="merge-row">手工銲錫 / 防水盒防護</td>
-                    </tr>
-
-                    <tr class="section-divider">
-                        <td colspan="4">保固</td>
+                        <td colspan="4" class="merge-row">手工銲錫 / 標配防水盒防護</td>
                     </tr>
                     <tr>
                         <td class="row-label">硬體保固</td>
-                        <td colspan="3" class="merge-row">全機 2 年保固</td>
+                        <td colspan="4" class="merge-row">全機 2 年保固</td>
                     </tr>
 
                     <tr class="section-divider">
-                        <td colspan="4">完工定價</td>
+                        <td colspan="5">完工定價</td>
                     </tr>
                     <tr class="price-row">
                         <td class="row-label">標準完工價</td>
                         <td class="price-td">NT$27,500</td>
                         <td class="price-td">NT$47,000</td>
                         <td class="price-td">NT$93,500</td>
+                        <td class="custom-td">
+                            <span id="custom-price" class="dynamic-price">NT$0</span>
+                        </td>
                     </tr>
                     
                     <tr class="action-row">
                         <td class="row-label">線上預約</td>
-                        <td colspan="3" class="merge-row">
+                        <td colspan="4" class="merge-row">
                             <div class="table-cta-group">
-                                <a href="https://line.me/ti/p/~gooa168" target="_blank" class="table-btn-line">立即加LINE諮詢</a>
-                                <a href="calc-cctv.html" class="table-btn-calc">預算多少？點我馬上算➔</a>
+                                <a href="#" class="table-btn-line" id="btn-line-cta">加LINE傳送自選方案</a>
+                                <a href="calc-cctv.html" class="table-btn-calc">進階估價計算機➔</a>
                             </div>
                         </td>
                     </tr>
@@ -397,5 +393,115 @@
     <script src="nav.js"></script>
     <script src="footer.js"></script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            populateCameraSelect(8); // 預設 8路主機
+            calculateCustomProject();
+        });
+
+        // 根據主機路數動態生成鏡頭選項（防呆機制）
+        function populateCameraSelect(maxChannels) {
+            const cameraSelect = document.getElementById("select-cameras");
+            const currentValue = parseInt(cameraSelect.value) || 4;
+            
+            cameraSelect.innerHTML = "";
+            for (let i = 1; i <= maxChannels; i++) {
+                const opt = document.createElement("option");
+                opt.value = i;
+                opt.textContent = `${i} 支監視器`;
+                if (i === currentValue || (currentValue > maxChannels && i === maxChannels)) {
+                    opt.selected = true;
+                }
+                cameraSelect.appendChild(opt);
+            }
+        }
+
+        // 監聽主機路數變更
+        const channelSelect = document.getElementById("select-channels");
+        channelSelect.addEventListener("change", function() {
+            const channels = parseInt(this.value);
+            populateCameraSelect(channels);
+            calculateCustomProject();
+        });
+
+        // 核心計算引擎
+        function calculateCustomProject() {
+            const channels = parseInt(document.getElementById("select-channels").value);
+            const cameras = parseInt(document.getElementById("select-cameras").value) || 4;
+            const hdd = parseInt(document.getElementById("select-hdd").value);
+
+            // 1️⃣ 標配線長描述更新（維持每支鏡頭 15 米標配）
+            const freeMeters = cameras * 15;
+            document.getElementById("custom-wire-desc").textContent = `${freeMeters} 米 (每支標配15米)`;
+
+            // 2️⃣ 載入老闆專屬的「儲存天數計算公式」
+            let estimatedDays = 0;
+            if (cameras > 0 && hdd > 0) {
+                let totalCapacityGB = hdd * 1000;      // 老闆公式：hddSize * 1000
+                let totalGbPerDay = cameras * 22;      // 老闆公式：camTotalQty * 22
+                estimatedDays = Math.floor(totalCapacityGB / totalGbPerDay);
+                document.getElementById("custom-days").textContent = `預估錄製約 ${estimatedDays} 天`;
+            } else {
+                document.getElementById("custom-days").textContent = `請選擇規格`;
+            }
+
+            // 3️⃣ 載入老闆最新調整的「完工價格數據」
+            let hostPrice = 0;   // 主機費
+            let cameraCost = 0;  // 鏡頭與拉線基本費
+            let hddPrice = 0;    // 硬碟升級費
+
+            // 主機功能價格對照
+            if (channels === 4) {
+                hostPrice = 6000;
+            } else if (channels === 8) {
+                hostPrice = 8000;
+            } else if (channels === 16) {
+                hostPrice = 14500;
+            }
+
+            // 鏡頭單支費用變更為 4,000 元
+            cameraCost = cameras * 4000; 
+
+            // 硬碟費價格對照
+            if (hdd === 2) hddPrice = 5500;
+            else if (hdd === 4) hddPrice = 7000;
+            else if (hdd === 8) hddPrice = 15000;
+
+            // 總完工價計算
+            const totalPrice = hostPrice + cameraCost + hddPrice;
+
+            // 即時呈現至網頁 Excel 自選欄位
+            document.getElementById("custom-price").textContent = `NT$${totalPrice.toLocaleString()}`;
+
+            // 4️⃣ 接通 LINE 按鈕的「自動複製 + 跳轉官方 LINE 聊天室」雙軌連動電路
+            let textForLine = `【正禾資訊 ｜ 監控自選需求單】\n` +
+                              `───────────────\n` +
+                              ` 錄影主機：${channels}路高規監控主機\n` +
+                              ` 鏡頭數量：${cameras} 支（500萬智慧雙光款）\n` +
+                              ` 儲存硬碟：${hdd}TB 監控專用硬碟（預估錄 ${estimatedDays} 天）\n` +
+                              ` 預估線長：${freeMeters} 米 (每支標配15米)\n` +
+                              ` 系統預估總價：NT$ ${totalPrice.toLocaleString()} 元\n` +
+                              `───────────────\n` +
+                              `💡 備註：施工一律內含防水防曬、壓條等基礎工法保護，全機設備線路享完整 2 年保固。`;
+
+            const lineCta = document.getElementById("btn-line-cta");
+            
+            lineCta.onclick = function(e) {
+                e.preventDefault(); // 阻止原生的空白錨點跳轉
+
+                // 執行剪貼簿自動複製
+                navigator.clipboard.writeText(textForLine).then(() => {
+                    alert("📋 您的自選配備與估價已自動複製！\n開啟 LINE 後直接「貼上」即可傳送給正禾資訊。");
+                    // 點選彈出視窗的確認後，自動開啟正禾官方 LINE 聊天室
+                    window.open("https://line.me/ti/p/~gooa168", "_blank");
+                }).catch(err => {
+                    // 備援機制：如果少數極舊手機不支援剪貼簿，改用網址參數直接帶入文字
+                    console.error("複製失敗，啟動備援方案", err);
+                    const backupMessage = encodeURIComponent(`老闆你好，我在官網試算了自選方案：\n- 主機：${channels}路\n- 鏡頭：${cameras}支\n- 硬碟：${hdd}TB (${estimatedDays}天)\n- 總價：NT$${totalPrice.toLocaleString()}`);
+                    window.open(`https://line.me/R/msg/text/?${backupMessage}`, "_blank");
+                });
+            };
+        }
+    </script>
 </body>
 </html>
